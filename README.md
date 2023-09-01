@@ -1,8 +1,19 @@
-# Rupiah
+# Panduan di WEB Rupiah
 
-# huh hah
+## Kolaborasi
 
-## Getting started intan coba
+1. Sebelum melakukan perubahan pada proyek jangan lupa untuk melakukan pull repository terlebih dahulu.
+`git pull`
+
+2. Setelah selesai melakukan perubahan melakukan perubahan jangan lupa untuk
+`git add .` ketika ingin menambahkan semua perubahan.
+`git add nama-file-perubahan.txt` jika ingin melakukannya satu persatu.
+3. Setelah melakukan `add` jangan lupa untuk commit.
+`git commit -m 'pesan commit'`
+NB : melakukan `add` satu-persatu dan di-`commit` setiap setelahnya agar bisa memberikan pesan perubahan pada setiap file-nya (agar aku gk bingung wkwk)
+4. Memberikan `commit` 
+
+## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
 
