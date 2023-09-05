@@ -17,7 +17,7 @@ class Beranda extends BaseController
         echo view('layouts/header');
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('beranda');
+        echo view('beranda', $data);
         echo view('layouts/footer');
     }
 }

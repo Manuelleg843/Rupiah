@@ -18,7 +18,7 @@ class ArahRevisiController extends BaseController
         echo view('layouts/header');
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('arahRevisi');
+        echo view('arahRevisi', $data);
         echo view('layouts/footer');
     }
 }

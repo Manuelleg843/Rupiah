@@ -33,7 +33,7 @@ class DataUploadController extends BaseController
         echo view('layouts/header');
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('dataUpload/angkaPDRB');
+        echo view('dataUpload/angkaPDRB', $data);
         echo view('layouts/footer');
     }
 
