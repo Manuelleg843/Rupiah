@@ -64,7 +64,7 @@ class TabelPDRBController extends BaseController
         echo view('layouts/header');
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('tabelPDRB/tabelHistoryPutaran', $data);
+        echo view('tabelPDRB/tabelHistoryPutaran');
         echo view('layouts/footer');
     }
 }
