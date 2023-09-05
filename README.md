@@ -11,7 +11,8 @@
 3. Setelah melakukan `add` jangan lupa untuk commit.
 `git commit -m 'pesan commit'`
 NB : melakukan `add` satu-persatu dan di-`commit` setiap setelahnya agar bisa memberikan pesan perubahan pada setiap file-nya (agar aku gk bingung wkwk)
-4. Memberikan `commit` 
+4. Setelah memberikan `commit` dapat di push ke branch masing-masing dengan `git push origin namabranch:namabranch`
+5. Nanti untuk merge dapat dilakukan bersama biar gak bingung. 
 
 ## Getting started
 
