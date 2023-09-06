@@ -5,18 +5,10 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/', 'Home::index');
-
-#------------------------------------#
-#        Menu Upload Data            #
-#------------------------------------#
-$routes->get('/pdrb_upload', 'uploadData::index/uploadAngkaPDRB');
-
-
-
-#------------------------------------#
-#        Menu Tabel PDRB             #
-#------------------------------------#
-$routes->get('/tabel_ringkasan', 'tabelPDRB::index/tabelRingkasan');
-$routes->get('/tabel_perKota', 'tabelPDRB::index/tabelPerKota');
-$routes->get('/tabel_historiPutaran', 'tabelPDRB::index/tabelPutaran');
+// $routes->get('/', 'Home::index');
+$routes->get('/', 'Beranda::index');
+$routes->get('/uploadData/angkaPDRB', 'DataUploadController::viewUploadAngkaPDRB');
+$routes->get('/tabelPDRB/tabelRingkasan', 'TabelPDRBController::viewTabelRingkasan');
+$routes->get('/tabelPDRB/tabelPerProvinsi', 'TabelPDRBController::viewTabelPerProvinsi');
+$routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
+$routes->get('/arahRevisi', 'ArahRevisiController::index');
