@@ -11,10 +11,10 @@ class Beranda extends BaseController
         //
         $data = [
             'title' => 'Beranda',
-            'tajuk' => 'beranda',
+            'tajuk' => 'Beranda',
             'subTajuk' => ''
         ];
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('beranda');

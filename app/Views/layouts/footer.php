@@ -48,10 +48,20 @@
 <script src="<?= base_url('/asset/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js'); ?>"></script>
 <!-- AdminLTE App -->
 <script src="<?= base_url('/asset/dist/js/adminlte.js'); ?>"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="<?= base_url('/asset/dist/js/demo.js'); ?>"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="<?= base_url('/asset/dist/js/pages/dashboard.js'); ?>"></script>
+<!-- jsGrid -->
+<script src="<?= base_url('/assets/jsgrid/demos/db.js'); ?>"></script>
+<script src="<?= base_url('/assets/jsgrid/jsgrid.min.js'); ?>"></script>
+<!-- Select2 -->
+<script src="<?= base_url('/assets/select2/js/select2.full.min.js'); ?>"></script>
+<!-- Page specific script -->
+
+<script>
+        $(function() {
+            $('.select2').select2()
+        });
+    </script>
 </body>
 
 </html>

@@ -10,12 +10,12 @@ class ArahRevisiController extends BaseController
     {
         //
         $data = [
-            'title' => 'Arah Revisi',
-            'tajuk' => 'arahRevisi',
+            'title' => 'Rupiah | Arah Revisi',
+            'tajuk' => 'Arah Revisi',
             'subTajuk' => ''
         ];
 
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('arahRevisi');

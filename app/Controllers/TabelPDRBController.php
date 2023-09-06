@@ -10,12 +10,12 @@ class TabelPDRBController extends BaseController
     {
         //
         $data = [
-            'title' => 'Tabel Ringkasan',
+            'title' => 'Rupiah | Tabel Ringkasan',
             'tajuk' => 'tabelPDRB',
             'subTajuk' => 'tabelRingkasan'
         ];
         
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('tabelPDRB/tabelRingkasan');
@@ -26,42 +26,42 @@ class TabelPDRBController extends BaseController
     {
         //
         $data = [
-            'title' => 'Tabel Ringkasan',
-            'tajuk' => 'tabelPDRB',
-            'subTajuk' => 'tabelRingkasan'
+            'title' => 'Rupiah | Tabel Ringkasan',
+            'tajuk' => 'Tabel PDRB',
+            'subTajuk' => 'Tabel Ringkasan'
         ];
 
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('tabelPDRB/tabelRingkasan');
         echo view('layouts/footer');
     }
-    public function viewTabelPerProvinsi()
+    public function viewTabelPerKota()
     {
         //
         $data = [
-            'title' => 'Tabel Per Provinsi',
-            'tajuk' => 'tabelPDRB',
-            'subTajuk' => 'tabelPerProvinsi'
+            'title' => 'Rupiah | Tabel Per Kota',
+            'tajuk' => 'Tabel PDRB',
+            'subTajuk' => 'Tabel Per Kota'
         ];
 
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('tabelPDRB/tabelPerProvinsi');
+        echo view('tabelPDRB/tabelPerKota');
         echo view('layouts/footer');
     }
     public function viewTabelHistoryPutaran()
     {
         //
         $data = [
-            'title' => 'Tabel History Putaran',
-            'tajuk' => 'tabelPDRB',
-            'subTajuk' => 'tabelHistoryPutaran'
+            'title' => 'Rupiah | Tabel History Putaran',
+            'tajuk' => 'Tabel PDRB',
+            'subTajuk' => 'Tabel History Putaran'
         ];
 
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('tabelPDRB/tabelHistoryPutaran');

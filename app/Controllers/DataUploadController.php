@@ -10,14 +10,14 @@ class DataUploadController extends BaseController
     {
         //
         $data = [
-            'title' => 'Upload Data',
-            'tajuk' => 'uploadData'
+            'title' => 'Rupiah | Upload Data',
+            'tajuk' => 'Upload Data'
         ];
         
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('dataUpload/angkaPDRB');
+        echo view('uploadData/uploadAngkaPDRB');
         echo view('layouts/footer');
     }
     
@@ -25,15 +25,15 @@ class DataUploadController extends BaseController
     {
         //
         $data = [
-            'title' => 'Upload Data',
-            'tajuk' => 'uploadData',
-            'subTajuk' => 'angkaPDRB'
+            'title' => 'Rupiah | Upload Data',
+            'tajuk' => 'Upload Data',
+            'subTajuk' => 'Angka PDRB'
         ];
 
-        echo view('layouts/header');
+        echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('dataUpload/angkaPDRB');
+        echo view('uploadData/uploadAngkaPDRB');
         echo view('layouts/footer');
     }
 
