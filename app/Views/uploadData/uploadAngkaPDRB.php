@@ -7,18 +7,13 @@
                 <div class="col-sm-6">
                     <h1><?= $tajuk ?></h1>
                 </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                        <li class="breadcrumb-item active">Fixed Navbar Layout</li>
-                    </ol>
-                </div>
+            </div>
 
+            <div class="row">
                 <!-- filter berdasarkan kota -->
                 <div class="col-auto mt-4">
                     <div class="form-group">
-                        <select class="form-control select2" style="width: 100%;">
+                        <select class="form-control" style="width: 100%;">
                             <option hidden>Pilih Kota</option>
                             <option>DKI Jakarta</option>
                             <option>Jakarta Pusat</option>
@@ -36,6 +31,7 @@
                     </button>
 
                 </div>
+
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -100,7 +96,7 @@
 
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <select class="form-control select2" style="width: 100%;">
+                                        <select class="form-control" style="width: 100%;">
                                             <option hidden>Pilih Jenis Tabel</option>
                                             <option>Tabel PDRB Atas Harga Berlaku (Juta Rupiah)</option>
                                             <option>Tabel PDRB Atas Harga Konstan (Juta Rupiah)</option>

@@ -10,5 +10,6 @@ $routes->get('/', 'Beranda::index');
 $routes->get('/uploadData/angkaPDRB', 'DataUploadController::viewUploadAngkaPDRB');
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelPDRBController::viewTabelRingkasan');
 $routes->get('/tabelPDRB/tabelPerKota', 'TabelPDRBController::viewTabelPerKota');
+$routes->get('/tabelPDRB/tabelPerKota_12Komponen', 'TabelPDRBController::viewTabelPerKota_12');
 $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
 $routes->get('/arahRevisi', 'ArahRevisiController::index');

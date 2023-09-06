@@ -5,14 +5,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1><?= $subTajuk?></h1>
-                        </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                                <li class="breadcrumb-item active">Fixed Navbar Layout</li>
-                            </ol>
+                            <h1><?= $subTajuk ?></h1>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
@@ -31,7 +24,7 @@
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <!-- <label>Jenis Tabel: </label> -->
-                                                <select class="form-control select2" style="width: 100%;">
+                                                <select class="form-control" style="width: 100%;">
                                                     <option selected="selected">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                                     <option>Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                                 </select>
@@ -41,7 +34,7 @@
                                         <div class="col-sm-2">
                                             <div class="form-group">
                                                 <!-- <label>Kota : </label> -->
-                                                <select class="form-control select2" style="width: 100%;">
+                                                <select class="form-control" style="width: 100%;">
                                                     <option>DKI Jakarta</option>
                                                     <option>Jakarta Pusat</option>
                                                     <option>Jakarta Utara</option>
@@ -54,7 +47,7 @@
                                         <div class="col-sm-2">
                                             <div class="form-group">
                                                 <!-- <label>Putaran: </label> -->
-                                                <select class="form-control select2" style="width: 100%;">
+                                                <select class="form-control" style="width: 100%;">
                                                     <option>Putaran 1</option>
                                                     <option>Putaran 2</option>
                                                     <option>Putaran 3</option>
@@ -66,12 +59,6 @@
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-sm">
                                                 Pilih Periode
                                             </button>
-                                            <!-- <div class="form-group">
-                                                <label>Periode: </label>
-                                                <select class="form-control select2" style="width: 100%;">
-                                                    <option>belum dibikin optionnya</option>
-                                                </select>
-                                            </div> -->
                                         </div>
 
                                     </div>
