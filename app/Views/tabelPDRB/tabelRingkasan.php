@@ -30,7 +30,7 @@
                                 <div class="row mt-2">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <select class="form-control select2" style="width: 100%;">
+                                            <select class="form-control" style="width: 100%;">
                                                 <option hidden>Pilih Jenis Tabel</option>
                                                 <option>Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</option>
                                                 <option>Tabel 1.12. Perbandingan Diskrepansi Kumulatif Provinsi dan Kota Menurut Komponen</option>
@@ -39,33 +39,18 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <select class="form-control select2" style="width: 100%;">
-                                                <option hidden>Pilih Komponen</option>
-                                                <option>PDRB</option>
-                                                <option>1. Pengeluaran Konsumsi Rumah Tangga</option>
-                                                <option>2. Pengeluaran Konsumsi LNPRT</option>
-                                                <option>3. Pengeluaran Konsumsi Pemerintah</option>
-                                                <option>4. Pembentukan Modal Tetap Bruto</option>
-                                                <option>5. Perubahan Inventori</option>
-                                                <option>7. Impor Luar Negeri</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+                                    <div class="col-auto align-items-center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-komponen">
                                             Pilih Komponen
                                         </button>
                                     </div>
-                                    <div class="col-sm-3">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+                                    <div class="col-auto align-items-center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-periode">
                                             Pilih Periode
                                         </button>
                                     </div>
 
                                 </div>
-
                                 <!-- export -->
                                 <div class="row justify-content-md-end">
                                     <div class="col-auto align-items-center">
@@ -73,7 +58,6 @@
                                             <i class="fa fa-file-excel"></i>
                                             <span>Ekspor Excel</span>
                                         </button>
-
                                     </div>
                                     <div class="col-auto align-items-center">
                                         <button type="submit" class="btn btn-outline-danger">
@@ -85,8 +69,8 @@
                             </div>
 
                             <!-- modal komponen -->
-                            <div class="modal fade" id="modal-default">
-                                <div class="modal-dialog modal-default">
+                            <div class="modal fade" id="modal-komponen">
+                                <div class="modal-dialog modal-komponen">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h4 class="modal-title">Komponen</h4>
@@ -97,71 +81,55 @@
                                         <div class="modal-body">
                                             <!-- 2010 -->
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="2010Q1" value="2010Q1">
-                                                <label class="form-check-label" for="2010Q1">2010Q1</label>
+                                                <input class="form-check-input" type="checkbox" id="0" value="0">
+                                                <label class="form-check-label" for="0">PDRB</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2010Q2" value="2010Q2">
-                                                <label class="form-check-label" for="2010Q2">2010Q2</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="1" value="1">
+                                                <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah Tangga</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2010Q3" value="2010Q3">
-                                                <label class="form-check-label" for="2010Q3">2010Q3</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="2" value="2">
+                                                <label class="form-check-label" for="2">2. Pengeluaran Konsumsi LNPRT</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2010Q4" value="2010Q4">
-                                                <label class="form-check-label" for="2010Q4">2010Q4</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="3" value="3">
+                                                <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2010" value="2010">
-                                                <label class="form-check-label" for="2010">2010</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="4" value="4">
+                                                <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto</label>
                                             </div>
                                             <!-- 2011 -->
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2011Q1" value="2011Q1">
-                                                <label class="form-check-label" for="2011Q1">2011Q1</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="5" value="5">
+                                                <label class="form-check-label" for="5">5. Perubahan Inventori</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2011Q2" value="2011Q2">
-                                                <label class="form-check-label" for="2011Q2">2011Q2</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="6" value="6">
+                                                <label class="form-check-label" for="6">6. Ekspor Luar Negeri</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2011Q3" value="2011Q3">
-                                                <label class="form-check-label" for="2011Q3">2011Q3</label>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="7" value="7">
+                                                <label class="form-check-label" for="7">7. Impor Luar Negeri</label>
                                             </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2011Q4" value="2011Q4">
-                                                <label class="form-check-label" for="2011Q4">2011Q4</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="2011" value="2011">
-                                                <label class="form-check-label" for="2011">2011</label>
-                                            </div>
-
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                             <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
                                             <div class="row justify-content-md-end">
-                                                <div class="col-auto align-items-center">
+                                                <div class="col-auto">
                                                     <div class="input-group-prepend">
                                                         <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
                                                             Pilihan
                                                         </button>
                                                         <ul class="dropdown-menu">
                                                             <li class="dropdown-item"><a href="#">Pilih Semua</a></li>
-                                                            <li class="dropdown-item"><a href="#">Semua Q1</a></li>
-                                                            <li class="dropdown-item"><a href="#">Semua Q2</a></li>
-                                                            <li class="dropdown-item"><a href="#">Semua Q3</a></li>
-                                                            <li class="dropdown-item"><a href="#">Semua Q4</a></li>
-                                                            <li class="dropdown-divider"></li>
                                                             <li class="dropdown-item"><a href="#">Hapus Pilihan</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                <div class="col-auto align-items-center">
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-                                                </div>
-                                                <div class="col-auto align-items-center">
+                                                <div class="col">
+                                                    <button type=" button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
                                                     <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
                                                 </div>
                                             </div>
@@ -174,8 +142,8 @@
                             <!-- /.modal komponen-->
 
                             <!-- modal periode -->
-                            <div class="modal fade" id="modal-default">
-                                <div class="modal-dialog modal-default">
+                            <div class="modal fade" id="modal-periode">
+                                <div class="modal-dialog modal-periode">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h4 class="modal-title">Periode</h4>

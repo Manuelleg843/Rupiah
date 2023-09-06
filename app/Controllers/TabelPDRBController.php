@@ -14,14 +14,14 @@ class TabelPDRBController extends BaseController
             'tajuk' => 'tabelPDRB',
             'subTajuk' => 'tabelRingkasan'
         ];
-        
+
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('tabelPDRB/tabelRingkasan');
         echo view('layouts/footer');
     }
-    
+
     public function viewTabelRingkasan()
     {
         //
@@ -43,13 +43,28 @@ class TabelPDRBController extends BaseController
         $data = [
             'title' => 'Rupiah | Tabel Per Kota',
             'tajuk' => 'Tabel PDRB',
-            'subTajuk' => 'Tabel Per Kota'
+            'subTajuk' => 'Tabel PDRB Per Kota (PKRT 7 Komponen)'
         ];
 
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('tabelPDRB/tabelPerKota');
+        echo view('layouts/footer');
+    }
+    public function viewTabelPerKota_12()
+    {
+        //
+        $data = [
+            'title' => 'Rupiah | Tabel Per Kota',
+            'tajuk' => 'Tabel PDRB',
+            'subTajuk' => 'Tabel PDRB Per Kota (PKRT 12 Komponen)'
+        ];
+
+        echo view('layouts/header', $data);
+        echo view('layouts/navbar');
+        echo view('layouts/sidebar', $data);
+        echo view('tabelPDRB/tabelPerKota12');
         echo view('layouts/footer');
     }
     public function viewTabelHistoryPutaran()

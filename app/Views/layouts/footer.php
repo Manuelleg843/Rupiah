@@ -54,14 +54,14 @@
 <script src="<?= base_url('/assets/jsgrid/demos/db.js'); ?>"></script>
 <script src="<?= base_url('/assets/jsgrid/jsgrid.min.js'); ?>"></script>
 <!-- Select2 -->
-<script src="<?= base_url('/assets/select2/js/select2.full.min.js'); ?>"></script>
+<script src="<?= base_url('/assets/plugins/select2/js/select2.full.min.js'); ?>"></script>
 <!-- Page specific script -->
 
 <script>
-        $(function() {
-            $('.select2').select2()
-        });
-    </script>
+    $(function() {
+        $('.select2').select2()
+    });
+</script>
 </body>
 
 </html>
