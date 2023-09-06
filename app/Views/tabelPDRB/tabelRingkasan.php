@@ -231,7 +231,7 @@
                             </div>
                             <!-- /.modal periode-->
 
-                            <!-- card-header -->
+                            <!-- card-header pdrb -->
                             <div class="card-header">
                                 <div class="row">
                                     <h2 class="card-title" style="font-weight: bold;">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</h2>
@@ -243,6 +243,177 @@
                             <!-- /.card-header -->
 
                             <!-- card body -->
+                            <!-- tabel pdrb -->
+                            <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
+                                <table id="example1" class="table table-bordered table-hover">
+                                    <thead class="text-center table-primary table-head-fixed">
+                                        <tr>
+                                            <th colspan="2" rowspan="3">Komponen</th>
+                                            <th colspan="2">2023Q1</th>
+                                            <th colspan="2">2023Q2</th>
+                                            <th colspan="2">2023Q3</th>
+                                            <th colspan="2">2023Q4</th>
+                                            <th colspan="2">2023</th>
+                                        </tr>
+                                        <tr>
+                                            <th colspan="2">Provinsi</th>
+                                            <th colspan="2">Diskrepansi</th>
+                                            <th colspan="2">Diskrepansi</th>
+                                            <th colspan="2">Diskrepansi</th>
+                                            <th colspan="2">Diskrepansi</th>
+                                        </tr>
+                                        <tr>
+                                            <th>ADHB</th>
+                                            <th>ADHK</th>
+                                            <th>ADHB</th>
+                                            <th>ADHK</th>
+                                            <th>ADHB</th>
+                                            <th>ADHK</th>
+                                            <th>ADHB</th>
+                                            <th>ADHK</th>
+                                            <th>ADHB</th>
+                                            <th>ADHK</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th colspan="2" style="font-weight: bold;">PDRB</th>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                            <td>0,00</td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <!-- tabel pdrb end -->
+                        </div>
+
+                        <div class="card">
+
+                            <!-- card-header diskrepansi -->
+                            <div class="card-header">
+                                <div class="row">
+                                    <h2 class="card-title" style="font-weight: bold;">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</h2>
+                                </div>
+                                <div class="row">
+                                    <p>Keterangan diskrepansi positif = kota lebih besar, diskrepansi negatif = kota lebih kecil</p>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+
+                            <!-- tabel diskrepansi -->
                             <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead class="text-center table-primary table-head-fixed">
@@ -396,6 +567,7 @@
 
                                 </table>
                             </div>
+                            <!-- tabel diskrepansi end -->
                             <!-- /.card-body -->
                         </div>
                         <!-- /.card -->
