@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rupiah | Tabel Ringkasan PDRB</title>
+    <title>Rupiah | Tabel PDRB per Kota</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="assets/font/fontawesome-free/css/all.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="assets/select2/css/select2.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="assets/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="assets/toastr/toastr.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/assets/css/adminlte.min.css">
 </head>
@@ -837,9 +841,9 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Tabel Ringkasan PDRB Kab/Kota</h1>
+                            <h1>Tabel Histori Putaran</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -864,50 +868,59 @@
                                     <div class="row mt-2">
                                         <div class="col-sm-6">
                                             <div class="form-group">
+                                                <!-- <label>Jenis Tabel: </label> -->
                                                 <select class="form-control select2" style="width: 100%;">
-                                                    <option hidden>Pilih Jenis Tabel</option>
-                                                    <option>Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</option>
-                                                    <option>Tabel 1.12. Perbandingan Diskrepansi Kumulatif Provinsi dan Kota Menurut Komponen</option>
-                                                    <option>Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Kota</option>
-                                                    <option>Tabel 1.14. Ringkasan Revisi Pertumbuhan Ekstrem dan Balik Arah Kota</option>
+                                                    <option selected="selected">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                                    <option>Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
+
+                                        <div class="col-sm-2">
                                             <div class="form-group">
+                                                <!-- <label>Kota : </label> -->
                                                 <select class="form-control select2" style="width: 100%;">
-                                                    <option hidden>Pilih Komponen</option>
-                                                    <option>PDRB</option>
-                                                    <option>1. Pengeluaran Konsumsi Rumah Tangga</option>
-                                                    <option>2. Pengeluaran Konsumsi LNPRT</option>
-                                                    <option>3. Pengeluaran Konsumsi Pemerintah</option>
-                                                    <option>4. Pembentukan Modal Tetap Bruto</option>
-                                                    <option>5. Perubahan Inventori</option>
-                                                    <option>7. Impor Luar Negeri</option>
+                                                    <option>DKI Jakarta</option>
+                                                    <option>Jakarta Pusat</option>
+                                                    <option>Jakarta Utara</option>
+                                                    <option>Jakarta Barat</option>
+                                                    <option>Jakarta Selatan</option>
+                                                    <option>Jakarta Timur</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
-                                                Pilih Komponen
-                                            </button>
+                                        <div class="col-sm-2">
+                                            <div class="form-group">
+                                                <!-- <label>Putaran: </label> -->
+                                                <select class="form-control select2" style="width: 100%;">
+                                                    <option>Putaran 1</option>
+                                                    <option>Putaran 2</option>
+                                                    <option>Putaran 3</option>
+                                                    <option>Putaran 4</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-sm">
                                                 Pilih Periode
                                             </button>
+                                            <!-- <div class="form-group">
+                                                <label>Periode: </label>
+                                                <select class="form-control select2" style="width: 100%;">
+                                                    <option>belum dibikin optionnya</option>
+                                                </select>
+                                            </div> -->
                                         </div>
 
                                     </div>
 
                                     <!-- export -->
-                                    <div class="row justify-content-md-end">
+                                    <div class="row mb-2 justify-content-md-end">
                                         <div class="col-auto align-items-center">
                                             <button type="submit" class="btn btn-outline-success">
                                                 <i class="fa fa-file-excel"></i>
                                                 <span>Ekspor Excel</span>
                                             </button>
-
                                         </div>
                                         <div class="col-auto align-items-center">
                                             <button type="submit" class="btn btn-outline-danger">
@@ -915,359 +928,86 @@
                                                 <span>Ekspor PDF</span>
                                             </button>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <!-- modal komponen -->
-                                <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog modal-default">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Komponen</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- 2010 -->
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q1" value="2010Q1">
-                                                    <label class="form-check-label" for="2010Q1">2010Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q2" value="2010Q2">
-                                                    <label class="form-check-label" for="2010Q2">2010Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q3" value="2010Q3">
-                                                    <label class="form-check-label" for="2010Q3">2010Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q4" value="2010Q4">
-                                                    <label class="form-check-label" for="2010Q4">2010Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010" value="2010">
-                                                    <label class="form-check-label" for="2010">2010</label>
-                                                </div>
-                                                <!-- 2011 -->
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q1" value="2011Q1">
-                                                    <label class="form-check-label" for="2011Q1">2011Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q2" value="2011Q2">
-                                                    <label class="form-check-label" for="2011Q2">2011Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q3" value="2011Q3">
-                                                    <label class="form-check-label" for="2011Q3">2011Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q4" value="2011Q4">
-                                                    <label class="form-check-label" for="2011Q4">2011Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011" value="2011">
-                                                    <label class="form-check-label" for="2011">2011</label>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                                <div class="row justify-content-md-end">
-                                                    <div class="col-auto align-items-center">
-                                                        <div class="input-group-prepend">
-                                                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                                                                Pilihan
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li class="dropdown-item"><a href="#">Pilih Semua</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q1</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q2</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q3</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q4</a></li>
-                                                                <li class="dropdown-divider"></li>
-                                                                <li class="dropdown-item"><a href="#">Hapus Pilihan</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="col-auto align-items-center">
+                                            <button type="submit" class="btn btn-outline-success">
+                                                <i class="fa fa-file-excel"></i>
+                                                <span>Ekspor Semua Putaran</span>
+                                            </button>
                                         </div>
-                                        <!-- /.modal-content -->
                                     </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <!-- /.modal komponen-->
-
-                                <!-- modal periode -->
-                                <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog modal-default">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Periode</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- 2010 -->
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q1" value="2010Q1">
-                                                    <label class="form-check-label" for="2010Q1">2010Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q2" value="2010Q2">
-                                                    <label class="form-check-label" for="2010Q2">2010Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q3" value="2010Q3">
-                                                    <label class="form-check-label" for="2010Q3">2010Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q4" value="2010Q4">
-                                                    <label class="form-check-label" for="2010Q4">2010Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010" value="2010">
-                                                    <label class="form-check-label" for="2010">2010</label>
-                                                </div>
-                                                <!-- 2011 -->
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q1" value="2011Q1">
-                                                    <label class="form-check-label" for="2011Q1">2011Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q2" value="2011Q2">
-                                                    <label class="form-check-label" for="2011Q2">2011Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q3" value="2011Q3">
-                                                    <label class="form-check-label" for="2011Q3">2011Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q4" value="2011Q4">
-                                                    <label class="form-check-label" for="2011Q4">2011Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011" value="2011">
-                                                    <label class="form-check-label" for="2011">2011</label>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                                <div class="row justify-content-md-end">
-                                                    <div class="col-auto align-items-center">
-                                                        <div class="input-group-prepend">
-                                                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                                                                Pilihan
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li class="dropdown-item"><a href="#">Pilih Semua</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q1</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q2</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q3</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q4</a></li>
-                                                                <li class="dropdown-divider"></li>
-                                                                <li class="dropdown-item"><a href="#">Hapus Pilihan</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
-                                                    </div>
-                                                </div>
-
-                                            </div>
+                                    <!-- card-header -->
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h2 class="card-title" style="font-weight: bold;">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah) - DKI Jakarta - Putaran 4</h2>
                                         </div>
-                                        <!-- /.modal-content -->
                                     </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <!-- /.modal periode-->
-
-                                <!-- card-header -->
-                                <div class="card-header">
-                                    <div class="row">
-                                        <h2 class="card-title" style="font-weight: bold;">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</h2>
+                                    <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <table id="example1" class="table table-bordered table-hover">
+                                            <thead class="text-center table-primary">
+                                                <tr>
+                                                    <th colspan="2">Komponen</th>
+                                                    <th>2023Q1</th>
+                                                    <th>2023Q2</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="2" style="font-weight: bold;">PDRB</th>
+                                                    <th>Rp</th>
+                                                    <th>Rp</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
                                     </div>
-                                    <div class="row">
-                                        <p>Keterangan diskrepansi positif = kota lebih besar, diskrepansi negatif = kota lebih kecil</p>
-                                    </div>
+                                    <!-- /.card-body -->
                                 </div>
-                                <!-- /.card-header -->
-
-                                <!-- card body -->
-                                <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
-                                    <table id="example1" class="table table-bordered table-hover">
-                                        <thead class="text-center table-primary table-head-fixed">
-                                            <tr>
-                                                <th colspan="2" rowspan="3">Komponen</th>
-                                                <th colspan="2">2023Q1</th>
-                                                <th colspan="2">2023Q2</th>
-                                                <th colspan="2">2023Q3</th>
-                                                <th colspan="2">2023Q4</th>
-                                                <th colspan="2">2023</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                            </tr>
-                                            <tr>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th colspan="2" style="font-weight: bold;">PDRB</th>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                <!-- /.card-body -->
+                                <!-- /.card -->
                             </div>
-                            <!-- /.card -->
                         </div>
                     </div>
-                </div>
             </section>
             <!-- /.content -->
         </div>
@@ -1282,24 +1022,21 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="assets/jquery/jquery.min.js"></script>
+    <script src="public/assets/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="public/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- jsGrid -->
-    <script src="assets/jsgrid/demos/db.js"></script>
-    <script src="assets/jsgrid/jsgrid.min.js"></script>
+    <script src=".public/assets/jsgrid/demos/db.js"></script>
+    <script src="public/assets/jsgrid/jsgrid.min.js"></script>
     <!-- Select2 -->
-    <script src="assets/select2/js/select2.full.min.js"></script>
+    <script src="public/assets/select2/js/select2.full.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="public/assets/sweetalert2/sweetalert2.min.js"></script>
+
     <!-- AdminLTE App -->
-    <script src="assets/js/adminlte.min.js"></script>
-
-    <!-- Page specific script -->
-
-    <script>
-        $(function() {
-            $('.select2').select2()
-        });
-    </script>
+    <script src="public/assets/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="public/assets/js/demo.js"></script>
 </body>
 
 </html>

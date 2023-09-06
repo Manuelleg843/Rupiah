@@ -4,20 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rupiah | Tabel Ringkasan PDRB</title>
+    <title>AdminLTE 3 | Modals & Alerts</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="assets/font/fontawesome-free/css/all.min.css">
-    <!-- Select2 -->
-    <link rel="stylesheet" href="assets/select2/css/select2.min.css">
+    <!-- SweetAlert2
+    <link rel="stylesheet" href="../../p/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css"> -->
+    <!-- Toastr -->
+    <!-- <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css"> -->
     <!-- Theme style -->
-    <link rel="stylesheet" href="/assets/css/adminlte.min.css">
+    <link rel="stylesheet" href="assets/css/adminlte.min.css">
 </head>
 
-<body class="hold-transition sidebar-mini layout-navbar-fixed">
-    <!-- Site wrapper -->
+<body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -68,7 +69,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="public/assets/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                                <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         Brad Diesel
@@ -84,7 +85,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="public/assets/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         John Pierce
@@ -100,7 +101,7 @@
                         <a href="#" class="dropdown-item">
                             <!-- Message Start -->
                             <div class="media">
-                                <img src="public/assets/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                                <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
                                 <div class="media-body">
                                     <h3 class="dropdown-item-title">
                                         Nora Silvester
@@ -160,8 +161,8 @@
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="../../index3.html" class="brand-link elevation-4">
-                <img src="public/assets/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <a href="../../index3.html" class="brand-link">
+                <img src="../../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">AdminLTE 3</span>
             </a>
 
@@ -170,7 +171,7 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="public/assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                        <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="#" class="d-block">Alexander Pierce</a>
@@ -232,8 +233,8 @@
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-copy"></i>
                                 <p>
                                     Layout Options
@@ -273,7 +274,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../layout/fixed-topnav.html" class="nav-link active">
+                                    <a href="../layout/fixed-topnav.html" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fixed Navbar</p>
                                     </a>
@@ -327,8 +328,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
                                 <i class="nav-icon fas fa-tree"></i>
                                 <p>
                                     UI Elements
@@ -361,7 +362,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../UI/modals.html" class="nav-link">
+                                    <a href="../UI/modals.html" class="nav-link active">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Modals & Alerts</p>
                                     </a>
@@ -837,15 +838,17 @@
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <div class="container-fluid">
-                    <div class="row">
+                    <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Tabel Ringkasan PDRB Kab/Kota</h1>
+                            <h1>
+                                Modals & Alerts
+                                <small>new</small>
+                            </h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                                <li class="breadcrumb-item active">Fixed Navbar Layout</li>
+                                <li class="breadcrumb-item active">Modals & Alerts</li>
                             </ol>
                         </div>
                     </div>
@@ -856,422 +859,445 @@
             <section class="content">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
-                            <!-- Default box -->
-                            <div class="card">
-                                <!-- filter-->
+                        <div class="col-md-12">
+                            <div class="card card-primary card-outline">
                                 <div class="card-header">
-                                    <div class="row mt-2">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <select class="form-control select2" style="width: 100%;">
-                                                    <option hidden>Pilih Jenis Tabel</option>
-                                                    <option>Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</option>
-                                                    <option>Tabel 1.12. Perbandingan Diskrepansi Kumulatif Provinsi dan Kota Menurut Komponen</option>
-                                                    <option>Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Kota</option>
-                                                    <option>Tabel 1.14. Ringkasan Revisi Pertumbuhan Ekstrem dan Balik Arah Kota</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <select class="form-control select2" style="width: 100%;">
-                                                    <option hidden>Pilih Komponen</option>
-                                                    <option>PDRB</option>
-                                                    <option>1. Pengeluaran Konsumsi Rumah Tangga</option>
-                                                    <option>2. Pengeluaran Konsumsi LNPRT</option>
-                                                    <option>3. Pengeluaran Konsumsi Pemerintah</option>
-                                                    <option>4. Pembentukan Modal Tetap Bruto</option>
-                                                    <option>5. Perubahan Inventori</option>
-                                                    <option>7. Impor Luar Negeri</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
-                                                Pilih Komponen
-                                            </button>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-default">
-                                                Pilih Periode
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-                                    <!-- export -->
-                                    <div class="row justify-content-md-end">
-                                        <div class="col-auto align-items-center">
-                                            <button type="submit" class="btn btn-outline-success">
-                                                <i class="fa fa-file-excel"></i>
-                                                <span>Ekspor Excel</span>
-                                            </button>
-
-                                        </div>
-                                        <div class="col-auto align-items-center">
-                                            <button type="submit" class="btn btn-outline-danger">
-                                                <i class="fa fa-file-pdf"></i>
-                                                <span>Ekspor PDF</span>
-                                            </button>
-                                        </div>
+                                    <h3 class="card-title">
+                                        <i class="fas fa-edit"></i>
+                                        Modal Examples
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-default">
+                                        Launch Default Modal
+                                    </button>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-primary">
+                                        Launch Primary Modal
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-secondary">
+                                        Launch Secondary Modal
+                                    </button>
+                                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-info">
+                                        Launch Info Modal
+                                    </button>
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-danger">
+                                        Launch Danger Modal
+                                    </button>
+                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-warning">
+                                        Launch Warning Modal
+                                    </button>
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-success">
+                                        Launch Success Modal
+                                    </button>
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-sm">
+                                        Launch Small Modal
+                                    </button>
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg">
+                                        Launch Large Modal
+                                    </button>
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-xl">
+                                        Launch Extra Large Modal
+                                    </button>
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-overlay">
+                                        Launch Modal with Overlay
+                                    </button>
+                                    <div class="text-muted mt-3">
+                                        Instructions for how to use modals are available on the
+                                        <a href="https://getbootstrap.com/docs/4.4/components/modal/">Bootstrap documentation</a>
                                     </div>
                                 </div>
-
-                                <!-- modal komponen -->
-                                <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog modal-default">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Komponen</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- 2010 -->
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q1" value="2010Q1">
-                                                    <label class="form-check-label" for="2010Q1">2010Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q2" value="2010Q2">
-                                                    <label class="form-check-label" for="2010Q2">2010Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q3" value="2010Q3">
-                                                    <label class="form-check-label" for="2010Q3">2010Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q4" value="2010Q4">
-                                                    <label class="form-check-label" for="2010Q4">2010Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010" value="2010">
-                                                    <label class="form-check-label" for="2010">2010</label>
-                                                </div>
-                                                <!-- 2011 -->
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q1" value="2011Q1">
-                                                    <label class="form-check-label" for="2011Q1">2011Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q2" value="2011Q2">
-                                                    <label class="form-check-label" for="2011Q2">2011Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q3" value="2011Q3">
-                                                    <label class="form-check-label" for="2011Q3">2011Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q4" value="2011Q4">
-                                                    <label class="form-check-label" for="2011Q4">2011Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011" value="2011">
-                                                    <label class="form-check-label" for="2011">2011</label>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                                <div class="row justify-content-md-end">
-                                                    <div class="col-auto align-items-center">
-                                                        <div class="input-group-prepend">
-                                                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                                                                Pilihan
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li class="dropdown-item"><a href="#">Pilih Semua</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q1</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q2</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q3</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q4</a></li>
-                                                                <li class="dropdown-divider"></li>
-                                                                <li class="dropdown-item"><a href="#">Hapus Pilihan</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <!-- /.modal komponen-->
-
-                                <!-- modal periode -->
-                                <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog modal-default">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Periode</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <!-- 2010 -->
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q1" value="2010Q1">
-                                                    <label class="form-check-label" for="2010Q1">2010Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q2" value="2010Q2">
-                                                    <label class="form-check-label" for="2010Q2">2010Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q3" value="2010Q3">
-                                                    <label class="form-check-label" for="2010Q3">2010Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010Q4" value="2010Q4">
-                                                    <label class="form-check-label" for="2010Q4">2010Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2010" value="2010">
-                                                    <label class="form-check-label" for="2010">2010</label>
-                                                </div>
-                                                <!-- 2011 -->
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q1" value="2011Q1">
-                                                    <label class="form-check-label" for="2011Q1">2011Q1</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q2" value="2011Q2">
-                                                    <label class="form-check-label" for="2011Q2">2011Q2</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q3" value="2011Q3">
-                                                    <label class="form-check-label" for="2011Q3">2011Q3</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011Q4" value="2011Q4">
-                                                    <label class="form-check-label" for="2011Q4">2011Q4</label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="2011" value="2011">
-                                                    <label class="form-check-label" for="2011">2011</label>
-                                                </div>
-
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                                <div class="row justify-content-md-end">
-                                                    <div class="col-auto align-items-center">
-                                                        <div class="input-group-prepend">
-                                                            <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                                                                Pilihan
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li class="dropdown-item"><a href="#">Pilih Semua</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q1</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q2</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q3</a></li>
-                                                                <li class="dropdown-item"><a href="#">Semua Q4</a></li>
-                                                                <li class="dropdown-divider"></li>
-                                                                <li class="dropdown-item"><a href="#">Hapus Pilihan</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-                                                    </div>
-                                                    <div class="col-auto align-items-center">
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <!-- /.modal-content -->
-                                    </div>
-                                    <!-- /.modal-dialog -->
-                                </div>
-                                <!-- /.modal periode-->
-
-                                <!-- card-header -->
-                                <div class="card-header">
-                                    <div class="row">
-                                        <h2 class="card-title" style="font-weight: bold;">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</h2>
-                                    </div>
-                                    <div class="row">
-                                        <p>Keterangan diskrepansi positif = kota lebih besar, diskrepansi negatif = kota lebih kecil</p>
-                                    </div>
-                                </div>
-                                <!-- /.card-header -->
-
-                                <!-- card body -->
-                                <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
-                                    <table id="example1" class="table table-bordered table-hover">
-                                        <thead class="text-center table-primary table-head-fixed">
-                                            <tr>
-                                                <th colspan="2" rowspan="3">Komponen</th>
-                                                <th colspan="2">2023Q1</th>
-                                                <th colspan="2">2023Q2</th>
-                                                <th colspan="2">2023Q3</th>
-                                                <th colspan="2">2023Q4</th>
-                                                <th colspan="2">2023</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                                <th colspan="2">Diskrepansi</th>
-                                            </tr>
-                                            <tr>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                                <th>ADHB</th>
-                                                <th>ADHK</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th colspan="2" style="font-weight: bold;">PDRB</th>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                                <td>0,00</td>
-                                            </tr>
-                                        </tbody>
-
-                                    </table>
-                                </div>
-                                <!-- /.card-body -->
+                                <!-- /.card -->
                             </div>
-                            <!-- /.card -->
+
+                            <div class="card card-info card-outline">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-edit"></i>
+                                        Toasts Examples <small>built in AdminLTE</small>
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-default toastsDefaultDefault">
+                                        Launch Default Toast
+                                    </button>
+                                    <button type="button" class="btn btn-default toastsDefaultFull">
+                                        Launch Full Toast (with icon)
+                                    </button>
+                                    <button type="button" class="btn btn-default toastsDefaultFullImage">
+                                        Launch Full Toast (with image)
+                                    </button>
+                                    <button type="button" class="btn btn-default toastsDefaultAutohide">
+                                        Launch Default Toasts with autohide
+                                    </button>
+                                    <button type="button" class="btn btn-default toastsDefaultNotFixed">
+                                        Launch Default Toasts with not fixed
+                                    </button>
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-default toastsDefaultTopLeft">
+                                        Launch Default Toast (topLeft)
+                                    </button>
+                                    <button type="button" class="btn btn-default toastsDefaultBottomRight">
+                                        Launch Default Toast (bottomRight)
+                                    </button>
+                                    <button type="button" class="btn btn-default toastsDefaultBottomLeft">
+                                        Launch Default Toast (bottomLeft)
+                                    </button>
+                                    <br />
+                                    <br />
+                                    <button type="button" class="btn btn-success toastsDefaultSuccess">
+                                        Launch Success Toast
+                                    </button>
+                                    <button type="button" class="btn btn-info toastsDefaultInfo">
+                                        Launch Info Toast
+                                    </button>
+                                    <button type="button" class="btn btn-warning toastsDefaultWarning">
+                                        Launch Warning Toast
+                                    </button>
+                                    <button type="button" class="btn btn-danger toastsDefaultDanger">
+                                        Launch Danger Toast
+                                    </button>
+                                    <button type="button" class="btn btn-default bg-maroon toastsDefaultMaroon">
+                                        Launch Maroon Toast
+                                    </button>
+                                    <div class="text-muted mt-3">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card card-success card-outline">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-edit"></i>
+                                        SweetAlert2 Examples
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-success swalDefaultSuccess">
+                                        Launch Success Toast
+                                    </button>
+                                    <button type="button" class="btn btn-info swalDefaultInfo">
+                                        Launch Info Toast
+                                    </button>
+                                    <button type="button" class="btn btn-danger swalDefaultError">
+                                        Launch Error Toast
+                                    </button>
+                                    <button type="button" class="btn btn-warning swalDefaultWarning">
+                                        Launch Warning Toast
+                                    </button>
+                                    <button type="button" class="btn btn-default swalDefaultQuestion">
+                                        Launch Question Toast
+                                    </button>
+                                    <div class="text-muted mt-3">
+                                        For more examples look at <a href="https://sweetalert2.github.io/">https://sweetalert2.github.io/</a>
+                                    </div>
+                                </div>
+                                <!-- /.card -->
+                            </div>
+
+                            <div class="card card-warning card-outline">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <i class="fas fa-edit"></i>
+                                        Toastr Examples
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <button type="button" class="btn btn-success toastrDefaultSuccess">
+                                        Launch Success Toast
+                                    </button>
+                                    <button type="button" class="btn btn-info toastrDefaultInfo">
+                                        Launch Info Toast
+                                    </button>
+                                    <button type="button" class="btn btn-danger toastrDefaultError">
+                                        Launch Error Toast
+                                    </button>
+                                    <button type="button" class="btn btn-warning toastrDefaultWarning">
+                                        Launch Warning Toast
+                                    </button>
+                                    <div class="text-muted mt-3">
+                                        For more examples look at <a href="https://codeseven.github.io/toastr/">https://codeseven.github.io/toastr/</a>
+                                    </div>
+                                </div>
+                                <!-- /.card -->
+                            </div>
                         </div>
+                        <!-- /.col -->
                     </div>
+                    <!-- ./row -->
+                </div><!-- /.container-fluid -->
+
+                <div class="modal fade" id="modal-default">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Default Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
                 </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-overlay">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="overlay">
+                                <i class="fas fa-2x fa-sync fa-spin"></i>
+                            </div>
+                            <div class="modal-header">
+                                <h4 class="modal-title">Default Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-primary">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-primary">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Primary Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-light">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-secondary">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-secondary">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Secondary Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-light">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-info">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-info">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Info Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-light">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-warning">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-warning">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Warning Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-dark">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-success">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-success">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Success Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-light">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-danger">
+                    <div class="modal-dialog">
+                        <div class="modal-content bg-danger">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Danger Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-outline-light">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-sm">
+                    <div class="modal-dialog modal-sm">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Small Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-lg">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Large Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
+                <div class="modal fade" id="modal-xl">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Extra Large Modal</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>One fine body&hellip;</p>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                        <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+                <!-- /.modal -->
+
             </section>
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 3.2.0
+            </div>
+            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+        </footer>
 
         <!-- Control Sidebar -->
         <aside class="control-sidebar control-sidebar-dark">
@@ -1285,19 +1311,167 @@
     <script src="assets/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- jsGrid -->
-    <script src="assets/jsgrid/demos/db.js"></script>
-    <script src="assets/jsgrid/jsgrid.min.js"></script>
-    <!-- Select2 -->
-    <script src="assets/select2/js/select2.full.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+    <!-- Toastr -->
+    <script src="../../plugins/toastr/toastr.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="assets/js/adminlte.min.js"></script>
-
+    <script src="../../dist/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="../../dist/js/demo.js"></script>
     <!-- Page specific script -->
-
     <script>
         $(function() {
-            $('.select2').select2()
+            var Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            $('.swalDefaultSuccess').click(function() {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.swalDefaultInfo').click(function() {
+                Toast.fire({
+                    icon: 'info',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.swalDefaultError').click(function() {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.swalDefaultWarning').click(function() {
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.swalDefaultQuestion').click(function() {
+                Toast.fire({
+                    icon: 'question',
+                    title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+
+            $('.toastrDefaultSuccess').click(function() {
+                toastr.success('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+            });
+            $('.toastrDefaultInfo').click(function() {
+                toastr.info('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+            });
+            $('.toastrDefaultError').click(function() {
+                toastr.error('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+            });
+            $('.toastrDefaultWarning').click(function() {
+                toastr.warning('Lorem ipsum dolor sit amet, consetetur sadipscing elitr.')
+            });
+
+            $('.toastsDefaultDefault').click(function() {
+                $(document).Toasts('create', {
+                    title: 'Toast Title',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultTopLeft').click(function() {
+                $(document).Toasts('create', {
+                    title: 'Toast Title',
+                    position: 'topLeft',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultBottomRight').click(function() {
+                $(document).Toasts('create', {
+                    title: 'Toast Title',
+                    position: 'bottomRight',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultBottomLeft').click(function() {
+                $(document).Toasts('create', {
+                    title: 'Toast Title',
+                    position: 'bottomLeft',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultAutohide').click(function() {
+                $(document).Toasts('create', {
+                    title: 'Toast Title',
+                    autohide: true,
+                    delay: 750,
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultNotFixed').click(function() {
+                $(document).Toasts('create', {
+                    title: 'Toast Title',
+                    fixed: false,
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultFull').click(function() {
+                $(document).Toasts('create', {
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
+                    title: 'Toast Title',
+                    subtitle: 'Subtitle',
+                    icon: 'fas fa-envelope fa-lg',
+                })
+            });
+            $('.toastsDefaultFullImage').click(function() {
+                $(document).Toasts('create', {
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.',
+                    title: 'Toast Title',
+                    subtitle: 'Subtitle',
+                    image: '../../dist/img/user3-128x128.jpg',
+                    imageAlt: 'User Picture',
+                })
+            });
+            $('.toastsDefaultSuccess').click(function() {
+                $(document).Toasts('create', {
+                    class: 'bg-success',
+                    title: 'Toast Title',
+                    subtitle: 'Subtitle',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultInfo').click(function() {
+                $(document).Toasts('create', {
+                    class: 'bg-info',
+                    title: 'Toast Title',
+                    subtitle: 'Subtitle',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultWarning').click(function() {
+                $(document).Toasts('create', {
+                    class: 'bg-warning',
+                    title: 'Toast Title',
+                    subtitle: 'Subtitle',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultDanger').click(function() {
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'Toast Title',
+                    subtitle: 'Subtitle',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
+            $('.toastsDefaultMaroon').click(function() {
+                $(document).Toasts('create', {
+                    class: 'bg-maroon',
+                    title: 'Toast Title',
+                    subtitle: 'Subtitle',
+                    body: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+                })
+            });
         });
     </script>
 </body>
