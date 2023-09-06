@@ -1,6 +1,6 @@
 <!-- Preloader -->
 <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="<?= base_url('/asset/dist/img/AdminLTELogo.png'); ?>" alt="AdminLTELogo" height="60" width="60" />
+    <img class="animation__shake" src="<?= base_url('/assets/dist/img/AdminLTELogo.png'); ?>" alt="AdminLTELogo" height="60" width="60" />
 </div>
 
 <!-- Navbar -->
@@ -56,7 +56,7 @@
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="<?= base_url('/asset/dist/img/user1-128x128.jpg'); ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle" />
+                        <img src="<?= base_url('/assets/dist/img/user1-128x128.jpg'); ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle" />
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 Budi Utami SST, M.Si

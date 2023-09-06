@@ -1022,21 +1022,21 @@
     <!-- ./wrapper -->
 
     <!-- jQuery -->
-    <script src="public/assets/jquery/jquery.min.js"></script>
+    <script src="<?= base_url('/public/assets/jquery/jquery.min.js'); ?>"></script>
     <!-- Bootstrap 4 -->
-    <script src="public/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url('/public/assets/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
     <!-- jsGrid -->
-    <script src=".public/assets/jsgrid/demos/db.js"></script>
-    <script src="public/assets/jsgrid/jsgrid.min.js"></script>
+    <script src="<?= base_url('/public/assets/jsgrid/demos/db.js'); ?>"></script>
+    <script src="<?= base_url('/public/assets/jsgrid/jsgrid.min.js'); ?>"></script>
     <!-- Select2 -->
-    <script src="public/assets/select2/js/select2.full.min.js"></script>
+    <script src="<?= base_url('/public/assets/select2/js/select2.full.min.js'); ?>"></script>
     <!-- SweetAlert2 -->
-    <script src="public/assets/sweetalert2/sweetalert2.min.js"></script>
+    <script src="<?= base_url('/public/assets/sweetalert2/sweetalert2.min.js'); ?>"></script>
 
     <!-- AdminLTE App -->
-    <script src="public/assets/js/adminlte.min.js"></script>
+    <script src="<?= base_url('/public/assets/js/adminlte.min.js'); ?>"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="public/assets/js/demo.js"></script>
+    <script src="<?= base_url('/public/assets/js/demo.js'); ?>"></script>
 </body>
 
 </html>
