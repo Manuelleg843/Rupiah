@@ -239,7 +239,7 @@
 
                             <!-- card body -->
                             <!-- tabel adhk -->
-                            <div class="card-body table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; position:relative;">
+                            <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead class="text-center table-primary table-head-fixed">
                                         <tr>
@@ -453,11 +453,11 @@
                             <!-- /.card-header -->
 
                             <!-- tabel diskrepansi -->
-                            <div class="card-body table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; position:relative;">
+                            <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
                                 <table id="example1" class="table table-bordered table-hover">
                                     <thead class="text-center table-primary table-head-fixed">
                                         <tr>
-                                            <th colspan="2" rowspan="2" class="th-lg">Komponen</th>
+                                            <th colspan="2" rowspan="2">Komponen</th>
                                             <th colspan="3">2023Q1</th>
                                             <th colspan="3">2023Q2</th>
                                             <th colspan="3">2023Q3</th>

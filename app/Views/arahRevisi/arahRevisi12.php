@@ -266,7 +266,7 @@
                         <!-- /.card-header -->
 
                         <!-- card body -->
-                        <div class="card-body table-responsive" style="overflow-y: scroll; height: 400px; max-height: fit-content; position:relative; overflow-x:auto;">
+                        <div class="card-body table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; max-height: fit-content; position:relative; overflow-x:auto;">
                             <table id="example1" class="table table-bordered table-hover">
                                 <thead class="text-center table-primary">
                                     <tr>

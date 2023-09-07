@@ -278,8 +278,8 @@
                         <!-- /.card-header -->
 
                         <!-- card body -->
-                        <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
-                            <table id="example1" class="table table-bordered table-hover">
+                        <div class="card-body table-responsive" style="overflow-y: scroll; height: 400px; position:relative; overflow-x:scroll;">
+                            <table id="example1" class="table table-bordered table-hover ">
                                 <thead class="text-center table-primary fixedHeader-floating">
                                     <tr>
                                         <th colspan="2">Komponen</th>
