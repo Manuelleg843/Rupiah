@@ -28,7 +28,7 @@ class TabelPDRBController extends BaseController
         $data = [
             'title' => 'Rupiah | Tabel Ringkasan',
             'tajuk' => 'Tabel PDRB',
-            'subTajuk' => 'Tabel Ringkasan'
+            'subTajuk' => 'Tabel Ringkasan PDRB Kab/Kota'
         ];
 
         echo view('layouts/header', $data);

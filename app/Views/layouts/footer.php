@@ -55,13 +55,8 @@
 <script src="<?= base_url('/assets/jsgrid/jsgrid.min.js'); ?>"></script>
 <!-- Select2 -->
 <script src="<?= base_url('/assets/plugins/select2/js/select2.full.min.js'); ?>"></script>
-<!-- Page specific script -->
-
-<script>
-    $(function() {
-        $('.select2').select2()
-    });
-</script>
+<!-- tabelPDRB -->
+<script src="<?= base_url('/assets/js/tabelPDRB.js'); ?>"></script>
 
 </body>
 
