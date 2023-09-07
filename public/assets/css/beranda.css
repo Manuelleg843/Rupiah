@@ -1,0 +1,19 @@
+.card-stats {
+  min-height: 8.7rem;
+  overflow: hidden !important;
+}
+
+.number-stats {
+  line-height: 2rem;
+  font-size: 2rem;
+}
+
+.card-header {
+  border-bottom: 0;
+}
+
+.last-update {
+  border-left: 0.7rem solid #007bff;
+  padding: 0.5em 0.5rem;
+  width: 100%;
+}
