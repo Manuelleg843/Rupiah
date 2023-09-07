@@ -3,9 +3,16 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
+                <div class="row">
                     <div class="col-sm-6">
-                        <h1 class="m-0"><?= $subTajuk ?></h1>
+                        <h1>Tabel Ringkasan PDRB Kab/Kota</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Layout</a></li>
+                            <li class="breadcrumb-item active">Fixed Navbar Layout</li>
+                        </ol>
                     </div>
                 </div>
             </div><!-- /.container-fluid -->
@@ -23,12 +30,12 @@
                                 <div class="row mt-2">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <select class="form-control" style="width: 100%;" id="selectTable">
-                                                <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                                <option value="Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</option>
-                                                <option value="Tabel 1.12. Perbandingan Diskrepansi Kumulatif Provinsi dan Kota Menurut Komponen">Tabel 1.12. Perbandingan Diskrepansi Kumulatif Provinsi dan Kota Menurut Komponen</option>
-                                                <option value="Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Kota">Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Kota</option>
-                                                <option value="Tabel 1.14. Ringkasan Revisi Pertumbuhan Ekstrem dan Balik Arah Kota">Tabel 1.14. Ringkasan Revisi Pertumbuhan Ekstrem dan Balik Arah Kota</option>
+                                            <select class="form-control" style="width: 100%;">
+                                                <option hidden>Pilih Jenis Tabel</option>
+                                                <option>Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</option>
+                                                <option>Tabel 1.12. Perbandingan Diskrepansi Kumulatif Provinsi dan Kota Menurut Komponen</option>
+                                                <option>Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Kota</option>
+                                                <option>Tabel 1.14. Ringkasan Revisi Pertumbuhan Ekstrem dan Balik Arah Kota</option>
                                             </select>
                                         </div>
                                     </div>
@@ -227,9 +234,11 @@
                             <!-- card-header pdrb -->
                             <div class="card-header">
                                 <div class="row">
-                                    <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
+                                    <h2 class="card-title" style="font-weight: bold;">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</h2>
                                 </div>
-
+                                <div class="row">
+                                    <p>Keterangan diskrepansi positif = kota lebih besar, diskrepansi negatif = kota lebih kecil</p>
+                                </div>
                             </div>
                             <!-- /.card-header -->
 
@@ -396,10 +405,9 @@
                             <!-- card-header diskrepansi -->
                             <div class="card-header">
                                 <div class="row">
-                                    <h2 class="card-title" style="font-weight: bold;"></h2>
+                                    <h2 class="card-title" style="font-weight: bold;">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</h2>
                                 </div>
                                 <div class="row">
-                                    <p>PDRB</p>
                                     <p>Keterangan diskrepansi positif = kota lebih besar, diskrepansi negatif = kota lebih kecil</p>
                                 </div>
                             </div>

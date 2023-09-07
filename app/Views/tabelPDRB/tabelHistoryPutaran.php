@@ -23,35 +23,35 @@
                                     <div class="row mt-2">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <!-- <label>Jenis Tabel: </label> -->
-                                                <select class="form-control" style="width: 100%;">
-                                                    <option selected="selected">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
-                                                    <option>Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
+                                                <select class="form-control select2" style="width: 100%;" id="selectTable">
+                                                    <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
+                                                    <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                                    <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="col-sm-2">
                                             <div class="form-group">
-                                                <!-- <label>Kota : </label> -->
-                                                <select class="form-control" style="width: 100%;">
-                                                    <option>DKI Jakarta</option>
-                                                    <option>Jakarta Pusat</option>
-                                                    <option>Jakarta Utara</option>
-                                                    <option>Jakarta Barat</option>
-                                                    <option>Jakarta Selatan</option>
-                                                    <option>Jakarta Timur</option>
+                                                <select class="form-control select2" style="width: 100%;" id="selectKota">
+                                                    <option value="Pilih Kota" hidden>Pilih Kota</option>
+                                                    <option value="DKI Jakarta">DKI Jakarta</option>
+                                                    <option value="Jakarta Pusat">Jakarta Pusat</option>
+                                                    <option value="Jakarta Utara">Jakarta Utara</option>
+                                                    <option value="Jakarta Barat">Jakarta Barat</option>
+                                                    <option value="Jakarta Selatan">Jakarta Selatan</option>
+                                                    <option value="Jakarta Timur">Jakarta Timur</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-sm-2">
                                             <div class="form-group">
-                                                <!-- <label>Putaran: </label> -->
-                                                <select class="form-control" style="width: 100%;">
-                                                    <option>Putaran 1</option>
-                                                    <option>Putaran 2</option>
-                                                    <option>Putaran 3</option>
-                                                    <option>Putaran 4</option>
+                                                <select class="form-control select2" style="width: 100%;" id="selectPutaran">
+                                                    <option value="Pilih Putaran" hidden>Pilih Putaran</option>
+                                                    <option value="Putaran 1">Putaran 1</option>
+                                                    <option value="Putaran 2">Putaran 2</option>
+                                                    <option value="Putaran 3">Putaran 3</option>
+                                                    <option value="Putaran 4">Putaran 4</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -87,9 +87,10 @@
                                     <!-- card-header -->
                                     <div class="card-header">
                                         <div class="row">
-                                            <h2 class="card-title" style="font-weight: bold;">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah) - DKI Jakarta - Putaran 4</h2>
+                                            <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                                         </div>
                                     </div>
+
                                     <!-- /.card-header -->
                                     <div class="card-body">
                                         <table id="example1" class="table table-bordered table-hover">

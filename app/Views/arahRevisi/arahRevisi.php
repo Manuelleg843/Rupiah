@@ -26,25 +26,25 @@
                             <div class="row mt-2">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <select class="form-control" style="width: 100%;">
-                                            <option hidden>Pilih Jenis Tabel</option>
-                                            <option>Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
-                                            <option>Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
-                                            <option>Tabel 303. Pertumbuhan PDRB (Q-TO-Q)</option>
-                                            <option>Tabel 304. Pertumbuhan PDRB (Y-ON-Y)</option>
-                                            <option>Tabel 305. Pertumbuhan PDRB (C-TO-C)</option>
-                                            <option>Tabel 306. Indeks Implisit</option>
-                                            <option>Tabel 307. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
-                                            <option>Tabel 308. Sumber Pertumbuhn (Q-TO-Q)</option>
-                                            <option>Tabel 309. Sumber Pertumbuhan (Y-ON-Y)</option>
-                                            <option>Tabel 310. Sumber Pertumbuhan (C-TO-C)</option>
+                                        <select class="form-control" style="width: 100%;" id="selectTable">
+                                            <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
+                                            <option value="Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                            <option value="Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
+                                            <option value="Tabel 303. Pertumbuhan PDRB (Q-TO-Q)">Tabel 303. Pertumbuhan PDRB (Q-TO-Q)</option>
+                                            <option value="Tabel 304. Pertumbuhan PDRB (Y-ON-Y)">Tabel 304. Pertumbuhan PDRB (Y-ON-Y)</option>
+                                            <option value="Tabel 305. Pertumbuhan PDRB (C-TO-C)">Tabel 305. Pertumbuhan PDRB (C-TO-C)</option>
+                                            <option value="Tabel 306. Indeks Implisit">Tabel 306. Indeks Implisit</option>
+                                            <option value="Tabel 307. Pertumbuhan Indeks Implisit (Y-ON-Y)">Tabel 307. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
+                                            <option value="Tabel 308. Sumber Pertumbuhn (Q-TO-Q)">Tabel 308. Sumber Pertumbuhn (Q-TO-Q)</option>
+                                            <option value="Tabel 309. Sumber Pertumbuhan (Y-ON-Y)">Tabel 309. Sumber Pertumbuhan (Y-ON-Y)</option>
+                                            <option value="Tabel 310. Sumber Pertumbuhan (C-TO-C)">Tabel 310. Sumber Pertumbuhan (C-TO-C)</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-auto">
                                     <div class="form-group">
-                                        <select class="form-control" style="width: 100%;">
-                                            <option hidden>Pilih Kota</option>
+                                        <select class="form-control" style="width: 100%;" id="selectKota">
+                                            <option value="Pilih Kota" hidden>Pilih Kota</option>
                                             <option>DKI Jakarta</option>
                                             <option>Jakarta Pusat</option>
                                             <option>Jakarta Utara</option>
@@ -268,10 +268,7 @@
                         <!-- card-header -->
                         <div class="card-header">
                             <div class="row">
-                                <h2 class="card-title" style="font-weight: bold;">Tabel 1.11. Perbandingan Diskrepansi Provinsi dan Kota Menurut Komponen</h2>
-                            </div>
-                            <div class="row">
-                                <p>Keterangan diskrepansi positif = kota lebih besar, diskrepansi negatif = kota lebih kecil</p>
+                                <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                             </div>
                         </div>
                         <!-- /.card-header -->
