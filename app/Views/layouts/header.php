@@ -36,6 +36,8 @@
     <link rel="stylesheet" href="<?= base_url('/assets/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css'); ?>" />
     <!-- dropzonejs -->
     <link rel="stylesheet" href="<?= base_url('/assets/plugins/dropzone/min/dropzone.min.css'); ?>" />
+    <!-- beranda -->
+    <link rel="stylesheet" href="<?= base_url('/assets/css/beranda.css'); ?>" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

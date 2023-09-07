@@ -55,13 +55,14 @@
 <script src="<?= base_url('/assets/jsgrid/jsgrid.min.js'); ?>"></script>
 <!-- Select2 -->
 <script src="<?= base_url('/assets/plugins/select2/js/select2.full.min.js'); ?>"></script>
-<!-- Page specific script -->
-
-<script>
-    $(function() {
-        $('.select2').select2()
-    });
-</script>
+<!-- FLOT CHARTS -->
+<script src="<?= base_url('/assets/plugins/flot/jquery.flot.js'); ?>"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="<?= base_url('/assets/plugins/flot/plugins/jquery.flot.resize.js'); ?>"></script>
+<!-- beranda -->
+<script src="<?= base_url('/assets/js/beranda.js'); ?>"></script>
+<!-- plugin datalabel -->
+<script src="<?= base_url('/assets/plugins/chartjs-plugin-datalabels/chartjs-plugin-datalabels.js'); ?>"></script>
 
 </body>
 
