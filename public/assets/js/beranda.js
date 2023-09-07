@@ -263,7 +263,7 @@ $(function () {
     [2023, null],
   ];
   var PDRBctoc = [
-    [0, -1.94],
+    [0, 0.94],
     [1, 4.1],
     [2, 3.53],
     [3, 3.56],
@@ -431,21 +431,25 @@ $(function () {
   $(".select2").select2();
 });
 
-$(document).ready(function() {
-    var optarray = $("#Jenis").children('option').map(function() {
+$(document).ready(function () {
+  var optarray = $("#Jenis")
+    .children("option")
+    .map(function () {
       return {
-        "value": this.value,
-        "option": "<option value='" + this.value + "'>" + this.text + "</option>"
-      }
-    })
-    $("#Jangka").change(function() {
-      $("#Jenis").children('option').remove();
+        value: this.value,
+        option: "<option value='" + this.value + "'>" + this.text + "</option>",
+      };
+    });
+  $("#Jangka")
+    .change(function () {
+      $("#Jenis").children("option").remove();
       var addoptarr = [];
       for (i = 0; i < optarray.length; i++) {
         if (optarray[i].value.indexOf($(this).val()) > -1) {
           addoptarr.push(optarray[i].option);
         }
       }
-      $("#Jenis").html(addoptarr.join(''))
-    }).change();
-  })
+      $("#Jenis").html(addoptarr.join(""));
+    })
+    .change();
+});
