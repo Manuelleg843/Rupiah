@@ -13,14 +13,14 @@
                 <!-- filter berdasarkan kota -->
                 <div class="col-auto mt-4">
                     <div class="form-group">
-                        <select class="form-control" style="width: 100%;">
-                            <option hidden>Pilih Kota</option>
-                            <option>DKI Jakarta</option>
-                            <option>Jakarta Pusat</option>
-                            <option>Jakarta Utara</option>
-                            <option>Jakarta Barat</option>
-                            <option>Jakarta Selatan</option>
-                            <option>Jakarta Timur</option>
+                        <select class="form-control" style="width: 100%;" id="selectKota">
+                            <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
+                            <option value="DKI Jakarta">DKI Jakarta</option>
+                            <option value="Jakarta Pusat">Jakarta Pusat</option>
+                            <option value="Jakarta Utara">Jakarta Utara</option>
+                            <option value="Jakarta Barat">Jakarta Barat</option>
+                            <option value="Jakarta Selatan">Jakarta Selatan</option>
+                            <option value="Jakarta Timur">Jakarta Timur</option>
                         </select>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h4 class="modal-title">Upload Data PDRB DKI Jakarta</h4>
+                    <h4 class="modal-title" id="modalWilayah"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
