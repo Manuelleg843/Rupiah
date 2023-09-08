@@ -206,7 +206,7 @@
                                                     </ul>
                                                 </div>
                                                 <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                    <button type="button" class="btn btn-success">OK</button>
+                                                    <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
                                                 </div>
                                             </div>
                                         </div>

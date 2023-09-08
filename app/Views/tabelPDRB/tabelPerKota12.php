@@ -42,7 +42,7 @@
                                 <div class="col-auto">
                                     <div class="form-group">
                                         <select class="form-control" style="width: 100%;" id="selectKota">
-                                            <option value="Pilih Kota" hidden>Pilih Kota</option>
+                                            <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
                                             <option value="DKI Jakarta">DKI Jakarta</option>
                                             <option value="Jakarta Pusat">Jakarta Pusat</option>
                                             <option value="Jakarta Utara">Jakarta Utara</option>
@@ -58,7 +58,7 @@
                                     </button>
                                 </div>
                                 <div class="col-auto align-items-center">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-periode">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                         Pilih Periode
                                     </button>
                                 </div>
@@ -147,24 +147,16 @@
                                             <label class="form-check-label" for="9">9. PDRB</label>
                                         </div>
                                     </div>
-                                    <div class="modal-footer justify-content-between">
-                                        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                        <div class="row justify-content-md-end">
-                                            <div class="col-auto">
-                                                <div class="input-group-prepend">
-                                                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                                                        Pilihan
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li class="dropdown-item"><a href="#">Pilih Semua</a></li>
-                                                        <li class="dropdown-item"><a href="#">Hapus Pilihan</a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <button type=" button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
-                                            </div>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilihan</button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:checkboxSemua()">Pilih Semua</a></li>
+                                                <li><a class="dropdown-item" href="#" id="hapusPilihan">Hapus Pilihan</a></li>
+                                            </ul>
+                                        </div>
+                                        <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                            <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
                                         </div>
                                     </div>
                                 </div>
@@ -173,93 +165,45 @@
                             <!-- /.modal-dialog -->
                         </div>
                         <!-- end modal komponen -->
+
                         <!-- modal periode -->
-                        <div class="modal fade" id="modal-periode">
-                            <div class="modal-dialog modal-periode">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Periode</h4>
+                                        <h5 class="modal-title" id="exampleModalLabel">Pilih Periode</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- 2010 -->
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2010Q1" value="2010Q1">
-                                            <label class="form-check-label" for="2010Q1">2010Q1</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2010Q2" value="2010Q2">
-                                            <label class="form-check-label" for="2010Q2">2010Q2</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2010Q3" value="2010Q3">
-                                            <label class="form-check-label" for="2010Q3">2010Q3</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2010Q4" value="2010Q4">
-                                            <label class="form-check-label" for="2010Q4">2010Q4</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2010" value="2010">
-                                            <label class="form-check-label" for="2010">2010</label>
-                                        </div>
-                                        <!-- 2011 -->
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2011Q1" value="2011Q1">
-                                            <label class="form-check-label" for="2011Q1">2011Q1</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2011Q2" value="2011Q2">
-                                            <label class="form-check-label" for="2011Q2">2011Q2</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2011Q3" value="2011Q3">
-                                            <label class="form-check-label" for="2011Q3">2011Q3</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2011Q4" value="2011Q4">
-                                            <label class="form-check-label" for="2011Q4">2011Q4</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="2011" value="2011">
-                                            <label class="form-check-label" for="2011">2011</label>
-                                        </div>
-
+                                        <form action="" class="p-2">
+                                            <div id="checkboxes-container"></div>
+                                        </form>
                                     </div>
-                                    <div class="modal-footer justify-content-between">
-                                        <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
-                                        <div class="row justify-content-md-end">
-                                            <div class="col-auto align-items-center">
-                                                <div class="input-group-prepend">
-                                                    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
-                                                        Pilihan
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li class="dropdown-item"><a href="#">Pilih Semua</a></li>
-                                                        <li class="dropdown-item"><a href="#">Semua Q1</a></li>
-                                                        <li class="dropdown-item"><a href="#">Semua Q2</a></li>
-                                                        <li class="dropdown-item"><a href="#">Semua Q3</a></li>
-                                                        <li class="dropdown-item"><a href="#">Semua Q4</a></li>
-                                                        <li class="dropdown-divider"></li>
-                                                        <li class="dropdown-item"><a href="#">Hapus Pilihan</a></li>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Periode</button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Periode</a></li>
+                                                <li><a class="dropdown-item" href="#" id="allQ1">Semua Q1</a></li>
+                                                <li><a class="dropdown-item" href="#" id="allQ2">Semua Q2</a></li>
+                                                <li><a class="dropdown-item" href="#" id="allQ3">Semua Q3</a></li>
+                                                <li><a class="dropdown-item" href="#" id="allQ4">Semua Q4</a></li>
+                                                <li><a class="dropdown-item" href="#" id="allYear">Semua Tahunan</a></li>
+                                                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Tahun</a>
+                                                    <ul class="dropdown-menu" id="tahunDropdown">
                                                     </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto align-items-center">
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Batalkan</button>
-                                            </div>
-                                            <div class="col-auto align-items-center">
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
-                                            </div>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#" id="hapusPilihan">Hapus Pilihan</a></li>
+                                            </ul>
                                         </div>
-
+                                        <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                            <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- /.modal-content -->
                             </div>
-                            <!-- /.modal-dialog -->
                         </div>
                         <!-- /.modal -->
 

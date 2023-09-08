@@ -34,7 +34,7 @@
                                         <div class="col-sm-2">
                                             <div class="form-group">
                                                 <select class="form-control select2" style="width: 100%;" id="selectKota">
-                                                    <option value="Pilih Kota" hidden>Pilih Kota</option>
+                                                    <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
                                                     <option value="DKI Jakarta">DKI Jakarta</option>
                                                     <option value="Jakarta Pusat">Jakarta Pusat</option>
                                                     <option value="Jakarta Utara">Jakarta Utara</option>
@@ -44,6 +44,7 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col-sm-2">
                                             <div class="form-group">
                                                 <select class="form-control select2" style="width: 100%;" id="selectPutaran">
@@ -55,12 +56,12 @@
                                                 </select>
                                             </div>
                                         </div>
+
                                         <div class="col-sm-2">
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-sm">
                                                 Pilih Periode
                                             </button>
                                         </div>
-
                                     </div>
 
                                     <!-- export -->
@@ -84,6 +85,11 @@
                                             </button>
                                         </div>
                                     </div>
+
+                                    <!-- modal periode -->
+
+                                    <!-- /.modal -->
+
                                     <!-- card-header -->
                                     <div class="card-header">
                                         <div class="row">
@@ -91,7 +97,7 @@
                                         </div>
                                     </div>
 
-                                    <!-- /.card-header -->
+                                    <!-- /.card-body -->
                                     <div class="card-body table-responsive text-nowrap">
                                         <table id="example1" class="table table-bordered table-hover">
                                             <thead class="text-center table-primary">
