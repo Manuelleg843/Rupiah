@@ -10,6 +10,7 @@ $routes->get('/', 'Beranda::index');
 $routes->get('/uploadData/angkaPDRB', 'DataUploadController::viewUploadAngkaPDRB');
 $routes->get('/admin/administrator', 'AdminController::viewAdministrator');
 $routes->get('/admin/roleAndPermission', 'AdminController::viewRoleAndPermission');
+$routes->get('/admin/createUserForm', 'AdminController::viewCreateUserForm');
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelPDRBController::viewTabelRingkasan');
 $routes->get('/tabelPDRB/tabelPerKota', 'TabelPDRBController::viewTabelPerKota');
 $routes->get('/tabelPDRB/tabelPerKota_12Komponen', 'TabelPDRBController::viewTabelPerKota_12');

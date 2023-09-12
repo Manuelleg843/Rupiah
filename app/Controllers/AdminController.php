@@ -52,4 +52,20 @@ class AdminController extends BaseController
         echo view('/admin/roleAndPermission');
         echo view('layouts/footer');
     }
+
+    public function viewCreateUserForm()
+    {
+        //
+        $data = [
+            'title' => 'Rupiah | Admin',
+            'tajuk' => 'Admin',
+            'subTajuk' => 'Tambah User'
+        ];
+
+        echo view('layouts/header', $data);
+        echo view('layouts/navbar');
+        echo view('layouts/sidebar', $data);
+        echo view('/admin/createUserForm');
+        echo view('layouts/footer');
+    }
 }

@@ -44,14 +44,14 @@
                                 </div>
                                 <!-- /.card-header -->
                                 <div class="col-auto align-items-center">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-tambahAdmin">
+                                    <a href="<?= base_url('/admin/createUserForm'); ?>" class="btn btn-primary">
                                         Tambah User
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
                             <!-- search component -->
-                            <div class="col-lg-6">
+                            <div class=" col-lg-6">
                                 <div class="form-group">
                                     <form action="simple-results.html">
                                         <div class="input-group">
@@ -68,41 +68,6 @@
                             <!-- search ended -->
                         </div>
                         <!-- filter ended -->
-
-                        <!-- modal tambah admin -->
-                        <div class="modal fade" id="modal-tambahAdmin">
-                            <div class="modal-dialog modal-komponen">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title">Tambah Admin</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="simple-results.html">
-                                            <div class="input-group">
-                                                <input type="search" class="form-control" placeholder="Search user...">
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-default">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer d-flex justify-content-end">
-                                        <div>
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Simpan</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- /.modal-content -->
-                            </div>
-                            <!-- /.modal-dialog -->
-                        </div>
-                        <!-- end modal komponen -->
 
                         <!-- modal tambah admin -->
                         <div class="modal fade" id="modal-ubahRole">
