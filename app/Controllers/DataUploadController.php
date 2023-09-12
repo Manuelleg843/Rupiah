@@ -13,14 +13,14 @@ class DataUploadController extends BaseController
             'title' => 'Rupiah | Upload Data',
             'tajuk' => 'Upload Data'
         ];
-        
+
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
         echo view('uploadData/uploadAngkaPDRB');
         echo view('layouts/footer');
     }
-    
+
     public function viewUploadAngkaPDRB()
     {
         //
@@ -36,6 +36,4 @@ class DataUploadController extends BaseController
         echo view('uploadData/uploadAngkaPDRB');
         echo view('layouts/footer');
     }
-
-    
 }

@@ -26,6 +26,18 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item menu-open">
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('/admin/administrator'); ?>" class="nav-link <?= ($tajuk == 'Admin') ? 'active'  : ''; ?>">
+                                <i class="nav-icon fas fa-user-plus"></i>
+                                <p>
+                                    Admin
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item menu<?= ($tajuk == 'Upload Data') ? '-open'  : ''; ?>">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-upload"></i>
