@@ -19,7 +19,7 @@
                             <!-- Default box -->
                             <div class="card">
                                 <!-- filter-->
-                                <div class="card-header">
+                                <div class="card-body">
                                     <div class="row">
                                         <div class="col-auto form-group">
                                             <select class="form-control select2" style="width: 100%;" id="selectTable">
@@ -54,104 +54,103 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- filter end -->
+
+                                    <!-- filter end -->
 
 
-                                <!-- card-header -->
-                                <div class="card-header ml-2">
-                                    <div class="row">
-                                        <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
-                                    </div>
-                                    <div class="row justify-content-end mt-2">
+                                    <!-- card-header -->
+                                    <div class="mt-2" style="border-top: 1px solid #ccc;">
                                         <!-- export -->
-                                        <div class="col-auto mt-2 align-content-center">
-                                            <button type="button" class="btn btn-outline-success">
-                                                <i class="fa fa-file-excel"></i>
-                                                <span>Ekspor Excel</span>
-                                            </button>
-                                        </div>
-                                        <div class="col-auto mt-2 align-content-center">
-                                            <button type="button" class="btn btn-outline-danger">
-                                                <i class="fa fa-file-pdf"></i>
-                                                <span>Ekspor PDF</span>
-                                            </button>
-                                        </div>
-                                        <div class="col-auto mt-2 align-content-center">
-                                            <button type="button" class="btn btn-outline-success">
-                                                <i class="fa fa-file-excel"></i>
-                                                <span>Ekspor Semua Putaran</span>
-                                            </button>
-                                        </div>
+                                        <row class="row justify-content-end mt-3">
+                                            <div class="col-auto">
+                                                <div class="btn-group">
+                                                    <a href="#" target="_blank" class="btn btn-outline-danger">
+                                                        <i class="fa fa-file-pdf"></i>
+                                                        <span>Ekspor PDF</span>
+                                                    </a>
+                                                    <a href="#" target="_blank" class="btn btn-outline-success">
+                                                        <i class="fa fa-file-excel"></i>
+                                                        <span>Ekspor Excel</span>
+                                                    </a>
+                                                    <a href="#" target="_blank" class="btn btn-outline-secondary">
+                                                        <i class="fa fa-file-excel"></i>
+                                                        <span>Ekspor Semua Putaran</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </row>
                                         <!-- export end -->
+                                        <div class="card-header">
+                                            <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- /. card-header -->
+                                    <!-- /. card-header -->
 
-                                <!-- /.card-body -->
-                                <div class="table-responsive" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                    <table id="tableHistory" class="table table-bordered table-hover">
-                                        <thead class="text-center table-primary sticky-top">
-                                            <tr>
-                                                <th colspan="2">Komponen</th>
-                                                <th>2023Q1</th>
-                                                <th>2023Q2</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
-                                                <td>Rp</td>
-                                                <td>Rp</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                                <td>Rp</td>
-                                                <td>Rp </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
-                                                <td>Rp</td>
-                                                <td>Rp</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
-                                                <td>Rp</td>
-                                                <td>Rp</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                                <td>Rp</td>
-                                                <td>Rp</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
-                                                <td>Rp</td>
-                                                <td>Rp</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
-                                                <td>Rp</td>
-                                                <td>Rp</td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
-                                                <td>Rp</td>
-                                                <td>Rp</td>
-                                            </tr>
-                                        </tbody>
-                                        <tfoot>
-                                            <tr>
-                                                <th colspan="2" style="font-weight: bold;">PDRB</th>
-                                                <th>Rp</th>
-                                                <th>Rp</th>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                    <!-- /.card-body -->
+                                    <div class="table-responsive" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+                                        <table id="tableHistory" class="table table-bordered table-hover">
+                                            <thead class="text-center table-primary sticky-top">
+                                                <tr>
+                                                    <th colspan="2">Komponen</th>
+                                                    <th>2023Q1</th>
+                                                    <th>2023Q2</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
+                                                    <td>Rp</td>
+                                                    <td>Rp</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="2" style="font-weight: bold;">PDRB</th>
+                                                    <th>Rp</th>
+                                                    <th>Rp</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <!-- /.card-body -->
                                 </div>
-                                <!-- /.card-body -->
+                                <!-- /.card -->
                             </div>
-                            <!-- /.card -->
                         </div>
                     </div>
                 </div>
