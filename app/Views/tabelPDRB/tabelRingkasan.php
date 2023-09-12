@@ -25,16 +25,10 @@
                                     <div class="col-auto form-group">
                                         <select class="form-control" style="width: 100%;" id="selectTable">
                                             <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                            <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
-                                            <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
-                                            <option value="Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)">Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)</option>
-                                            <option value="Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)">Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)</option>
-                                            <option value="Tabel 3.5. Pertumbuhan PDRB (C-TO-C)">Tabel 3.5. Pertumbuhan PDRB (C-TO-C)</option>
-                                            <option value="Tabel 3.6. Indeks Implisit">Tabel 3.6. Indeks Implisit</option>
-                                            <option value="Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)">Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
-                                            <option value="Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)">Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)</option>
-                                            <option value="Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)">Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)</option>
-                                            <option value="Tabel 3.10. Sumber Pertumbuhan (C-TO-C)">Tabel 3.10. Sumber Pertumbuhan (C-TO-C)</option>
+                                            <option value="Tabel 1.11. Perbandingan Diskrepansi Nasional dan Regional Menurut Komponen">Tabel 1.11. Perbandingan Diskrepansi Nasional dan Regional Menurut Komponen</option>
+                                            <option value="Tabel 1.12. Perbandingan Diskrepansi Kumulatif Nasional dan Regional Menurut Komponen">Tabel 1.12. Perbandingan Diskrepansi Kumulatif Nasional dan Regional Menurut Komponen</option>
+                                            <option value="Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Provinsi">Ringkasan Pertumbuhan Ekstrem Provinsi</option>
+                                            <option value="Tabel 1.14. Ringkasan Revisi Pertumbuhan Esktrem dan Balik Arah Provinsi">Tabel 1.14. Ringkasan Revisi Pertumbuhan Esktrem dan Balik Arah Provinsi</option>
                                         </select>
                                     </div>
                                     <div class="col-auto align-items-center">
