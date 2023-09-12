@@ -4,7 +4,7 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-auto">
                     <h1><?= $tajuk ?></h1>
                 </div>
             </div>
@@ -119,9 +119,9 @@
                             </div>
                         </div>
                         <!-- /.card-header -->
-                        <div class="card-body" style="overflow-y: scroll; height: 400px; position:relative;">
-                            <table id="pdrbTable" class="table table-bordered table-hover">
-                                <thead class="text-center table-primary table-head-fixed">
+                        <div class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+                            <table id="tabelPDRB" class="table table-bordered table-hover">
+                                <thead class="text-center table-primary sticky-top">
                                     <tr>
                                         <th colspan="2">Komponen</th>
                                         <th>2023Q1</th>

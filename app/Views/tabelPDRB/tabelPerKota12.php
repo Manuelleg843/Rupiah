@@ -4,8 +4,8 @@
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1><?= $subTajuk ?></h1>
+                <div class="col-auto">
+                    <h1 class="m-0"><?= $subTajuk ?></h1>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
@@ -21,36 +21,32 @@
                     <div class="card">
                         <!-- filter-->
                         <div class="card-header">
-                            <div class="row mt-2">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <select class="form-control" style="width: 100%;" id="selectTable">
-                                            <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                            <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
-                                            <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
-                                            <option value="Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)">Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)</option>
-                                            <option value="Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)">Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)</option>
-                                            <option value="Tabel 3.5. Pertumbuhan PDRB (C-TO-C)">Tabel 3.5. Pertumbuhan PDRB (C-TO-C)</option>
-                                            <option value="Tabel 3.6. Indeks Implisit">Tabel 3.6. Indeks Implisit</option>
-                                            <option value="Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)">Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
-                                            <option value="Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)">Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)</option>
-                                            <option value="Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)">Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)</option>
-                                            <option value="Tabel 3.10. Sumber Pertumbuhan (C-TO-C)">Tabel 3.10. Sumber Pertumbuhan (C-TO-C)</option>
-                                        </select>
-                                    </div>
+                            <div class="row">
+                                <div class="col-auto form-group">
+                                    <select class="form-control" style="width: 100%;" id="selectTable">
+                                        <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
+                                        <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                        <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
+                                        <option value="Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)">Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)</option>
+                                        <option value="Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)">Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)</option>
+                                        <option value="Tabel 3.5. Pertumbuhan PDRB (C-TO-C)">Tabel 3.5. Pertumbuhan PDRB (C-TO-C)</option>
+                                        <option value="Tabel 3.6. Indeks Implisit">Tabel 3.6. Indeks Implisit</option>
+                                        <option value="Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)">Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
+                                        <option value="Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)">Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)</option>
+                                        <option value="Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)">Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)</option>
+                                        <option value="Tabel 3.10. Sumber Pertumbuhan (C-TO-C)">Tabel 3.10. Sumber Pertumbuhan (C-TO-C)</option>
+                                    </select>
                                 </div>
-                                <div class="col-auto">
-                                    <div class="form-group">
-                                        <select class="form-control" style="width: 100%;" id="selectKota">
-                                            <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                            <option value="DKI Jakarta">DKI Jakarta</option>
-                                            <option value="Jakarta Pusat">Jakarta Pusat</option>
-                                            <option value="Jakarta Utara">Jakarta Utara</option>
-                                            <option value="Jakarta Barat">Jakarta Barat</option>
-                                            <option value="Jakarta Selatan">Jakarta Selatan</option>
-                                            <option value="Jakarta Timur">Jakarta Timur</option>
-                                        </select>
-                                    </div>
+                                <div class="col-auto form-group">
+                                    <select class="form-control" style="width: 100%;" id="selectKota">
+                                        <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
+                                        <option value="DKI Jakarta">DKI Jakarta</option>
+                                        <option value="Jakarta Pusat">Jakarta Pusat</option>
+                                        <option value="Jakarta Utara">Jakarta Utara</option>
+                                        <option value="Jakarta Barat">Jakarta Barat</option>
+                                        <option value="Jakarta Selatan">Jakarta Selatan</option>
+                                        <option value="Jakarta Timur">Jakarta Timur</option>
+                                    </select>
                                 </div>
                                 <div class="col-auto align-items-center">
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-komponen">
@@ -62,38 +58,21 @@
                                         Pilih Periode
                                     </button>
                                 </div>
-
                             </div>
-                            <div class="row mb-2 justify-content-between">
-                                <!-- switch jenis data -->
+
+                            <!-- switch jenis data -->
+                            <div class="row mt-2">
                                 <div class="col-auto">
-                                    <ul class="nav nav-pills ml-auto">
+                                    <ul class="nav nav-pills">
                                         <li class="nav-item">
                                             <a class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 7 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('/tabelPDRB/tabelPerKota'); ?>">PKRT 7 Komponen</a>
                                         </li>
                                         <li class="nav-item">
-
-                                            <a class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 12 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('/tabelPDRB/tabelPerKota_12Komponen'); ?>">PKRT 12 Komponen baru</a>
+                                            <a class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 12 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('/tabelPDRB/tabelPerKota_12Komponen'); ?>">PKRT 12 Komponen</a>
                                         </li>
                                     </ul>
                                 </div>
-                                <!-- export -->
-                                <div class="col-auto align-items-center">
-                                    <button type="submit" class="btn btn-outline-success">
-                                        <i class="fa fa-file-excel"></i>
-                                        <span>Ekspor Excel</span>
-                                    </button>
-                                    <button type="submit" class="btn btn-outline-danger">
-                                        <i class="fa fa-file-pdf"></i>
-                                        <span>Ekspor PDF</span>
-                                    </button>
-                                    <button type="submit" class="btn btn-outline-success">
-                                        <i class="fa fa-file-excel"></i>
-                                        <span>Ekspor Satu Kota</span>
-                                    </button>
-                                </div>
                             </div>
-
                         </div>
                         <!-- filter ended -->
 
@@ -208,17 +187,39 @@
                         <!-- /.modal -->
 
                         <!-- card-header -->
-                        <div class="card-header">
+                        <div class="card-header ml-2">
                             <div class="row">
                                 <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                             </div>
+                            <!-- export -->
+                            <div class="row justify-content-end">
+                                <div class="col-auto mt-2 align-items-center">
+                                    <button type="submit" class="btn btn-outline-success">
+                                        <i class="fa fa-file-excel"></i>
+                                        <span>Ekspor Excel</span>
+                                    </button>
+                                </div>
+
+                                <div class="col-auto mt-2 align-items-center">
+                                    <button type="submit" class="btn btn-outline-danger">
+                                        <i class="fa fa-file-pdf"></i>
+                                        <span>Ekspor PDF</span>
+                                    </button>
+                                </div>
+                                <div class="col-auto mt-2 align-items-center">
+                                    <button type="submit" class="btn btn-outline-success">
+                                        <i class="fa fa-file-excel"></i>
+                                        <span>Ekspor Satu Kota</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <!-- /.card-header -->
+                        <!-- export end -->
 
                         <!-- card body -->
-                        <div class="card-body table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; position:relative;">
-                            <table id="example1" class="table table-bordered table-hover">
-                                <thead class="text-center table-primary fixedHeader-floating">
+                        <div class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+                            <table id="tabelPerkota12" class="table table-bordered table-hover">
+                                <thead class="text-center table-primary sticky-top">
                                     <tr>
                                         <th colspan="2">Komponen</th>
                                         <th>2023Q1</th>
