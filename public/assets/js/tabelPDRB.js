@@ -1,16 +1,28 @@
-var selectTable = document.getElementById("selectTable");
-var selectKota = document.getElementById("selectKota");
-var selectPutaran = document.getElementById("selectPutaran");
-var judulTable = document.getElementById("judulTable");
-var modalWilayah = document.getElementById("modalWilayah");
+const selectTable       = document.getElementById("selectTable");
+const selectKota        = document.getElementById("selectKota");
+const selectPutaran     = document.getElementById("selectPutaran");
+const judulTable        = document.getElementById("judulTable");
+const modalWilayah      = document.getElementById("modalWilayah");
+const judulTableADHB    = document.getElementById("judulTableADHB");
+const judulTableADHK    = document.getElementById("judulTableADHK");
 
 // dropdown jenis tabel
-selectTable.addEventListener("change", function () {
+selectTable.addEventListener("change", function (){
+    var tableSelected = selectTable.value;
+    var kotaSelected = selectKota.value;
+
+    // mengganti judul tabel
+    judulTable.textContent = tableSelected + " - " + kotaSelected;
+});
+
+// dropdown jenis tabel khusus halaman Tabel Ringkasan
+selectTable.addEventListener("change", function (){
   var tableSelected = selectTable.value;
-  var kotaSelected = selectKota.value;
 
   // mengganti judul tabel
-  judulTable.textContent = tableSelected + " - " + kotaSelected;
+  judulTableADHB.textContent = tableSelected + " (ADHB)";
+  judulTableADHK.textContent = tableSelected + " (ADHK)";
+
 });
 
 // dropdown kota
