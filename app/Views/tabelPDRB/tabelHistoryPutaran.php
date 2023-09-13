@@ -23,7 +23,7 @@
                                     <div class="row mt-2">
                                         <div class="col-sm-6">
                                             <div class="form-group">
-                                                <select class="form-control select2" style="width: 100%;" id="selectTable">
+                                                <select class="form-control" style="width: 100%;" id="selectTable">
                                                     <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
                                                     <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                                     <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
@@ -33,7 +33,7 @@
 
                                         <div class="col-sm-2">
                                             <div class="form-group">
-                                                <select class="form-control select2" style="width: 100%;" id="selectKota">
+                                                <select class="form-control" style="width: 100%;" id="selectKota">
                                                     <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
                                                     <option value="DKI Jakarta">DKI Jakarta</option>
                                                     <option value="Jakarta Pusat">Jakarta Pusat</option>
@@ -47,7 +47,7 @@
 
                                         <div class="col-sm-2">
                                             <div class="form-group">
-                                                <select class="form-control select2" style="width: 100%;" id="selectPutaran">
+                                                <select class="form-control" style="width: 100%;" id="selectPutaran">
                                                     <option value="Pilih Putaran" hidden>Pilih Putaran</option>
                                                     <option value="Putaran 1">Putaran 1</option>
                                                     <option value="Putaran 2">Putaran 2</option>
@@ -58,7 +58,7 @@
                                         </div>
 
                                         <div class="col-sm-2">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-sm">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                                 Pilih Periode
                                             </button>
                                         </div>
@@ -87,7 +87,45 @@
                                     </div>
 
                                     <!-- modal periode -->
-
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Pilih Periode</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="" class="p-2">
+                                                        <div id="checkboxes-container-current-year"></div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-between">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Periode</button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Periode</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ1">Semua Q1</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ2">Semua Q2</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ3">Semua Q3</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ4">Semua Q4</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="onlyYears">Semua Tahunan</a></li>
+                                                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Tahun</a>
+                                                                <ul class="dropdown-menu" id="tahunDropdownCurrentYear">
+                                                                </ul>
+                                                            </li>
+                                                            <div class="dropdown-divider"></div>
+                                                            <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <!-- /.modal -->
 
                                     <!-- card-header -->

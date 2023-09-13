@@ -187,7 +187,7 @@
                                                 <li><a class="dropdown-item" href="#" id="allQ2">Semua Q2</a></li>
                                                 <li><a class="dropdown-item" href="#" id="allQ3">Semua Q3</a></li>
                                                 <li><a class="dropdown-item" href="#" id="allQ4">Semua Q4</a></li>
-                                                <li><a class="dropdown-item" href="#" id="allYear">Semua Tahunan</a></li>
+                                                <li><a class="dropdown-item" href="#" id="onlyYears">Semua Tahunan</a></li>
                                                 <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Tahun</a>
                                                     <ul class="dropdown-menu" id="tahunDropdownCurrentYear">
                                                     </ul>
