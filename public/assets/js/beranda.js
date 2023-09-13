@@ -1,13 +1,22 @@
 // MODAL PILIH PERIODE
 // Function to generate checkboxes for each year and quarter
+
+const quarters = ["Q1", "Q2", "Q3", "Q4"];
+const today = new Date();
+const currentYear = today.getFullYear();
+const currentMonth = today.getMonth() + 1;
+
 function generateCheckboxes() {
-  const today = new Date();
-  const currentYear = today.getFullYear();
-  const quarters = ["Q1", "Q2", "Q3", "Q4"];
   const checkboxesContainer = document.getElementById("checkboxes-container");
+  const checkboxesContainerYear = document.getElementById(
+    "checkboxes-container-year"
+  );
 
   // Generate checkboxes for each year and quarter
-  for (let year = 2011; year <= currentYear; year++) {
+  for (let year = currentYear; year >= 2010; year--) {
+    if (!(checkboxesContainerYear == null)) {
+      quarters.push(year);
+    }
     const row = document.createElement("div");
     row.classList.add("row");
 
@@ -18,15 +27,133 @@ function generateCheckboxes() {
 
       const checkboxLabel = document.createElement("label");
       checkboxLabel.classList.add("form-check-label");
-      checkboxLabel.textContent = `${year} ${quarter}`;
-      checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
 
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.classList.add("form-check-input");
+
+      if (isNaN(quarter)) {
+        checkboxLabel.textContent = `${year} ${quarter}`;
+        checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
+
+        checkbox.name = `${year}-${quarter}`;
+        checkbox.id = `checkbox${year}${quarter}`;
+        checkbox.value = `option${year}${quarter}`;
+      } else {
+        checkboxLabel.textContent = `${quarter}`;
+        checkboxLabel.setAttribute("for", `checkbox${quarter}`);
+
+        checkbox.name = `${quarter}`;
+        checkbox.id = `checkbox${quarter}`;
+        checkbox.value = `option${quarter}`;
+      }
+
+      col.appendChild(checkbox);
+      col.appendChild(checkboxLabel);
+      row.appendChild(col);
+    });
+
+    if (checkboxesContainerYear == null) {
+      checkboxesContainer.appendChild(row);
+    } else {
+      checkboxesContainerYear.appendChild(row);
+      quarters.pop();
+    }
+  }
+}
+
+function generateCheckboxesCurrentYear() {
+  const year = currentYear;
+  popCount = 4 - Math.ceil(currentMonth / 3) + 1;
+  quarters.splice(-popCount, popCount);
+  const checkboxesContainerCurrentYear = document.getElementById(
+    "checkboxes-container-current-year"
+  );
+
+  console.log(checkboxesContainerCurrentYear);
+
+  if (quarters.length == 4) {
+    quarters.push(year);
+  }
+
+  const row = document.createElement("div");
+  row.classList.add("row");
+
+  quarters.forEach((quarter) => {
+    const col = document.createElement("div");
+    col.classList.add("col");
+    col.classList.add("form-check", "form-check-inline");
+
+    const checkboxLabel = document.createElement("label");
+    checkboxLabel.classList.add("form-check-label");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("form-check-input");
+
+    if (isNaN(quarter)) {
+      checkboxLabel.textContent = `${year} ${quarter}`;
+      checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
+
       checkbox.name = `${year}-${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
       checkbox.value = `option${year}${quarter}`;
+    } else {
+      checkboxLabel.textContent = `${quarter}`;
+      checkboxLabel.setAttribute("for", `checkbox${quarter}`);
+
+      checkbox.name = `${quarter}`;
+      checkbox.id = `checkbox${quarter}`;
+      checkbox.value = `option${quarter}`;
+    }
+
+    col.appendChild(checkbox);
+    col.appendChild(checkboxLabel);
+    row.appendChild(col);
+  });
+
+  checkboxesContainerCurrentYear.appendChild(row);
+}
+
+function generateCheckboxes3Year() {
+  const checkboxesContainer = document.getElementById(
+    "checkboxes-container-3-years"
+  );
+
+  // Generate checkboxes for each year and quarter
+  for (let year = currentYear; year >= currentYear - 2; year--) {
+    // quarters.push(year);
+
+    const row = document.createElement("div");
+    row.classList.add("row");
+
+    quarters.forEach((quarter) => {
+      const col = document.createElement("div");
+      col.classList.add("col");
+      col.classList.add("form-check", "form-check-inline");
+
+      const checkboxLabel = document.createElement("label");
+      checkboxLabel.classList.add("form-check-label");
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.classList.add("form-check-input");
+
+      // if (isNaN(quarter)) {
+      checkboxLabel.textContent = `${year} ${quarter}`;
+      checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
+
+      checkbox.name = `${year}-${quarter}`;
+      checkbox.id = `checkbox${year}${quarter}`;
+      checkbox.value = `option${year}${quarter}`;
+      // } else {
+      // checkboxLabel.textContent = `${quarter}`;
+      // checkboxLabel.setAttribute("for", `checkbox${quarter}`);
+
+      // checkbox.name = `${quarter}`;
+      // checkbox.id = `checkbox${quarter}`;
+      // checkbox.value = `option${quarter}`;
+      // }
 
       col.appendChild(checkbox);
       col.appendChild(checkboxLabel);
@@ -34,16 +161,15 @@ function generateCheckboxes() {
     });
 
     checkboxesContainer.appendChild(row);
+    // quarters.pop();
   }
 }
 
 // Function to generate dropdown submenu for each year
 function generateTahunDropdown() {
-  const today = new Date();
-  const currentYear = today.getFullYear();
   const tahunDropdown = document.getElementById("tahunDropdown");
 
-  for (let year = 2011; year <= currentYear; year++) {
+  for (let year = currentYear; year >= 2010; year--) {
     const dropdownItemList = document.createElement("li");
 
     const dropdownItem = document.createElement("a");
@@ -57,6 +183,24 @@ function generateTahunDropdown() {
   }
 }
 
+function generateTahunDropdownCurrentYear() {
+  const tahunDropdownCurrentYear = document.getElementById(
+    "tahunDropdownCurrentYear"
+  );
+
+  year = currentYear;
+  const dropdownItemList = document.createElement("li");
+
+  const dropdownItem = document.createElement("a");
+  dropdownItem.classList.add("dropdown-item");
+  dropdownItem.textContent = year;
+  dropdownItem.href = "#";
+  dropdownItem.id = `all${year}`;
+
+  dropdownItemList.appendChild(dropdownItem);
+  tahunDropdownCurrentYear.appendChild(dropdownItemList);
+}
+
 // Function to check all checkboxes
 function checkboxSemua() {
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -65,39 +209,38 @@ function checkboxSemua() {
   });
 }
 
-// Check all checkboxes in a quarter...
-const allQ1 = document.getElementById("allQ1");
-const allQ2 = document.getElementById("allQ2");
-const allQ3 = document.getElementById("allQ3");
-const allQ4 = document.getElementById("allQ4");
+// Check all checkboxes in a quarter
+function checkboxQuarter() {
+  quarters.forEach((quarter) => {
+    const allQuarter = document.getElementById(`all${quarter}`);
 
-function checkboxQuarter(event) {
-  event.preventDefault();
+    function checkboxKuartal(event) {
+      event.preventDefault();
 
-  const quarter = this.textContent.slice(-2);
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      const quarter = this.textContent.slice(-2);
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
-  checkboxes.forEach((checkbox) => {
-    checkbox.checked = false;
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
 
-    const checkboxId = checkbox.id;
-    const lastTwoChars = checkboxId.slice(-2);
+        const checkboxId = checkbox.id;
+        const lastTwoChars = checkboxId.slice(-2);
 
-    if (lastTwoChars === quarter) {
-      checkbox.checked = true;
+        if (lastTwoChars === quarter) {
+          checkbox.checked = true;
+        }
+      });
+    }
+
+    if (!(allQuarter == null)) {
+      allQuarter.addEventListener("click", checkboxKuartal);
     }
   });
 }
 
-allQ1.addEventListener("click", checkboxQuarter);
-allQ2.addEventListener("click", checkboxQuarter);
-allQ3.addEventListener("click", checkboxQuarter);
-allQ4.addEventListener("click", checkboxQuarter);
-// ...and it ends here
-
 // Check all checkboxes in a year
 function checkboxYear() {
-  for (let year = 2011; year <= new Date().getFullYear(); year++) {
+  for (let year = new Date().getFullYear(); year >= 2010; year--) {
     const allYear = document.getElementById(`all${year}`);
 
     function checkboxTahun(event) {
@@ -118,13 +261,71 @@ function checkboxYear() {
       });
     }
 
-    allYear.addEventListener("click", checkboxTahun);
+    if (!(allYear == null)) {
+      allYear.addEventListener("click", checkboxTahun);
+    }
   }
 }
 
-window.addEventListener("load", generateCheckboxes);
-window.addEventListener("load", generateTahunDropdown);
+function checkboxOnlyYear() {
+  const onlyYears = document.getElementById(`onlyYears`);
+
+  function checkboxTahunSaja(event) {
+    event.preventDefault();
+
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+
+      const checkboxId = checkbox.id;
+      const lastFourChars = checkboxId.slice(-4);
+
+      const yearPattern = /^\d{4}$/;
+
+      if (yearPattern.test(lastFourChars)) {
+        checkbox.checked = true;
+      }
+    });
+  }
+  if (!(onlyYears == null)) {
+    onlyYears.addEventListener("click", checkboxTahunSaja);
+  }
+}
+
+function clearCheckbox() {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+}
+
+if (document.getElementById("checkboxes-container") != null) {
+  generateCheckboxes();
+  generateTahunDropdown();
+}
+
+if (document.getElementById("checkboxes-container-year") != null) {
+  generateCheckboxes();
+  generateTahunDropdown();
+}
+
+if (document.getElementById("checkboxes-container-current-year") != null) {
+  generateCheckboxesCurrentYear();
+  generateTahunDropdownCurrentYear();
+}
+
+if (document.getElementById("checkboxes-container-3-years") != null) {
+  generateCheckboxes3Year();
+}
+// window.addEventListener("load", generateCheckboxes);
+// window.addEventListener("load", generateTahunDropdown);
+// window.addEventListener("load", generateCheckboxesCurrentYear);
+// window.addEventListener("load", generateCheckboxes3Year);
+// window.addEventListener("load", generateTahunDropdownCurrentYear);
+window.addEventListener("load", checkboxQuarter);
 window.addEventListener("load", checkboxYear);
+window.addEventListener("load", checkboxOnlyYear);
 
 // CHARTS
 $(function () {
@@ -452,4 +653,30 @@ $(document).ready(function () {
       $("#Jenis").html(addoptarr.join(""));
     })
     .change();
+});
+
+// Toast for upload validation
+$(".toastsDefaultWarning").click(function () {
+  $(document).Toasts("create", {
+    class: "bg-warning toast-warning-validasi",
+    fixed: false,
+    title: "Perhatian!",
+    body: "{ADHB.2023Q1} Komponen (1) tidak sesuai dengan sub-komponennyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.\
+    <br>{ADHK.2023Q2} Komponen (2) tidak sesuai dengan sub-komponennya.\
+    <br>{ADHK.2023Q3} Komponen (4) tidak sesuai dengan sub-komponennya.\
+    <br>{ADHK.2022Q3} Komponen (5) tidak sesuai dengan sub-komponennya.\
+    <br>{ADHK.2022Q3} Komponen (6) tidak sesuai dengan sub-komponennya.\
+    <br>{ADHK.2022Q4} Komponen (7) tidak sesuai dengan sub-komponennya.\
+    <br>{ADHK.2021Q1} Komponen (3) tidak sesuai dengan sub-komponennya.\
+    <br>{ADHK.2021Q1} Komponen (4) tidak sesuai dengan sub-komponennya.\
+    <br>{ADHK.2021Q2} Komponen (6) tidak sesuai dengan sub-komponennya.",
+  });
+});
+
+// Modal title for data upload
+$("#uploadData").on("show.bs.modal", function (event) {
+  var button = $(event.relatedTarget); // Button that triggered the modal
+  var recipient = button.data("whatever"); // Extract info from data-* attributes
+  var modal = $(this);
+  modal.find(".modal-title").text("Upload Data " + recipient);
 });

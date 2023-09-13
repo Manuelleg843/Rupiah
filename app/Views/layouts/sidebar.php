@@ -17,7 +17,7 @@
                 <li class="nav-item menu-open">
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('/'); ?>" class="nav-link <?= ($tajuk == 'Beranda') ? 'active'  : ''; ?>">
+                            <a href="<?= base_url('/beranda'); ?>" class="nav-link <?= ($tajuk == 'Beranda') ? 'active'  : ''; ?>">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Beranda

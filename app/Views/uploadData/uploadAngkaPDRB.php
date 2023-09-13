@@ -13,7 +13,7 @@
                 <!-- filter berdasarkan kota -->
                 <div class="col-auto mt-4">
                     <div class="form-group">
-                        <select class="form-control" style="width: 100%;" id="selectKota">
+                        <select class="form-control" style="width: 100%;" id="pilihKota">
                             <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
                             <option value="DKI Jakarta">DKI Jakarta</option>
                             <option value="Jakarta Pusat">Jakarta Pusat</option>
@@ -51,7 +51,10 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="downloadTemplate">1. Download Format Template Upload Terbaru</label>
-                                <button class="btn btn-warning">Download Template</button>
+                                <form action="">
+                                    <div id="checkboxes-container-3-years" class="ml-2 mb-2"></div>
+                                    <button class="btn btn-warning">Download Template</button>
+                                </form>
                             </div>
                             <div class="form-group">
                                 <label for="alasanUpload">2. Isi Keterangan/Alasan Upload</label>
@@ -72,7 +75,7 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Upload Data</button>
+                            <button type="submit" class="btn btn-primary toastsDefaultWarning" data-dismiss="modal">Upload Data</button>
                         </div>
                     </form>
                 </div>
@@ -187,3 +190,10 @@
         </div>
     </section>
     <!-- /.content -->
+    <script>
+        pilihKota.addEventListener("change", function() {
+            varKotaSelected = this.value;
+            
+            modalWilayah.textContent = "Upload PDRB - " + varKotaSelected;
+        });
+    </script>
