@@ -318,11 +318,6 @@ if (document.getElementById("checkboxes-container-current-year") != null) {
 if (document.getElementById("checkboxes-container-3-years") != null) {
   generateCheckboxes3Year();
 }
-// window.addEventListener("load", generateCheckboxes);
-// window.addEventListener("load", generateTahunDropdown);
-// window.addEventListener("load", generateCheckboxesCurrentYear);
-// window.addEventListener("load", generateCheckboxes3Year);
-// window.addEventListener("load", generateTahunDropdownCurrentYear);
 window.addEventListener("load", checkboxQuarter);
 window.addEventListener("load", checkboxYear);
 window.addEventListener("load", checkboxOnlyYear);

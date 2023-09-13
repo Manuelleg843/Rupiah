@@ -53,7 +53,7 @@
                             <!-- search component -->
                             <div class=" col-lg-6">
                                 <div class="form-group">
-                                    <form action="simple-results.html">
+                                    <form action="#">
                                         <div class="input-group">
                                             <input type="search" class="form-control" placeholder="Cari User...">
                                             <div class="input-group-append">
