@@ -57,6 +57,47 @@
 
                                     <!-- filter end -->
 
+                                    <!-- modal periode -->
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Pilih Periode</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="" class="p-2">
+                                                        <div id="checkboxes-container-current-year"></div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-between">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Periode</button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Periode</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ1">Semua Q1</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ2">Semua Q2</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ3">Semua Q3</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="allQ4">Semua Q4</a></li>
+                                                            <li><a class="dropdown-item" href="#" id="onlyYears">Semua Tahunan</a></li>
+                                                            <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Tahun</a>
+                                                                <ul class="dropdown-menu" id="tahunDropdownCurrentYear">
+                                                                </ul>
+                                                            </li>
+                                                            <div class="dropdown-divider"></div>
+                                                            <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal -->
 
                                     <!-- card-header -->
                                     <div class="mt-2" style="border-top: 1px solid #ccc;">

@@ -17,10 +17,22 @@
                 <li class="nav-item menu-open">
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('/'); ?>" class="nav-link <?= ($tajuk == 'Beranda') ? 'active'  : ''; ?>">
+                            <a href="<?= base_url('/beranda'); ?>" class="nav-link <?= ($tajuk == 'Beranda') ? 'active'  : ''; ?>">
                                 <i class="nav-icon fas fa-chart-line"></i>
                                 <p>
                                     Beranda
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item menu-open">
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('/admin/administrator'); ?>" class="nav-link <?= ($tajuk == 'Admin') ? 'active'  : ''; ?>">
+                                <i class="nav-icon fas fa-user-plus"></i>
+                                <p>
+                                    Admin
                                 </p>
                             </a>
                         </li>
@@ -88,6 +100,18 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item menu-open">
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('/monitoring'); ?>" class="nav-link <?= ($tajuk == 'Monitoring Putaran') ? 'active'  : ''; ?>">
+                                <i class="far fas fa-hourglass nav-icon"></i>
+                                <p>
+                                    Monitoring
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-download"></i>
@@ -102,4 +126,3 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-

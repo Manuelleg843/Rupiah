@@ -202,7 +202,8 @@
                                                             <ul class="dropdown-menu" id="tahunDropdown">
                                                             </ul>
                                                         </li>
-                                                        <li><a class="dropdown-item" href="#" id="hapusPilihan">Hapus Pilihan</a></li>
+                                                        <div class="dropdown-divider"></div>
+                                                        <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
                                                     </ul>
                                                 </div>
                                                 <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
