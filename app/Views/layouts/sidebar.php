@@ -88,6 +88,18 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item menu-open">
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="<?= base_url('/monitoring'); ?>" class="nav-link <?= ($tajuk == 'Monitoring Putaran') ? 'active'  : ''; ?>">
+                                <i class="far fas fa-hourglass nav-icon"></i>
+                                <p>
+                                    Monitoring
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-download"></i>
@@ -102,4 +114,3 @@
     </div>
     <!-- /.sidebar -->
 </aside>
-

@@ -65,6 +65,8 @@
 <script src="<?= base_url('/assets/js/beranda.js'); ?>"></script>
 <!-- plugin datalabel -->
 <script src="<?= base_url('/assets/plugins/chartjs-plugin-datalabels/chartjs-plugin-datalabels.js'); ?>"></script>
+<!-- Tombol Buka Tutup Putaran Monitoring -->
+<script src="<?= base_url('/assets/js/monitoring.js'); ?>"></script>
 
 </body>
 
