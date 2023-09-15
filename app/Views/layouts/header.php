@@ -38,6 +38,8 @@
     <link rel="stylesheet" href="<?= base_url('/assets/plugins/dropzone/min/dropzone.min.css'); ?>" />
     <!-- beranda -->
     <link rel="stylesheet" href="<?= base_url('/assets/css/beranda.css'); ?>" />
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="<?= base_url('/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css'); ?>" />
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
