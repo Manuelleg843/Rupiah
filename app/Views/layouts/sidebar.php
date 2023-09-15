@@ -38,19 +38,12 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item menu<?= ($tajuk == 'Upload Data') ? '-open'  : ''; ?>">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-upload"></i>
-                        <p>
-                            Upload Data
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
+                <li class="nav-item menu-open">
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="<?= base_url('/uploadData/angkaPDRB'); ?>" class="nav-link <?= ($subTajuk == 'Angka PDRB') ? 'active'  : ''; ?>">
-                                <i class="far fas fa-arrow-right nav-icon"></i>
-                                <p>Angka PDRB</p>
+                                <i class="far fas fa-upload nav-icon"></i>
+                                <p>Upload Angka PDRB</p>
                             </a>
                         </li>
                     </ul>
@@ -104,7 +97,7 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="<?= base_url('/monitoring'); ?>" class="nav-link <?= ($tajuk == 'Monitoring Putaran') ? 'active'  : ''; ?>">
-                                <i class="far fas fa-hourglass nav-icon"></i>
+                                <i class="far fas fa-tachometer-alt nav-icon"></i>
                                 <p>
                                     Monitoring
                                 </p>

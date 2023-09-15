@@ -9,7 +9,6 @@
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
     <!-- /.content-header -->
 
@@ -60,6 +59,21 @@
                                     </button>
                                 </div>
                             </div>
+                            <!-- switch jenis data -->
+                            <div class="row mt-2">
+                                <div class="col-auto">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                            <a class="nav-link <?= ($subTajuk == 'Arah Revisi Kota (PKRT 7 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('arahRevisi_7Komponen'); ?>">PKRT 7 Komponen</a>
+                                        </li>
+                                        <li class="nav-item">
+
+                                            <a class="nav-link <?= ($subTajuk == 'Arah Revisi Kota (PKRT 12 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('arahRevisi'); ?>">PKRT 12 Komponen</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
                             <!-- filter ended -->
 
                             <!-- modal komponen -->
@@ -75,7 +89,7 @@
                                         <div class="modal-body">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="1" value="1">
-                                                <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah Tangga</label>
+                                                <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="2" value="2">
@@ -83,11 +97,11 @@
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="3" value="3">
-                                                <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah</label>
+                                                <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="4" value="4">
-                                                <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto</label>
+                                                <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="5" value="5">
@@ -95,23 +109,15 @@
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="6" value="6">
-                                                <label class="form-check-label" for="6">6. Ekspor Luar Negeri</label>
+                                                <label class="form-check-label" for="6">6. Ekspor Luar Negeri (6.a. + 6.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="7" value="7">
-                                                <label class="form-check-label" for="7">7. Impor Luar Negeri</label>
+                                                <label class="form-check-label" for="7">7. Impor Luar Negeri (7.a. + 7.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="8" value="8">
-                                                <label class="form-check-label" for="8">8. Net Ekspor Antar Daerah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="8a" value="8a">
-                                                <label class="form-check-label" for="8a">8.a. Ekspor Antar Daerah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="8b" value="8b">
-                                                <label class="form-check-label" for="8b">8.b. Impor Antar Daerah</label>
+                                                <label class="form-check-label" for="8">8. Net Ekspor Antar Daerah (8.a. - 8.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="11" value="11">
@@ -203,7 +209,7 @@
 
                             <!-- card body -->
                             <div class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                <table id="tableArah7" class="table table-bordered table-hover">
+                                <table id="tableArah12" class="table table-bordered table-hover">
                                     <thead class="text-center table-primary sticky-top">
                                         <tr>
                                             <th colspan="4" rowspan="2">Komponen</th>

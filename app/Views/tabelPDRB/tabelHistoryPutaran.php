@@ -22,14 +22,14 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-auto form-group">
-                                            <select class="form-control select2" style="width: 100%;" id="selectTable">
+                                            <select class="form-control" style="width: 100%;" id="selectTable">
                                                 <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
                                                 <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                                 <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                             </select>
                                         </div>
                                         <div class="col-auto form-group">
-                                            <select class="form-control select2" style="width: 100%;" id="selectKota">
+                                            <select class="form-control" style="width: 100%;" id="selectKota">
                                                 <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
                                                 <option value="DKI Jakarta">DKI Jakarta</option>
                                                 <option value="Jakarta Pusat">Jakarta Pusat</option>
@@ -40,7 +40,7 @@
                                             </select>
                                         </div>
                                         <div class="col-auto form-group">
-                                            <select class="form-control select2" style="width: 100%;" id="selectPutaran">
+                                            <select class="form-control" style="width: 100%;" id="selectPutaran">
                                                 <option value="Pilih Putaran" hidden>Pilih Putaran</option>
                                                 <option value="Putaran 1">Putaran 1</option>
                                                 <option value="Putaran 2">Putaran 2</option>
@@ -49,7 +49,7 @@
                                             </select>
                                         </div>
                                         <div class="col-auto align-items-center">
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-sm">
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                                 Pilih Periode
                                             </button>
                                         </div>

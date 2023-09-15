@@ -11,6 +11,7 @@
         </div><!-- /.container-fluid -->
     </section>
 
+
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -53,12 +54,27 @@
                                     </button>
                                 </div>
                                 <div class="col-auto align-items-center">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-periode">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                         Pilih Periode
                                     </button>
                                 </div>
                             </div>
-                            <!-- filter end-->
+
+                            <!-- switch jenis data -->
+                            <div class="row mt-2">
+                                <div class="col-auto">
+                                    <ul class="nav nav-pills">
+                                        <li class="nav-item">
+                                            <a class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 7 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('/tabelPDRB/tabelPerKota'); ?>">PKRT 7 Komponen</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 12 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('/tabelPDRB/tabelPerKota_12Komponen'); ?>">PKRT 12 Komponen</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- filter ended -->
 
                             <!-- modal komponen -->
                             <div class="modal fade" id="modal-komponen">
@@ -71,9 +87,10 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
+
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="1" value="1">
-                                                <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah</label>
+                                                <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah (1.a. s/d 1.l.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="2" value="2">
@@ -81,39 +98,32 @@
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="3" value="3">
-                                                <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah</label>
+                                                <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="4" value="4">
-                                                <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto</label>
+                                                <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</label>
                                             </div>
+                                            <!-- 2011 -->
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="5" value="5">
                                                 <label class="form-check-label" for="5">5. Perubahan Inventori</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="6" value="6">
-                                                <label class="form-check-label" for="6">6. Ekspor Luar Negeri</label>
+                                                <label class="form-check-label" for="6">6. Ekspor Luar Negeri (6.a. + 6.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="7" value="7">
-                                                <label class="form-check-label" for="7">7. Impor Luar Negeri</label>
+                                                <label class="form-check-label" for="7">7. Impor Luar Negeri (7.a. + 7.b.)</label>
                                             </div>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" id="8" value="8">
-                                                <label class="form-check-label" for="8">8. Net Ekspor Antar Daerah</label>
+                                                <label class="form-check-label" for="8">8. Net Ekspor Antar Daerah (8.a. - 8.b.)</label>
                                             </div>
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="9" value="9">
-                                                <label class="form-check-label" for="9">9. Ekspor Antar Daerah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="10" value="10">
-                                                <label class="form-check-label" for="10">10. Impor Antar Daerah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="11" value="11">
-                                                <label class="form-check-label" for="11">11. PDRB</label>
+                                                <input class="form-check-input" type="checkbox" id="9" val9e="0">
+                                                <label class="form-check-label" for="9">9. PDRB</label>
                                             </div>
                                         </div>
                                         <div class="modal-footer d-flex justify-content-between">
@@ -136,11 +146,11 @@
                             <!-- end modal komponen -->
 
                             <!-- modal periode -->
-                            <div class="modal fade" id="modal-periode" tabindex="-1" aria-labelledby="modal-periodeLabel" aria-hidden="true">
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="modal-periodeLabel">Pilih Periode</h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Pilih Periode</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
@@ -178,8 +188,7 @@
                             <!-- /.modal -->
 
                             <!-- card-header -->
-                            <div class="mt-2" style="border-top: 1px solid #ccc;">
-                                <!-- export -->
+                            <div class="card-header ml-2">
                                 <div class="row justify-content-end mt-3">
                                     <div class="col-auto">
                                         <div class="btn-group">
@@ -198,108 +207,105 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- export end -->
                                 <div class="card-header">
                                     <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                                 </div>
-                            </div>
-                            <!-- /.card-header -->
 
-                            <!-- card body -->
-                            <div class="table-responsive" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                <table id="TablePerKota" class="table table-bordered table-hover ">
-                                    <thead class="text-center table-primary sticky-top">
-                                        <tr>
-                                            <th colspan="2">Komponen</th>
-                                            <th>2023Q1</th>
-                                            <th>2023Q2</th>
-                                            <th>2023Q3</th>
-                                            <th>2023Q4</th>
-                                            <th>2023</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">7. Impor Luar Negeri</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="2" style="font-weight: bold;">PDRB</th>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <!-- card body -->
+                                <div class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+                                    <table id="tabelPerkota12" class="table table-bordered table-hover">
+                                        <thead class="text-center table-primary sticky-top">
+                                            <tr>
+                                                <th colspan="2">Komponen</th>
+                                                <th>2023Q1</th>
+                                                <th>2023Q2</th>
+                                                <th>2023Q3</th>
+                                                <th>2023Q4</th>
+                                                <th>2023</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">7. Impor Luar Negeri (7.a. + 7.b.)</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. - 8.b.)</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="2" style="font-weight: bold;">PDRB</th>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                                <td>0,00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.card -->
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <!-- /.content -->
