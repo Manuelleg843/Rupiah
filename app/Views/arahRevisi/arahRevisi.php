@@ -60,21 +60,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <!-- switch jenis data -->
-                            <div class="row mt-2">
-                                <div class="col-auto">
-                                    <ul class="nav nav-pills">
-                                        <li class="nav-item">
-                                            <a class="nav-link <?= ($subTajuk == 'Arah Revisi Kota (PKRT 7 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('arahRevisi_7Komponen'); ?>">PKRT 7 Komponen</a>
-                                        </li>
-                                        <li class="nav-item">
-
-                                            <a class="nav-link <?= ($subTajuk == 'Arah Revisi Kota (PKRT 12 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('arahRevisi'); ?>">PKRT 12 Komponen</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
                             <!-- filter ended -->
 
                             <!-- modal komponen -->

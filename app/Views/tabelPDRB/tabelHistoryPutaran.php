@@ -128,8 +128,8 @@
                                     <!-- /. card-header -->
 
                                     <!-- /.card-body -->
-                                    <div class="table-responsive" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                        <table id="tableHistory" class="table table-bordered table-hover">
+                                    <div class="table-responsive d-flex text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+                                        <table id="example1" class="table table-bordered table-hover">
                                             <thead class="text-center table-primary sticky-top">
                                                 <tr>
                                                     <th colspan="2">Komponen</th>
@@ -138,54 +138,25 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp </td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
-                                                    <td>Rp</td>
-                                                    <td>Rp</td>
-                                                </tr>
+                                                <?php
+                                                foreach ($komponen12 as $row) :
+                                                    $id = $row->id_komponen;
+                                                    $komponen = $row->komponen;
+                                                ?>
+                                                    <tr>
+                                                        <td colspan="2" <?php
+                                                                        $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "";
+                                                                        echo $bold;
+                                                                        ?>>
+                                                            <?php
+                                                            echo $id . ". " . $row->komponen;
+                                                            ?>
+                                                        </td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                <?php endforeach ?>
                                             </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th colspan="2" style="font-weight: bold;">PDRB</th>
-                                                    <th>Rp</th>
-                                                    <th>Rp</th>
-                                                </tr>
-                                            </tfoot>
                                         </table>
                                     </div>
                                     <!-- /.card-body -->

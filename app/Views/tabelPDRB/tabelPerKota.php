@@ -58,20 +58,6 @@
                                     </button>
                                 </div>
                             </div>
-                            <!-- switch jenis data -->
-                            <div class="row mt-2">
-                                <div class="col-auto">
-                                    <ul class="nav nav-pills">
-                                        <li class="nav-item">
-                                            <a class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 7 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('/tabelPDRB/tabelPerKota'); ?>">PKRT 7 Komponen</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 12 Komponen)') ? 'active'  : ''; ?>" href="<?= base_url('/tabelPDRB/tabelPerKota_12Komponen'); ?>">PKRT 12 Komponen</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
                             <!-- filter end-->
 
                             <!-- modal komponen -->
@@ -309,7 +295,7 @@
                             </div>
                             <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+
                     </div>
                 </div>
             </div>
