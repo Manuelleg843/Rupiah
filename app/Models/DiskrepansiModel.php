@@ -48,8 +48,8 @@ class DiskrepansiModel extends Model
 
     public function get_data()
     {
-        $builder = $this->db->query('SELECT nilai FROM diskrepansi');
+        // $builder = $this->db->query('SELECT nilai FROM diskrepansi');
 
-        return $builder->getResult();
+        // return $builder->getResult();
     }
 }

@@ -20,5 +20,13 @@ $routes->get('/admin/createUserForm', 'AdminController::viewCreateUserForm');
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelPDRBController::viewTabelRingkasan');
 $routes->get('/tabelPDRB/tabelPerKota', 'TabelPDRBController::viewTabelPerKota');
 $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
+$routes->post('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
 $routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->get('/monitoring', 'MonitoringController::index');
+
+// routes ekspor
+$routes->get('/tabelPDRB/exportExcel', 'TabelPDRBController::exportExcel');
+$routes->resource('dataPDRB');
+
+$routes->get('/tabelPDRB/exportPDF', 'TabelPDRBController::exportPDF');
+$routes->resource('dataPDRB');

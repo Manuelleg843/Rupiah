@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 
 class DataUploadController extends BaseController
 {
+
     public function index()
     {
         //

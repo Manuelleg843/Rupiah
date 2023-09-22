@@ -57,6 +57,8 @@
 <script src="<?= base_url('/assets/plugins/select2/js/select2.full.min.js'); ?>"></script>
 <!-- tabelPDRB -->
 <script src="<?= base_url('/assets/js/tabelPDRB.js'); ?>"></script>
+<!-- table Histori putaran -->
+<script src="<?= base_url('/assets/js/tabelHistoriPutaran.js'); ?>"></script>
 <!-- FLOT CHARTS -->
 <script src="<?= base_url('/assets/plugins/flot/jquery.flot.js'); ?>"></script>
 <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
@@ -83,25 +85,7 @@
 <!-- SweetAlert2 -->
 <script src="<?= base_url('/assets/plugins/sweetalert2/sweetalert2.min.js'); ?>"></script>
 
-<script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["csv", "excel", "pdf", "print"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
-    });
-</script>
+<!-- custom script -->
 </body>
 
 </html>

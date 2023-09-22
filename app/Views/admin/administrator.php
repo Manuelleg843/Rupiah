@@ -43,11 +43,7 @@
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
-                                <div class="col-auto align-items-center">
-                                    <a href="<?= base_url('/admin/createUserForm'); ?>" class="btn btn-primary">
-                                        Tambah User
-                                    </a>
-                                </div>
+
                             </div>
 
                             <!-- search component -->
@@ -124,7 +120,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -136,7 +132,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -148,7 +144,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -160,7 +156,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -172,7 +168,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -184,7 +180,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -196,7 +192,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -208,7 +204,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -220,7 +216,7 @@
                                         <td>
                                             <div class="d-flex justify-content-center">
                                                 <button disabled type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button disabled type="button" class="btn btn-danger  btn-sm px-3 mx-1">Revoke</button>
+                                                <button disabled type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
                                             </div>
                                         </td>
                                     </tr>

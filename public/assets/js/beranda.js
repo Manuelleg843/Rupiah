@@ -87,6 +87,8 @@ function generateCheckboxesCurrentYear() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add("form-check-input");
+    
+    checkbox
 
     if (isNaN(quarter)) {
       checkboxLabel.textContent = `${year}${quarter}`;
@@ -95,6 +97,7 @@ function generateCheckboxesCurrentYear() {
       checkbox.name = `${year}${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
       checkbox.value = `option${year}${quarter}`;
+      // checkbox.checked = true;
     } else {
       checkboxLabel.textContent = `${quarter}`;
       checkboxLabel.setAttribute("for", `checkbox${quarter}`);
@@ -102,6 +105,7 @@ function generateCheckboxesCurrentYear() {
       checkbox.name = `${quarter}`;
       checkbox.id = `checkbox${quarter}`;
       checkbox.value = `option${quarter}`;
+      // checkbox.checked = true;
     }
 
     col.appendChild(checkbox);
