@@ -24,16 +24,18 @@
                                 <div class="col-auto form-group">
                                     <select class="form-control" style="width: 100%;" id="selectTable">
                                         <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                        <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
-                                        <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
-                                        <option value="Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)">Tabel 3.3. Pertumbuhan PDRB (Q-TO-Q)</option>
-                                        <option value="Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)">Tabel 3.4. Pertumbuhan PDRB (Y-ON-Y)</option>
-                                        <option value="Tabel 3.5. Pertumbuhan PDRB (C-TO-C)">Tabel 3.5. Pertumbuhan PDRB (C-TO-C)</option>
-                                        <option value="Tabel 3.6. Indeks Implisit">Tabel 3.6. Indeks Implisit</option>
-                                        <option value="Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)">Tabel 3.7. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
-                                        <option value="Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)">Tabel 3.8. Sumber Pertumbuhn (Q-TO-Q)</option>
-                                        <option value="Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)">Tabel 3.9. Sumber Pertumbuhan (Y-ON-Y)</option>
-                                        <option value="Tabel 3.10. Sumber Pertumbuhan (C-TO-C)">Tabel 3.10. Sumber Pertumbuhan (C-TO-C)</option>
+                                        <option value="1">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                        <option value="2">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
+                                        <option value="3">Tabel 3.3. Tabel Distribusi Persentase PDRB ADHB</option>
+                                        <option value="4">Tabel 3.4. Pertumbuhan PDRB ADHK (Q-TO-Q)</option>
+                                        <option value="5">Tabel 3.5. Pertumbuhan PDRB ADHK (Y-ON-Y)</option>
+                                        <option value="6">Tabel 3.6. Pertumbuhan PDRB ADHK (C-TO-C)</option>
+                                        <option value="7">Tabel 3.7. Indeks Implisit PDRB (Persen)</option>
+                                        <option value="8">Tabel 3.8. Pertumbuhan Indeks Implisit (Q-TO-Q)</option>
+                                        <option value="9">Tabel 3.9. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
+                                        <option value="10">Tabel 3.10. Sumber Pertumbuhan Ekonomi (Q-TO-Q)</option>
+                                        <option value="11">Tabel 3.11. Sumber Pertumbuhan Ekonomi (Y-ON-Y)</option>
+                                        <option value="12">Tabel 3.12. Sumber Pertumbuhan Ekonomi (C-TO-C)</option>
                                     </select>
                                 </div>
                                 <div class="col-auto form-group">
@@ -219,78 +221,40 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
+                                        <?php
+                                        foreach ($komponen as $row) :
+                                            $id = $row->id_komponen;
+                                            $komponen = $row->komponen;
+                                        ?>
+                                            <tr>
+                                                <td colspan="2" <?php
+                                                                $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "class='pl-5'";
+                                                                echo $bold;
+                                                                ?>>
+                                                    <?php
+                                                    if ($id == 9) {
+                                                        echo $komponen;
+                                                    } else {
+                                                        echo "            " . $id . ". " . $komponen;
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td>108.532.731,62</td>
+                                                <td>108.532.731,62</td>
+                                                <td>108.532.731,62</td>
+                                                <td>108.532.731,62</td>
+                                                <td>108.532.731,62</td>
+                                            </tr>
+                                        <?php endforeach ?>
+                                        <!-- <tr>
                                             <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga</td>
                                             <td>0,00</td>
                                             <td>0,00</td>
                                             <td>0,00</td>
                                             <td>0,00</td>
                                             <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">7. Impor Luar Negeri</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="2" style="font-weight: bold;">PDRB</th>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
+                                        </tr> -->
+
                                     </tbody>
                                 </table>
                             </div>

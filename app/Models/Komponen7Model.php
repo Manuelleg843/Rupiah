@@ -6,14 +6,15 @@ use CodeIgniter\Model;
 
 class Komponen7Model extends Model
 {
-    protected $DBGroup          = 'default';
-    protected $table            = 'komponen7';
+    // protected $DBGroup          = '';
+    protected $table            = 'komponen_7';
     protected $primaryKey       = 'id_komponen';
     protected $useAutoIncrement = false;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = [
+        'id_komponen',
         'komponen',
     ];
 
@@ -43,8 +44,11 @@ class Komponen7Model extends Model
 
     public function get_data()
     {
-        $builder = $this->db->query('SELECT * FROM komponen_7');
+        $builder = $this->db->query('SELECT * FROM komponen_7 ORDER BY id_komponen');
 
         return $builder->getResult();
+        // $builder = $this->table('komponen_7');
+        // $query   = $builder->get();
+        // return $query->getResult();
     }
 }

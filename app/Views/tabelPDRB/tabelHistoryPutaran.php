@@ -22,30 +22,34 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-auto form-group">
-                                            <select class="form-control" style="width: 100%;" id="selectTable">
+                                            <select class="form-control" style="width: 100%;" id="selectTable" onchange="kirimData()">
                                                 <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                                <option value="Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
-                                                <option value="Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
+                                                <option value="1" selected>Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                                <option value="2">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                             </select>
                                         </div>
                                         <div class="col-auto form-group">
                                             <select class="form-control" style="width: 100%;" id="selectKota">
                                                 <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                                <option value="DKI Jakarta">DKI Jakarta</option>
-                                                <option value="Jakarta Pusat">Jakarta Pusat</option>
-                                                <option value="Jakarta Utara">Jakarta Utara</option>
-                                                <option value="Jakarta Barat">Jakarta Barat</option>
-                                                <option value="Jakarta Selatan">Jakarta Selatan</option>
-                                                <option value="Jakarta Timur">Jakarta Timur</option>
+                                                <option value="3100" selected>DKI Jakarta</option>
+                                                <option value="3171">Jakarta Selatan</option>
+                                                <option value="3172">Jakarta Timur</option>
+                                                <option value="3173">Jakarta Pusat</option>
+                                                <option value="3174">Jakarta Barat</option>
+                                                <option value="3175">Jakarta Utara</option>
                                             </select>
                                         </div>
                                         <div class="col-auto form-group">
                                             <select class="form-control" style="width: 100%;" id="selectPutaran">
                                                 <option value="Pilih Putaran" hidden>Pilih Putaran</option>
-                                                <option value="Putaran 1">Putaran 1</option>
-                                                <option value="Putaran 2">Putaran 2</option>
-                                                <option value="Putaran 3">Putaran 3</option>
-                                                <option value="Putaran 4">Putaran 4</option>
+                                                <?php $i = 0;
+                                                foreach ($putaran as $opsi) :
+                                                ?>
+                                                    <option value="<?= $opsi['putaran'] ?>" <?php $i++;
+                                                                                            if ($i == sizeof($putaran)) {
+                                                                                                echo "selected";
+                                                                                            } ?>>Putaran <?= $opsi['putaran'] ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                         <div class="col-auto align-items-center">
@@ -54,6 +58,7 @@
                                             </button>
                                         </div>
                                     </div>
+
 
                                     <!-- filter end -->
 
@@ -102,24 +107,24 @@
                                     <!-- card-header -->
                                     <div class="mt-2" style="border-top: 1px solid #ccc;">
                                         <!-- export -->
-                                        <row class="row justify-content-end mt-3">
+                                        <div class="row justify-content-end mt-3">
                                             <div class="col-auto">
                                                 <div class="btn-group">
-                                                    <a href="#" target="_blank" class="btn btn-outline-danger">
+                                                    <a href="<?= base_url('/tabelPDRB/exportPDF') ?>" target="_self" class="btn btn-outline-danger">
                                                         <i class="fa fa-file-pdf"></i>
                                                         <span>Ekspor PDF</span>
                                                     </a>
-                                                    <a href="#" target="_blank" class="btn btn-outline-success">
+                                                    <a href="<?= base_url('/tabelPDRB/exportExcel') ?>" target="_self" class="btn btn-outline-success">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Excel</span>
                                                     </a>
-                                                    <a href="#" target="_blank" class="btn btn-outline-secondary">
+                                                    <a href="#" target="_self" class="btn btn-outline-secondary">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Semua Putaran</span>
                                                     </a>
                                                 </div>
                                             </div>
-                                        </row>
+                                        </div>
                                         <!-- export end -->
                                         <div class="card-header">
                                             <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
@@ -129,34 +134,18 @@
 
                                     <!-- /.card-body -->
                                     <div class="table-responsive d-flex text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                        <table id="example1" class="table table-bordered table-hover">
+                                        <table id="PDRBTable" class="table table-bordered table-hover">
                                             <thead class="text-center table-primary sticky-top">
                                                 <tr>
                                                     <th colspan="2">Komponen</th>
                                                     <th>2023Q1</th>
-                                                    <th>2023Q2</th>
+                                                    <!-- <th>2023Q2</th> -->
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php
-                                                foreach ($komponen12 as $row) :
-                                                    $id = $row->id_komponen;
-                                                    $komponen = $row->komponen;
-                                                ?>
-                                                    <tr>
-                                                        <td colspan="2" <?php
-                                                                        $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "";
-                                                                        echo $bold;
-                                                                        ?>>
-                                                            <?php
-                                                            echo $id . ". " . $row->komponen;
-                                                            ?>
-                                                        </td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                <?php endforeach ?>
+
                                             </tbody>
+
                                         </table>
                                     </div>
                                     <!-- /.card-body -->

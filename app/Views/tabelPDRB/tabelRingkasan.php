@@ -23,12 +23,22 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-auto form-group">
-                                        <select class="form-control" style="width: 100%;" id="selectTable">
+                                        <select class="form-control" style="width: 100%; max-width: 600px" id="selectTable">
                                             <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                            <option value="Tabel 1.11. Perbandingan Diskrepansi Nasional dan Regional Menurut Komponen">Tabel 1.11. Perbandingan Diskrepansi Nasional dan Regional Menurut Komponen</option>
-                                            <option value="Tabel 1.12. Perbandingan Diskrepansi Kumulatif Nasional dan Regional Menurut Komponen">Tabel 1.12. Perbandingan Diskrepansi Kumulatif Nasional dan Regional Menurut Komponen</option>
-                                            <option value="Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Provinsi">Tabel 1.13. Ringkasan Pertumbuhan Ekstrem Provinsi</option>
-                                            <option value="Tabel 1.14. Ringkasan Revisi Pertumbuhan Esktrem dan Balik Arah Provinsi">Tabel 1.14. Ringkasan Revisi Pertumbuhan Esktrem dan Balik Arah Provinsi</option>
+                                            <option value="1">Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
+                                            <option value="2">Tabel 1.12. Diskrepansi PDRB ADHK Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
+                                            <option value="3">Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota</option>
+                                            <option value="4">Tabel 1.14. Distribusi Persentase PDRB Kabupaten Kota Terhadap Total Provinsi</option>
+                                            <option value="5">Tabel 1.15. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Q-TO-Q)</option>
+                                            <option value="6">Tabel 1.16. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Y-ON-Y)</option>
+                                            <option value="7">Tabel 1.17. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (C-TO-C)</option>
+                                            <option value="8">Tabel 1.18. Indeks Implisit PDRB Provinsi dan Kabupaten/Kota</option>
+                                            <option value="9">Tabel 1.19. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Q-TO-Q)</option>
+                                            <option value="10">Tabel 1.20. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Y-ON-Y)</option>
+                                            <option value="11">Tabel 1.23. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Q-TO-Q)</option>
+                                            <option value="12">Tabel 1.24. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Y-ON-Y)</option>
+                                            <option value="13">Tabel 1.25. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (C-TO-C)</option>
+                                            <option value="14">Tabel 1.26. Ringkasan Pertumbuhan Ekstrim Provinsi dan 6 Kabupaten Kota</option>
                                         </select>
                                     </div>
                                     <div class="col-auto align-items-center">
@@ -209,9 +219,42 @@
 
                                         </thead>
                                         <tbody>
-
+                                            <?php
+                                            foreach ($adhb as $row) :
+                                                $id = $row->id_komponen;
+                                                $komponen = $row->komponen;
+                                            ?>
+                                                <tr>
+                                                    <td colspan="2" <?php
+                                                                    $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "class='pl-5'";
+                                                                    echo $bold;
+                                                                    ?>>
+                                                        <?php
+                                                        if ($id == 9) {
+                                                            echo $komponen;
+                                                        } else {
+                                                            echo "            " . $id . ". " . $komponen;
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                    <td class="text-right">0,90</td>
+                                                    <td class="text-right">108.532.731,62</td>
+                                                    <td class="text-right">108.530.731,62</td>
+                                                    <td class="text-right">0,90</td>
+                                                    <td class="text-right">108.532.731,62</td>
+                                                    <td class="text-right">108.530.731,62</td>
+                                                    <td class="text-right">0,90</td>
+                                                    <td class="text-right">108.532.731,62</td>
+                                                    <td class="text-right">108.530.731,62</td>
+                                                    <td class="text-right">0,90</td>
+                                                    <td class="text-right">108.532.731,62</td>
+                                                    <td class="text-right">108.530.731,62</td>
+                                                    <td class="text-right">0,90</td>
+                                                    <td class="text-right">108.532.731,62</td>
+                                                    <td class="text-right">108.530.731,62</td>
+                                                </tr>
+                                            <?php endforeach ?>
                                         </tbody>
-
                                     </table>
                                 </div>
                                 <!-- tabel adhb end -->
@@ -262,6 +305,42 @@
                                             </thead>
                                             <tbody>
 
+                                                <?php
+
+                                                foreach ($adhk as $row) :
+                                                    $id = $row->id_komponen;
+                                                    $komponen = $row->komponen;
+                                                ?>
+                                                    <tr>
+                                                        <td colspan="2" <?php
+                                                                        $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "class='pl-5'";
+                                                                        echo $bold;
+                                                                        ?>>
+                                                            <?php
+                                                            if ($id == 9) {
+                                                                echo $komponen;
+                                                            } else {
+                                                                echo "            " . $id . ". " . $komponen;
+                                                            }
+                                                            ?>
+                                                        </td>
+                                                        <td class="text-right">0,90</td>
+                                                        <td class="text-right">108.532.731,62</td>
+                                                        <td class="text-right">108.530.731,62</td>
+                                                        <td class="text-right">0,90</td>
+                                                        <td class="text-right">108.532.731,62</td>
+                                                        <td class="text-right">108.530.731,62</td>
+                                                        <td class="text-right">0,90</td>
+                                                        <td class="text-right">108.532.731,62</td>
+                                                        <td class="text-right">108.530.731,62</td>
+                                                        <td class="text-right">0,90</td>
+                                                        <td class="text-right">108.532.731,62</td>
+                                                        <td class="text-right">108.530.731,62</td>
+                                                        <td class="text-right">0,90</td>
+                                                        <td class="text-right">108.532.731,62</td>
+                                                        <td class="text-right">108.530.731,62</td>
+                                                    </tr>
+                                                <?php endforeach ?>
                                             </tbody>
 
                                         </table>

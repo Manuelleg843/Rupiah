@@ -191,7 +191,7 @@
     <script>
         pilihKota.addEventListener("change", function() {
             varKotaSelected = this.value;
-            
+
             modalWilayah.textContent = "Upload PDRB - " + varKotaSelected;
         });
     </script>

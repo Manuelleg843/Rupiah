@@ -10,7 +10,7 @@ class PutaranSeeder extends Seeder
     {
 
         // lokasi file csv
-        $csvFile = WRITEPATH . 'tabel putaran.csv'; //belum dicustom path nya 
+        $csvFile = WRITEPATH . 'putaran_dummy.csv'; //belum dicustom path nya 
 
         // read file csv 
         $csv = array_map('str_getcsv', file($csvFile));
