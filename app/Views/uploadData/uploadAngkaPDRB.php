@@ -15,7 +15,8 @@
                     <div class="form-group">
                         <select class="form-control" style="width: 100%;" id="pilihKota">
                             <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                            <option value="DKI Jakarta">DKI Jakarta</option>
+                            <option value="DKI Jakarta">Provinsi DKI Jakarta</option>
+                            <option value="Kepulauan Seribu">Kepulauan Seribu</option>
                             <option value="Jakarta Pusat">Jakarta Pusat</option>
                             <option value="Jakarta Utara">Jakarta Utara</option>
                             <option value="Jakarta Barat">Jakarta Barat</option>
@@ -30,7 +31,13 @@
                         <span>Upload</span>
                     </button>
                 </div>
-
+            </div>
+            <div class="row">
+                <?php if (session()->has('msg')) : ?>
+                    <div class="text-danger col">
+                        <?= session('msg') ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div><!-- /.container-fluid -->
     </section>
@@ -46,37 +53,36 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="card-body">
+                    <div class="card-body">
+                        <form method="post" action="<?= base_url('/downloadExcel'); ?>">
                             <div class="form-group">
                                 <label for="downloadTemplate">1. Download Format Template Upload Terbaru</label>
-                                <form action="">
-                                    <div id="checkboxes-container-3-years" class="ml-2 mb-2"></div>
-                                    <button class="btn btn-warning">Download Template</button>
-                                </form>
+                                <div id="checkboxes-container-3-years" class="ml-2 mb-2"></div>
+                                <button type="submit" class="btn btn-warning">Download Template</button>
+                                <input type="hidden" id="kotaSelected" name="kotaSelected" hidden>
                             </div>
+                        </form>
+                        <form method="post" action="<?= base_url('/uploadExcel'); ?>" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="alasanUpload">2. Isi Keterangan/Alasan Upload</label>
-                                <textarea class="form-control" rows="3" placeholder="Isikan Keterangan/Alasan..."></textarea>
+                                <textarea class="form-control" rows="3" placeholder="Isikan Keterangan/Alasan..." name="alasanUpload" id="alasanUpload"></textarea>
                             </div>
                             <div class="form-group">
-                                <label for="inputFile">3. Upload File Berkas yang Telah Diisi</label>
+                                <label for="inputFile">3. Upload File Template yang Telah Diisi</label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="inputFile">
-                                        <label class="custom-file-label" for="inputFile">Choose file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Upload</span>
+                                        <input type="file" class="custom-file-input" id="inputFile" name="inputFile" accept=".xlsx">
+                                        <label class="custom-file-label" for="inputFile" id="inputFileLabel">Pilih file</label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- /.card-body -->
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary toastsDefaultWarning" data-dismiss="modal">Upload Data</button>
-                        </div>
-                    </form>
+                            <!-- <button type="submit" class="btn btn-primary toastsDefaultWarning" data-dismiss="modal">Upload Data</button> -->
+                            <button type="submit" class="btn btn-primary">Upload Data</button>
+                        </form>
+                    </div>
+                    <!-- /.card-body -->
+                    <!-- <div class="card-footer">
+                    </div> -->
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -189,9 +195,12 @@
     </section>
     <!-- /.content -->
     <script>
+        // Mengambil wilayah yang sudah terpilih
+        const kotaSelected = document.getElementById("kotaSelected");
         pilihKota.addEventListener("change", function() {
             varKotaSelected = this.value;
-            
+
             modalWilayah.textContent = "Upload PDRB - " + varKotaSelected;
+            kotaSelected.setAttribute("value", varKotaSelected);
         });
     </script>

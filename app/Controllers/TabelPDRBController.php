@@ -46,8 +46,8 @@ class TabelPDRBController extends BaseController
             'title' => 'Rupiah | Tabel Ringkasan',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel Ringkasan PDRB Kab/Kota',
-            'nilaiDiskrepansi' => $this->nilaiDiskrepansi->get_data(),
-            'komponen7' => $this->komponen7->get_data(),
+            // 'nilaiDiskrepansi' => $this->nilaiDiskrepansi->get_data(),
+            // 'komponen7' => $this->komponen7->get_data(),
         ];
 
         echo view('layouts/header', $data);

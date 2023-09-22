@@ -10,6 +10,8 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'LoginController::index');
 $routes->get('/lupa_password', 'LoginController::forgotPassword');
 $routes->post('/login', 'LoginController::login');
+$routes->post('/downloadExcel', 'DownloadExcelController::download');
+$routes->post('/uploadExcel', 'UploadExcelController::upload');
 $routes->get('/beranda', 'Beranda::index');
 $routes->get('/uploadData/angkaPDRB', 'DataUploadController::viewUploadAngkaPDRB');
 $routes->get('/admin/administrator', 'AdminController::viewAdministrator');

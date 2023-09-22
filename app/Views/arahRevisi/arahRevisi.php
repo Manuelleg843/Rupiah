@@ -41,7 +41,8 @@
                                 <div class="col-auto form-group">
                                     <select class="form-control" style="width: 100%;" id="selectKota">
                                         <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                        <option>DKI Jakarta</option>
+                                        <option>Provinsi DKI Jakarta</option>
+                                        <option>Kepulauan Seribu</option>
                                         <option>Jakarta Pusat</option>
                                         <option>Jakarta Utara</option>
                                         <option>Jakarta Barat</option>
@@ -157,15 +158,6 @@
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Periode</button>
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Periode</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ1">Semua Q1</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ2">Semua Q2</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ3">Semua Q3</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ4">Semua Q4</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="onlyYears">Semua Tahunan</a></li>
-                                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Tahun</a>
-                                                        <ul class="dropdown-menu" id="tahunDropdownCurrentYear">
-                                                        </ul>
-                                                    </li>
                                                     <div class="dropdown-divider"></div>
                                                     <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
                                                 </ul>

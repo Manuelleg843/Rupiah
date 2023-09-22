@@ -44,12 +44,3 @@ selectPutaran.addEventListener("change", function () {
   judulTable.textContent =
     tableSelected + " - " + kotaSelected + " - " + putaranSelected;
 });
-
-// modal untuk upload table
-// modalWilayah.addEventListener("change", function(){
-//     var kotaSelected  = selectKota.value;
-//     var judulModal = modalWilayah;
-
-//     // mengganti judul pop-up
-//     judulModal.textContent = "Upload Data PDRB " + kotaSelected;
-// });
