@@ -1,11 +1,10 @@
 // MODAL PILIH PERIODE
-// Function to generate checkboxes for each year and quarter
-
-const quarters = ["Q1", "Q2", "Q3", "Q4"];
+let quarters = ["Q1", "Q2", "Q3", "Q4"];
 const today = new Date();
 const currentYear = today.getFullYear();
 const currentMonth = today.getMonth() + 1;
 
+// Fungsi generate checkbox untuk tiap tahun dan kuartal,...
 function generateCheckboxes() {
   const checkboxesContainer = document.getElementById("checkboxes-container");
   const checkboxesContainerYear = document.getElementById(
@@ -33,10 +32,10 @@ function generateCheckboxes() {
       checkbox.classList.add("form-check-input");
 
       if (isNaN(quarter)) {
-        checkboxLabel.textContent = `${year} ${quarter}`;
+        checkboxLabel.textContent = `${year}${quarter}`;
         checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
 
-        checkbox.name = `${year}-${quarter}`;
+        checkbox.name = `${year}${quarter}`;
         checkbox.id = `checkbox${year}${quarter}`;
         checkbox.value = `option${year}${quarter}`;
       } else {
@@ -70,8 +69,6 @@ function generateCheckboxesCurrentYear() {
     "checkboxes-container-current-year"
   );
 
-  console.log(checkboxesContainerCurrentYear);
-
   if (quarters.length == 4) {
     quarters.push(year);
   }
@@ -94,10 +91,10 @@ function generateCheckboxesCurrentYear() {
     checkbox
 
     if (isNaN(quarter)) {
-      checkboxLabel.textContent = `${year} ${quarter}`;
+      checkboxLabel.textContent = `${year}${quarter}`;
       checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
 
-      checkbox.name = `${year}-${quarter}`;
+      checkbox.name = `${year}${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
       checkbox.value = `option${year}${quarter}`;
       // checkbox.checked = true;
@@ -125,9 +122,14 @@ function generateCheckboxes3Year() {
   );
 
   // Generate checkboxes for each year and quarter
-  for (let year = currentYear; year >= currentYear - 2; year--) {
-    // quarters.push(year);
-
+  for (let year = currentYear - 2; year <= currentYear; year++) {
+    if (year == currentYear) {
+      popCount = 4 - Math.ceil(currentMonth / 3) + 1;
+      quarters.splice(-popCount, popCount);
+    }
+    if (quarters.length == 4) {
+      quarters.push(year);
+    }
     const row = document.createElement("div");
     row.classList.add("row");
 
@@ -143,21 +145,21 @@ function generateCheckboxes3Year() {
       checkbox.type = "checkbox";
       checkbox.classList.add("form-check-input");
 
-      // if (isNaN(quarter)) {
-      checkboxLabel.textContent = `${year} ${quarter}`;
-      checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
+      if (isNaN(quarter)) {
+        checkboxLabel.textContent = `${year}${quarter}`;
+        checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
 
-      checkbox.name = `${year}-${quarter}`;
-      checkbox.id = `checkbox${year}${quarter}`;
-      checkbox.value = `option${year}${quarter}`;
-      // } else {
-      // checkboxLabel.textContent = `${quarter}`;
-      // checkboxLabel.setAttribute("for", `checkbox${quarter}`);
+        checkbox.name = `${year}${quarter}`;
+        checkbox.id = `checkbox${year}${quarter}`;
+        checkbox.value = `option${year}${quarter}`;
+      } else {
+        checkboxLabel.textContent = `${quarter}`;
+        checkboxLabel.setAttribute("for", `checkbox${quarter}`);
 
-      // checkbox.name = `${quarter}`;
-      // checkbox.id = `checkbox${quarter}`;
-      // checkbox.value = `option${quarter}`;
-      // }
+        checkbox.name = `${quarter}`;
+        checkbox.id = `checkbox${quarter}`;
+        checkbox.value = `option${quarter}`;
+      }
 
       col.appendChild(checkbox);
       col.appendChild(checkboxLabel);
@@ -165,11 +167,12 @@ function generateCheckboxes3Year() {
     });
 
     checkboxesContainer.appendChild(row);
-    // quarters.pop();
+    quarters.pop();
   }
 }
+// ...sampe sini.
 
-// Function to generate dropdown submenu for each year
+// Fungsi generate menu dropdown untuk tiap tahun,...
 function generateTahunDropdown() {
   const tahunDropdown = document.getElementById("tahunDropdown");
 
@@ -202,10 +205,14 @@ function generateTahunDropdownCurrentYear() {
   dropdownItem.id = `all${year}`;
 
   dropdownItemList.appendChild(dropdownItem);
-  tahunDropdownCurrentYear.appendChild(dropdownItemList);
-}
 
-// Function to check all checkboxes
+  if (!(tahunDropdownCurrentYear == null)) {
+    tahunDropdownCurrentYear.appendChild(dropdownItemList);
+  }
+}
+// ..., sampe sini.
+
+// Fungsi untuk centang checkbox (semua, per tahun, per kuartal, hapus semua centang),...
 function checkboxSemua() {
   const checkboxes = document.querySelectorAll('input[type="checkbox"]');
   checkboxes.forEach((checkbox) => {
@@ -213,7 +220,6 @@ function checkboxSemua() {
   });
 }
 
-// Check all checkboxes in a quarter
 function checkboxQuarter() {
   quarters.forEach((quarter) => {
     const allQuarter = document.getElementById(`all${quarter}`);
@@ -242,7 +248,6 @@ function checkboxQuarter() {
   });
 }
 
-// Check all checkboxes in a year
 function checkboxYear() {
   for (let year = new Date().getFullYear(); year >= 2010; year--) {
     const allYear = document.getElementById(`all${year}`);
@@ -303,7 +308,9 @@ function clearCheckbox() {
     checkbox.checked = false;
   });
 }
+// ..., sampe sini.
 
+// Menambahkan fungsi yg telah dibuat pada halaman agar bisa dipakai,...
 if (document.getElementById("checkboxes-container") != null) {
   generateCheckboxes();
   generateTahunDropdown();
@@ -325,13 +332,14 @@ if (document.getElementById("checkboxes-container-3-years") != null) {
 window.addEventListener("load", checkboxQuarter);
 window.addEventListener("load", checkboxYear);
 window.addEventListener("load", checkboxOnlyYear);
+// ..., sampe sini.
 
 // CHARTS
 $(function () {
   // ChartJS
   Chart.plugins.register(ChartDataLabels);
 
-  // BAR CHARTS
+  // Bar Charts
   var barChartYOY = $("#barChartYOY").get(0).getContext("2d");
   var barChartQTQ = $("#barChartQTQ").get(0).getContext("2d");
   var barChartCTC = $("#barChartCTC").get(0).getContext("2d");
@@ -406,7 +414,7 @@ $(function () {
         },
         color: "black",
         formatter: (value) => value,
-        display: "auto", // Display data labels
+        display: "auto",
       },
     },
   };
@@ -443,8 +451,8 @@ $(function () {
     options: barChartOptions,
   });
 
-  // FLOT
-  /* LINE CHART */
+  // Flot
+  // Line Chart
 
   // PDRB
   var PDRBtahunan = [
@@ -600,7 +608,7 @@ $(function () {
     },
   });
 
-  //Initialize tooltip on hover
+  // Initialize tooltip on hover
   $('<div class="tooltip-inner" id="line-chart-tooltip"></div>')
     .css({
       position: "absolute",
@@ -623,7 +631,6 @@ $(function () {
       $("#line-chart-tooltip").hide();
     }
   });
-  /* END LINE CHART */
 });
 
 // DROPDOWN SELECT
@@ -631,6 +638,7 @@ $(function () {
   $(".select2").select2();
 });
 
+// DROPDOWN TAHUNAN/TRIWULANAN pada Beranda
 $(document).ready(function () {
   var optarray = $("#Jenis")
     .children("option")
@@ -654,28 +662,32 @@ $(document).ready(function () {
     .change();
 });
 
-// Toast for upload validation
-$(".toastsDefaultWarning").click(function () {
-  $(document).Toasts("create", {
-    class: "bg-warning toast-warning-validasi",
-    fixed: false,
-    title: "Perhatian!",
-    body: "{ADHB.2023Q1} Komponen (1) tidak sesuai dengan sub-komponennyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.\
-    <br>{ADHK.2023Q2} Komponen (2) tidak sesuai dengan sub-komponennya.\
-    <br>{ADHK.2023Q3} Komponen (4) tidak sesuai dengan sub-komponennya.\
-    <br>{ADHK.2022Q3} Komponen (5) tidak sesuai dengan sub-komponennya.\
-    <br>{ADHK.2022Q3} Komponen (6) tidak sesuai dengan sub-komponennya.\
-    <br>{ADHK.2022Q4} Komponen (7) tidak sesuai dengan sub-komponennya.\
-    <br>{ADHK.2021Q1} Komponen (3) tidak sesuai dengan sub-komponennya.\
-    <br>{ADHK.2021Q1} Komponen (4) tidak sesuai dengan sub-komponennya.\
-    <br>{ADHK.2021Q2} Komponen (6) tidak sesuai dengan sub-komponennya.",
-  });
-});
+// Toast untuk validasi upload
+// $(".toastsDefaultWarning").click(function () {
+//   $(document).Toasts("create", {
+//     class: "bg-warning toast-warning-validasi",
+//     fixed: false,
+//     title: "Perhatian!",
+//     body: "<b>{ADHB.2023Q1}</b> Komponen (1) tidak sesuai dengan sub-komponennyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.\
+//     <br>{ADHK.2023Q2} Komponen (2) tidak sesuai dengan sub-komponennya.\
+//     <br>{ADHK.2023Q3} Komponen (4) tidak sesuai dengan sub-komponennya.\
+//     <br>{ADHK.2022Q3} Komponen (5) tidak sesuai dengan sub-komponennya.\
+//     <br>{ADHK.2022Q3} Komponen (6) tidak sesuai dengan sub-komponennya.\
+//     <br>{ADHK.2022Q4} Komponen (7) tidak sesuai dengan sub-komponennya.\
+//     <br>{ADHK.2021Q1} Komponen (3) tidak sesuai dengan sub-komponennya.\
+//     <br>{ADHK.2021Q1} Komponen (4) tidak sesuai dengan sub-komponennya.\
+//     <br>{ADHK.2021Q2} Komponen (6) tidak sesuai dengan sub-komponennya.",
+//   });
+// });
 
-// Modal title for data upload
-$("#uploadData").on("show.bs.modal", function (event) {
-  var button = $(event.relatedTarget); // Button that triggered the modal
-  var recipient = button.data("whatever"); // Extract info from data-* attributes
-  var modal = $(this);
-  modal.find(".modal-title").text("Upload Data " + recipient);
+$("#inputFile").change(function () {
+  fileLabel = document.getElementById("inputFileLabel");
+  // Check if a file has been selected
+  if (this.files.length > 0) {
+    // Display the selected file name in the label
+    fileLabel.textContent = this.files[0].name;
+  } else {
+    // No file selected, clear the label
+    fileLabel.textContent = "Pilih file";
+  }
 });

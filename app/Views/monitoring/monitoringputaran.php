@@ -30,10 +30,10 @@
                                     <li class="nav-item ">
                                         <small id="detail_buka" class="mr-2"><i>Putaran Belum dibuka</i></small>
                                         <small id="detail_tutup" class="mr-2" hidden><i>Sedang Dalam Putaran </i></small>
-                                        <button onclick="membuka();" id="buttonbuka" type="button" class="btn btn-success">
+                                        <button id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
                                             Buka Putaran
                                         </button>
-                                        <button hidden onclick="menutup();" id="buttontutup" type="button" class="btn btn-danger">
+                                        <button hidden id="buttontutup" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tutup">
                                             Tutup Putaran
                                         </button>
                                     </li>
@@ -41,7 +41,6 @@
                             </div>
 
                             <!-- /.card-header -->
-
                             <div style="overflow-x: scroll; position:relative;">
                                 <table id="tabel" class="table table-bordered table-secondary">
                                     <thead id="kepala" class="text-center">
@@ -137,6 +136,53 @@
             <!-- /.row -->
         </div>
         <!-- /.container-fluid -->
+
+        <!-- /.modal Sukses Buka Button-->
+        <div class="modal fade" id="modal-buka">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- <div class="modal-header">
+
+                    </div> -->
+                    <div class="modal-body mt-2">
+                        <p>Apakah anda yakin untuk memulai putaran&hellip;</p>
+                    </div>
+                    <div class="modal-footer justify-content-end">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Tidak
+                        </button>
+                        <button onclick="membuka();" type="button" class="btn btn-success swalDefaultBuka" data-dismiss="modal">
+                            Yakin
+                        </button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <!-- /.modal Sukses Tutup Button-->
+        <div class="modal fade" id="modal-tutup">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body mt-2">
+                        <p>Apakah anda yakin untuk menghentikan putaran&hellip;</p>
+                    </div>
+                    <div class="modal-footer justify-content-end">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Tidak
+                        </button>
+                        <button onclick="menutup();" type="button" class="btn btn-success swalDefaultTutup" data-dismiss="modal">
+                            Yakin
+                        </button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
     </section>
     <!-- /.content -->
 </div>

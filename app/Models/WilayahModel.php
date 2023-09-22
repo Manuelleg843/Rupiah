@@ -2,22 +2,18 @@
 
 namespace App\Models;
 
-use CodeIgniter\Database\MySQLi\Builder;
 use CodeIgniter\Model;
 
-class Komponen7Model extends Model
+class WilayahModel extends Model
 {
-    // protected $DBGroup          = '';
-    protected $table            = 'komponen_7';
-    protected $primaryKey       = 'id_komponen';
-    protected $useAutoIncrement = false;
+    protected $DBGroup          = 'default';
+    protected $table            = 'wilayah';
+    protected $primaryKey       = 'id_wilayah';
+    protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id_komponen',
-        'komponen',
-    ];
+    protected $allowedFields    = ['wilayah'];
 
     // Dates
     protected $useTimestamps = false;
@@ -42,14 +38,4 @@ class Komponen7Model extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function get_data()
-    {
-        $builder = $this->db->query('SELECT * FROM komponen_7 ORDER BY id_komponen ASC');
-
-        return $builder->getResult();
-        // $builder = $this->table('komponen_7');
-        // $query   = $builder->get();
-        // return $query->getResult();
-    }
 }

@@ -186,7 +186,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <form action="" class="p-2">
-                                                    <div id="checkboxes-container"></div>
+                                                    <div id="checkboxes-container" class="checkboxes-container-or-year-only"></div>
                                                 </form>
                                             </div>
                                             <div class="modal-footer d-flex justify-content-between">

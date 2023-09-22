@@ -41,7 +41,8 @@
                                 <div class="col-auto form-group">
                                     <select class="form-control" style="width: 100%;" id="selectKota">
                                         <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                        <option>DKI Jakarta</option>
+                                        <option>Provinsi DKI Jakarta</option>
+                                        <option>Kepulauan Seribu</option>
                                         <option>Jakarta Pusat</option>
                                         <option>Jakarta Utara</option>
                                         <option>Jakarta Barat</option>
@@ -157,15 +158,6 @@
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Periode</button>
                                                 <ul class="dropdown-menu">
                                                     <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Periode</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ1">Semua Q1</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ2">Semua Q2</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ3">Semua Q3</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="allQ4">Semua Q4</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="onlyYears">Semua Tahunan</a></li>
-                                                    <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown">Tahun</a>
-                                                        <ul class="dropdown-menu" id="tahunDropdownCurrentYear">
-                                                        </ul>
-                                                    </li>
                                                     <div class="dropdown-divider"></div>
                                                     <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
                                                 </ul>
@@ -206,7 +198,7 @@
                                 <table id="tableArah7" class="table table-bordered table-hover">
                                     <thead class="text-center table-primary sticky-top">
                                         <tr>
-                                            <th colspan="4" rowspan="2">Komponen</th>
+                                            <th rowspan="2">Komponen</th>
                                             <th colspan="3">2023Q1</th>
                                             <th colspan="3">2023Q2</th>
                                             <th colspan="3">2023Q3</th>
@@ -228,141 +220,43 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">1. Pengeluaran Konsumsi Pemerintah</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">6. Ekspor Luar Negeri</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">7. Impor Luar Negeri</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="4" style="font-weight: bold;">8. Net Ekspor Antar Daerah</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
-                                        <tr>
-                                            <th colspan="4" style="font-weight: bold;">PDRB</th>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr>
+                                        <?php
+                                        foreach ($komponen as $row) :
+                                            $id = $row->id_komponen;
+                                            $komponen = $row->komponen;
+                                            $rilis = $row->nilai;
+                                        ?>
+                                            <tr>
+                                                <td <?php
+                                                    $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "";
+                                                    echo $bold;
+                                                    ?>>
+                                                    <?php
+                                                    if ($id == 9) {
+                                                        echo $komponen;
+                                                    } else {
+                                                        echo $id . ". " . $komponen;
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <td class="text-right">
+                                                    <?php
+                                                    echo number_format($rilis, 2, ',', '.');
+                                                    ?>
+                                                </td>
+                                                <td class="text-right">0,00</td>
+                                                <td class="text-center"><span class="text-warning">═</span></td>
+                                                <td class="text-right">0,00</td>
+                                                <td class="text-right">0,00</td>
+                                                <td class="text-center"><span class="text-danger">▼</span></td>
+                                                <td class="text-right">0,00</td>
+                                                <td class="text-right">0,00</td>
+                                                <td class="text-center"><span class="text-success">▲</span></td>
+                                                <td class="text-right">0,00</td>
+                                                <td class="text-right">0,00</td>
+                                                <td class="text-center"><span class="text-success">▲</span></td>
+                                            </tr>
+                                        <?php endforeach ?>
                                     </tbody>
                                 </table>
                             </div>

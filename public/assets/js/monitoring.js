@@ -36,3 +36,24 @@ let membuka = () => {
     .getElementById("tabel")
     .setAttribute("class", "table table-bordered table-striped");
 };
+
+$(function () {
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+  });
+  $(".swalDefaultBuka").click(function () {
+    Toast.fire({
+      icon: "success",
+      title: "Putaran telah berhasil dibuka",
+    });
+  });
+  $(".swalDefaultTutup").click(function () {
+    Toast.fire({
+      icon: "success",
+      title: "Putaran telah berhasil ditutup",
+    });
+  });
+});

@@ -41,7 +41,8 @@
                                 <div class="col-auto form-group">
                                     <select class="form-control" style="width: 100%;" id="selectKota">
                                         <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                        <option value="DKI Jakarta">DKI Jakarta</option>
+                                        <option value="Provinsi DKI Jakarta">Provinsi DKI Jakarta</option>
+                                        <option value="Kepulauan Seribu">Kepulauan Seribu</option>
                                         <option value="Jakarta Pusat">Jakarta Pusat</option>
                                         <option value="Jakarta Utara">Jakarta Utara</option>
                                         <option value="Jakarta Barat">Jakarta Barat</option>
