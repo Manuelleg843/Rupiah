@@ -63,7 +63,7 @@ class TabelPDRBController extends BaseController
         $data = [
             'title' => 'Rupiah | Tabel Per Kota',
             'tajuk' => 'Tabel PDRB',
-            'subTajuk' => 'Tabel PDRB Per Kota (PKRT 7 Komponen)'
+            'subTajuk' => 'Tabel PDRB Per Kota'
         ];
 
         echo view('layouts/header', $data);
