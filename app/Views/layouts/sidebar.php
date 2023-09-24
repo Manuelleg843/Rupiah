@@ -26,28 +26,47 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item menu-open">
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= base_url('/admin/administrator'); ?>" class="nav-link <?= ($tajuk == 'Admin') ? 'active'  : ''; ?>">
-                                <i class="nav-icon fas fa-user-plus"></i>
-                                <p>
-                                    Admin
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item menu-open">
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= base_url('/uploadData/angkaPDRB'); ?>" class="nav-link <?= ($subTajuk == 'Angka PDRB') ? 'active'  : ''; ?>">
-                                <i class="far fas fa-upload nav-icon"></i>
-                                <p>Upload Angka PDRB</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                <?php if (in_array('5', session()->get('permission'))) { ?>
+                    <li class="nav-item menu-open">
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?= base_url('/admin/administrator'); ?>" class="nav-link <?= ($tajuk == 'Admin') ? 'active'  : ''; ?>">
+                                    <i class="nav-icon fas fa-user-plus"></i>
+                                    <p>
+                                        Admin
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } ?>
+                <?php if (in_array('4', session()->get('permission'))) { ?>
+                    <li class="nav-item menu-open">
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?= base_url('/monitoring'); ?>" class="nav-link <?= ($tajuk == 'Monitoring Putaran') ? 'active'  : ''; ?>">
+                                    <i class="far fas fa-tachometer-alt nav-icon"></i>
+                                    <p>
+                                        Monitoring
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } ?>
+                <?php if (in_array('2', session()->get('permission'))) { ?>
+                    <!-- Kode yang dijalankan jika kondisi benar -->
+                    <li class="nav-item menu-open">
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?= base_url('/uploadData/angkaPDRB'); ?>" class="nav-link <?= ($subTajuk == 'Angka PDRB') ? 'active'  : ''; ?>">
+                                    <i class="far fas fa-upload nav-icon"></i>
+                                    <p>Upload Angka PDRB</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php } ?>
                 <li class="nav-item menu-<?= ($tajuk == 'Tabel PDRB') ? 'open'  : ''; ?>">
                     <a href="#" class="nav-link active">
                         <i class="nav-icon fas fa-table"></i>
@@ -58,7 +77,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('/tabelPDRB/tabelRingkasan'); ?>" class="nav-link <?= ($subTajuk == 'Tabel Ringkasan') ? 'active'  : ''; ?>">
+                            <a href="<?= base_url('/tabelPDRB/tabelRingkasan'); ?>" class="nav-link <?= ($subTajuk == 'Tabel Ringkasan PDRB Kab/Kota') ? 'active'  : ''; ?>">
                                 <i class="far fas fa-arrow-right nav-icon"></i>
                                 <p>Tabel Ringkasan</p>
                             </a>
@@ -66,7 +85,7 @@
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('/tabelPDRB/tabelPerKota'); ?>" class="nav-link <?= ($subTajuk == 'Tabel Per Kota') ? 'active'  : ''; ?>">
+                            <a href="<?= base_url('/tabelPDRB/tabelPerKota'); ?>" class="nav-link <?= ($subTajuk == 'Tabel PDRB Per Kota (PKRT 7 Komponen)') ? 'active'  : ''; ?>">
                                 <i class="far fas fa-arrow-right nav-icon"></i>
                                 <p>Tabel Per Kota</p>
                             </a>
@@ -88,18 +107,6 @@
                                 <i class="far fas fa-hourglass nav-icon"></i>
                                 <p>
                                     Arah Revisi
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item menu-open">
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="<?= base_url('/monitoring'); ?>" class="nav-link <?= ($tajuk == 'Monitoring Putaran') ? 'active'  : ''; ?>">
-                                <i class="far fas fa-tachometer-alt nav-icon"></i>
-                                <p>
-                                    Monitoring
                                 </p>
                             </a>
                         </li>

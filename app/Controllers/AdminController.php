@@ -3,9 +3,16 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\UserModel;
 
 class AdminController extends BaseController
 {
+    protected $userModel;
+
+    public function __construct()
+    {
+        $this->userModel = new UserModel();
+    }
     public function index()
     {
         //
@@ -27,13 +34,15 @@ class AdminController extends BaseController
         $data = [
             'title' => 'Rupiah | Admin',
             'tajuk' => 'Admin',
-            'subTajuk' => 'User Administrator'
+            'subTajuk' => 'User Administrator',
+            'users' => $this->userModel->paginate(10, 'users'),
+            'pager' => $this->userModel->pager,
         ];
 
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('/admin/administrator');
+        echo view('/admin/administrator', $data);
         echo view('layouts/footer');
     }
 
@@ -53,19 +62,12 @@ class AdminController extends BaseController
         echo view('layouts/footer');
     }
 
-    public function viewCreateUserForm()
+    public function deleteUser($id)
     {
-        //
-        $data = [
-            'title' => 'Rupiah | Admin',
-            'tajuk' => 'Admin',
-            'subTajuk' => 'Tambah User'
-        ];
+        // method untuk menghapus data user
 
-        echo view('layouts/header', $data);
-        echo view('layouts/navbar');
-        echo view('layouts/sidebar', $data);
-        echo view('/admin/createUserForm');
-        echo view('layouts/footer');
+        $this->userModel->delete($id);
+        session()->setFlashdata('pesan', 'User berhasil dihapus.');
+        return redirect()->to('/admin/administrator');
     }
 }

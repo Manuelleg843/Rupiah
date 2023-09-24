@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Masuk</title>
+    <title>Rupiah | Masuk</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -50,9 +50,22 @@
                         <div class="login-decor mb-4"><img src="/assets/img/logo-bps-dki-jakarta.png" alt="Logo bps dki jakarta"></div>
                         <h2>Selamat Datang,</h2>
                         <p>silakan masuk untuk memulai sesi Anda.</p>
-                        <form action="<?= base_url('/login'); ?>" method="post">
+                        <form action="<?= base_url('/UserController/login'); ?>" method="POST" enctype="multipart/form-data">
+                            <?= csrf_field(); ?>
                             <div class="input-group mb-3">
-                                <input type="email" class="form-control" placeholder="Username">
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger">
+                                        <?= $validation->getError('email') ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (session('error')) : ?>
+                                    <div class="text-danger">
+                                        <?= session('error') ?>
+                                    </div>
+                                <?php endif ?>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input name="email" id="email" type="email" class="form-control" placeholder="Email">
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-envelope"></span>
@@ -60,7 +73,14 @@
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <?php if (isset($validation)) : ?>
+                                    <div class="text-danger">
+                                        <?= $validation->getError('password') ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="input-group mb-3">
+                                <input required id="password" name="password" type="password" class="form-control" placeholder="Password">
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>
@@ -68,15 +88,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <!-- <div class="col-8">
-                                    <div class="icheck-primary">
-                                        <input type="checkbox" id="remember">
-                                        <label for="remember">
-                                            Ingat Saya
-                                        </label>
-                                    </div>
-                                </div> -->
-                                <!-- /.col -->
                                 <div class="col">
                                     <button type="submit" class="btn btn-primary btn-block">Masuk</button>
                                 </div>
@@ -93,19 +104,6 @@
                             </a>
                         </div>
                         <!-- /.social-auth-links -->
-                        <div class="row">
-                            <div class="col">
-                                <span>
-                                    <a href="<?= base_url('/lupa_password') ?>">Lupa kata sandi?</a>
-                                </span>
-                            </div>
-                        </div>
-                        <!-- <span>
-                            <a href="forgot-password.html">Lupa kata sandi?</a>
-                        </span>
-                        <span class="mb-0">
-                            <a href="register.html">Daftar</a>
-                        </span> -->
                     </div>
                     <div class="col-6 login-decor">
                         <img src="/assets/img/login-vector-2.jpg" alt="Login decorations">

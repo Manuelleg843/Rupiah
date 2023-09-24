@@ -6,13 +6,15 @@ use App\Controllers\BaseController;
 
 class LoginController extends BaseController
 {
+
     public function index()
     {
+        helper(['form']);
         echo view('login');
     }
 
     public function login()
-    {        
+    {
         $data = [
             'title' => 'Beranda',
             'tajuk' => 'Beranda',

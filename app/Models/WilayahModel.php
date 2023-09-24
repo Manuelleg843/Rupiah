@@ -13,7 +13,7 @@ class WilayahModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['wilayah'];
+    protected $allowedFields    = ['id_wilayah', 'wilayah'];
 
     // Dates
     protected $useTimestamps = false;

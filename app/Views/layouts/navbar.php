@@ -27,15 +27,16 @@
                         <img src="<?= base_url('/assets/dist/img/user1-128x128.jpg'); ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle" />
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
-                                Budi Utami SST, M.Si
+                                <?= session()->get('nama'); ?>
                             </h3>
-                            <p class="text-sm">Operator Provinsi</p>
+                            <p class="text-sm"><?= session()->get('satker'); ?></p>
+                            <p class="text-sm text-muted"><?= session()->get('role'); ?></p>
                         </div>
                     </div>
                     <!-- Message End -->
                 </a>
                 <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">Logout</a>
+                <a href="<?= base_url('/UserController/logout'); ?>" class="dropdown-item dropdown-footer">Logout</a>
             </div>
         </li>
     </ul>

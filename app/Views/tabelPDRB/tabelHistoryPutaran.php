@@ -135,28 +135,6 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-<<<<<<< app/Views/tabelPDRB/tabelHistoryPutaran.php
-
-=======
-                                                <?php
-                                                foreach ($komponen7 as $row) :
-                                                    $id = $row->id_komponen;
-                                                    $komponen = $row->komponen;
-                                                ?>
-                                                    <tr>
-                                                        <td colspan="2" <?php
-                                                                        $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "";
-                                                                        echo $bold;
-                                                                        ?>>
-                                                            <?php
-                                                            echo $id . ". " . $row->komponen;
-                                                            ?>
-                                                        </td>
-                                                        <td></td>
-                                                        <td></td>
-                                                    </tr>
-                                                <?php endforeach ?>
->>>>>>> app/Views/tabelPDRB/tabelHistoryPutaran.php
                                             </tbody>
 
                                         </table>
