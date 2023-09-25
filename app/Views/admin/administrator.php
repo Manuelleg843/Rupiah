@@ -1,5 +1,13 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+    <?php if (session()->getFlashdata('pesan')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('pesan'); ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif ?>
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -42,8 +50,6 @@
                                         <h2 class="card-title px-1" style="font-weight: bold;" id="judulTable">List User</h2>
                                     </div>
                                 </div>
-                                <!-- /.card-header -->
-
                             </div>
 
                             <!-- search component -->
@@ -107,121 +113,65 @@
                                 <thead class="text-center table-primary fixedHeader-floating">
                                     <tr>
                                         <th colspan="2" style="width: 40%;">Nama</th>
+                                        <th>Satuan Kerja</th>
                                         <th>Role</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td colspan="2">Rayyan 1</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Admin</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 2</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Admin</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 3</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Admin</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 4</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Viewer</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 5</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Operator</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 6</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Operator</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 7</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Admin</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 8</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Viewer</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2">Rayyan 9</td>
-                                        <td class="text-center">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">Super Admin</small>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex justify-content-center">
-                                                <button disabled type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
-                                                <button disabled type="button" class="btn btn-danger  btn-sm px-3 mx-1">hapus</button>
-                                            </div>
-                                        </td>
-                                    </tr>
+
+                                    <?php foreach ($users as $user) : ?>
+                                        <tr>
+                                            <td colspan="2"><?= $user['nama']; ?></td>
+                                            <td><?php
+                                                if ($user['id_satker'] == 3100) {
+                                                    echo "DKI Jakarta";
+                                                } elseif ($user['id_satker'] == 3173) {
+                                                    echo "Jakarta Pusat";
+                                                } elseif ($user['id_satker'] == 3175) {
+                                                    echo "Jakarta Utara";
+                                                } elseif ($user['id_satker'] == 3174) {
+                                                    echo "Jakarta Barat";
+                                                } elseif ($user['id_satker'] == 3171) {
+                                                    echo "Jakarta Selatan";
+                                                } elseif ($user['id_satker'] == 3172) {
+                                                    echo "Jakarta Timur";
+                                                } elseif ($user['id_satker'] == 3101) {
+                                                    echo "Kepulauan Seribu";
+                                                } else {
+                                                    echo "DKI Jakarta";
+                                                }
+                                                ?></td>
+                                            <td class="text-center">
+                                                <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">
+                                                    <?php
+                                                    if ($user['id_role'] == 1) {
+                                                        echo "Super Admin";
+                                                    } elseif ($user['id_role'] == 2) {
+                                                        echo "Admin";
+                                                    } elseif ($user['id_role'] == 3) {
+                                                        echo "Operator";
+                                                    } else {
+                                                        echo "Viewer";
+                                                    }
+                                                    ?>
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex justify-content-center">
+                                                    <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
+                                                    <form class="d-inline" action="<?= base_url('/admin/administrator'); ?>/<?= $user['niplama']; ?>" method="POST">
+                                                        <?= csrf_field(); ?>
+                                                        <input type="hidden" name="_method" value="DELETE">
+                                                        <button type="submit" class="btn btn-danger  btn-sm px-3 mx-1" onclick="return confirm('Apakah anda yakin?')">hapus</button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
+                            <?= $pager->links('users', 'users_pagination') ?>
                         </div>
                         <!-- /.card-body -->
                     </div>
