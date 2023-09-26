@@ -66,36 +66,7 @@ class PutaranModel extends Model
         return $query->get()->getResult();
     }
 
-    public function getData($jenisPDRB, $kota)
-    {
-        $builder = $this->table('putaran')
-            ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
-            ->where('id_wilayah', $kota)
-            ->where('id_pdrb', $jenisPDRB)
-            ->where('periode', '2023Q1')
-            ->where('putaran', '1')
-            ->orderBy('id_komponen');
-
-        return $builder->get()->getResult();
-    }
-
-
-    // public function getData()
-    // {
-    //     $builder = $this->table('putaran')
-    //         ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-    //         ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
-    //         ->where('id_wilayah', '3100')
-    //         ->where('id_pdrb', "1")
-    //         ->where('periode', '2023Q1')
-    //         ->where('putaran', '1')
-    //         ->orderBy('id_komponen');
-
-    //     return $builder->get()->getResult();
-    // }
-
-    public function getByPDRB($idPDRB, $kota)
+    public function getData($idPDRB, $kota, $putaran)
     {
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
@@ -103,7 +74,7 @@ class PutaranModel extends Model
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $idPDRB)
             ->where('periode', '2023Q1')
-            ->where('putaran', '1')
+            ->where('putaran', $putaran)
             ->orderBy('id_komponen');
         return $builder->get()->getResult();
     }
@@ -114,5 +85,13 @@ class PutaranModel extends Model
         $currentYear = date("Y");
         $builder = $this->db->query('SELECT DISTINCT putaran FROM Putaran where tahun=' . $currentYear);
         return $builder->getResultArray();
+    }
+
+    public function getAllPeriode()
+    {
+        $builder = $this->db->table('putaran')
+            ->distinct('periode')
+            ->orderBy('tahun', 'desc');
+        return $builder->get()->getResult();
     }
 }

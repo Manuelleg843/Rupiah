@@ -87,8 +87,7 @@ function generateCheckboxesCurrentYear() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.classList.add("form-check-input");
-    
-    checkbox
+    checkbox.checked = true;
 
     if (isNaN(quarter)) {
       checkboxLabel.textContent = `${year}${quarter}`;

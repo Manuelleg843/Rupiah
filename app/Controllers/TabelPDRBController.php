@@ -84,8 +84,9 @@ class TabelPDRBController extends BaseController
     {
         $jenisPDRB = $this->request->getPost('jenisPDRB');
         $kota = $this->request->getPost('kota');
-
-        $data = $this->putaran->getByPDRB($jenisPDRB, $kota);
+        $putaran = $this->request->getPost('putaran');
+        // $periode = $this->request->getPost('periode');
+        $data = $this->putaran->getData($jenisPDRB, $kota, $putaran);
         echo json_encode($data);
     }
 
@@ -106,41 +107,11 @@ class TabelPDRBController extends BaseController
         echo view('layouts/footer');
     }
 
-
-    // public function viewTabelHistoryPutaran()
-    // {
-    //     // get id_wilayah from session
-    //     if (session()->has('id_satker')) {
-    //         $wilayah = session('id_satker');
-    //     }
-
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $pilihan = $_POST['jenisPDRB'];
-    //     }
-
-    //     $data = [
-    //         'title' => 'Rupiah | Tabel History Putaran',
-    //         'tajuk' => 'Tabel PDRB',
-    //         'subTajuk' => 'Tabel History Putaran',
-    //         'komponen' => $this->putaran->get_data(),
-    //         'selectedPeriode' => $this->request->getVar('columns'),
-    //         'putaran' => $this->putaran->getPutaranTerakhir(),
-    //     ];
-
-    //     echo view('layouts/header', $data);
-    //     echo view('layouts/navbar');
-    //     echo view('layouts/sidebar', $data);
-    //     echo view('tabelPDRB/tabelHistoryPutaran', $data);
-    //     echo view('layouts/footer');
-    // }
-
-    public function getDataHistory()
+    public function getAllPeriode()
     {
-        $data = [
-            'pdrb' => $this->putaran->get_pdrb(),
-        ];
+        $allPeriode = $this->putaran->getAllPeriode();
 
-        dd($data['pdrb']);
+        return $this->response->setJSON($allPeriode);
     }
 
     // export excel

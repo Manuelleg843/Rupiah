@@ -8,40 +8,42 @@ const judulTableADHK = document.getElementById("judulTableADHK");
 const tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
 const kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
 const putaranSelected = selectPutaran.value;
+const submitPeriode = document.getElementById("simpan-periode");
+var checkedValues = {};
 
 // munculin data on load
 function loadData() {
   const tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
   const kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
-  const putaranSelected = selectPutaran.value;
+  const putaran = selectPutaran.value;
   const jenisPDRB = selectTable.value;
   const kota = selectKota.value;
 
   // mengganti judul tabel
-  judulTable.textContent = tableSelected + " - " + kotaSelected + " - Putaran " + putaranSelected;
+  judulTable.textContent = tableSelected + " - " + kotaSelected + " - Putaran " + putaran;
 
-  kirimData(jenisPDRB, kota);
+  kirimData(jenisPDRB, kota, putaran);
 
 }
 
-loadData(tableSelected, kotaSelected, putaranSelected);
+loadData();
 
 
-function kirimData(jenisPDRB, kota) {
-  // var tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
-  // var kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
-  // var putaranSelected = selectPutaran.value;
+function kirimData(jenisPDRB, kota, putaran) {
+
   $.ajax({
     type: "POST",
     url: "/tabelPDRB/tabelHistoryPutaran/getData",
     data: {
       jenisPDRB: jenisPDRB,
-      kota: kota
+      kota: kota,
+      putaran: putaran,
+      // periode: checkedValues
     },
     dataType: 'json',
     success: function (data) {
       renderTable(data);
-      // console.log("Sukses! Respons dari server:", data[kota], "| kota: ");
+      // console.log("Sukses! Respons dari server:");
     },
     error: function (error) {
       // Handle kesalahan jika ada
@@ -92,37 +94,7 @@ function renderTable(data) {
 
 }
 // dropdown jenis tabel khusus halaman Tabel Ringkasan
-selectTable.addEventListener("change", function () {
-  var tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
 
-  // mengganti judul tabel
-  judulTableADHB.textContent = tableSelected + " (ADHB)";
-  judulTableADHK.textContent = tableSelected + " (ADHK)";
-
-});
-
-// dropdown kota
-selectKota.addEventListener("change", function () {
-  var tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
-  var kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
-  var putaranSelected = selectPutaran.value;
-
-  // mengganti judul tabel
-  loadData(tableSelected, kotaSelected, putaranSelected);
-});
-
-// dropdown putaran
-selectPutaran.addEventListener("change", function () {
-  var tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
-  var kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
-  var putaranSelected = selectPutaran.value;
-
-  // mengganti judul tabel
-  // judulTable.textContent =
-  //   tableSelected + " - " + kotaSelected + " - Putaran " + putaranSelected;
-  loadData(tableSelected, kotaSelected, putaranSelected);
-
-});
 
 // dropdown putaran
 function createDropdownPutaran(data) {
@@ -150,3 +122,14 @@ function numberFormat(number, decimals = 2, decimalSeparator = ',', thousandsSep
 
   return parts.join(decimalSeparator);
 }
+
+// pilih periode 
+// submitPeriode.addEventListener("click", function () {
+//   // get checked value 
+//   $('input[type="checkbox"]:checked').map(function () {
+//     checkedValues[$(this).attr('name')] = $(this).attr('name');
+//   }).get();
+// });
+
+
+
