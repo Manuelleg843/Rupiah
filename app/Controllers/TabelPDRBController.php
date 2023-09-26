@@ -10,14 +10,10 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use \Dompdf\Dompdf;
 use Dompdf\Options;
+use Hermawan\DataTables\DataTable;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
 
 use function PHPUnit\Framework\isEmpty;
-
-$data = [
-    'id_satker' => '3100',
-];
-session()->set($data);
 
 class TabelPDRBController extends BaseController
 {
@@ -46,21 +42,6 @@ class TabelPDRBController extends BaseController
         echo view('layouts/sidebar', $data);
         echo view('tabelPDRB/tabelRingkasan');
         echo view('layouts/footer');
-    }
-
-    // // get filter
-    public function getData()
-    {
-        $filter = array();
-
-        if (!empty($_GET['jenisPDRB'])) {
-            $filter['jenisPDRB'] = array(
-                'id_pdrb' => $_GET['jenisPDRB'],
-            );
-        };
-
-        // dd($filter);
-        return $filter;
     }
 
     public function viewTabelRingkasan()
@@ -99,24 +80,22 @@ class TabelPDRBController extends BaseController
         echo view('layouts/footer');
     }
 
+    public function getData()
+    {
+        $jenisPDRB = $this->request->getPost('jenisPDRB');
+        $kota = $this->request->getPost('kota');
+
+        $data = $this->putaran->getByPDRB($jenisPDRB, $kota);
+        echo json_encode($data);
+    }
+
     public function viewTabelHistoryPutaran()
     {
-        $dataPDRB = $this->putaran
-            ->select()
-            ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
-            ->orderBy('putaran.id_komponen');
-        if ($jenisPDRB = $this->request->getGet('jenisPDRB')) {
-            $dataPDRB = $dataPDRB->where('id_pdrb', $jenisPDRB);
-        }
 
         $data = [
             'title' => 'Rupiah | Tabel History Putaran',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel History Putaran',
-            'dataPDRB' => $dataPDRB,
-            // 'komponen' => $this->putaran->get_data(),
-            'selectedPeriode' => $this->request->getVar('columns'),
             'putaran' => $this->putaran->getPutaranTerakhir(),
         ];
 
@@ -126,6 +105,7 @@ class TabelPDRBController extends BaseController
         echo view('tabelPDRB/tabelHistoryPutaran', $data);
         echo view('layouts/footer');
     }
+
 
     // public function viewTabelHistoryPutaran()
     // {
