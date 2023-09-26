@@ -83,35 +83,20 @@ class TabelPDRBController extends BaseController
     public function getData()
     {
         $jenisPDRB = $this->request->getPost('jenisPDRB');
-        $data = $this->putaran->getByPDRB($jenisPDRB);
+        $kota = $this->request->getPost('kota');
+
+        $data = $this->putaran->getByPDRB($jenisPDRB, $kota);
         echo json_encode($data);
     }
 
     public function viewTabelHistoryPutaran()
     {
 
-        // $jenisPDRB = $this->getData();
-        // $coba = $this->putaran->getByPDRB($jenisPDRB);
-        // $dataC = array();
-        // foreach ($coba as $record) {
-        //     $dataC[] = array(
-        //         "id_komponen" => $record['id_komponen'],
-        //         "komponen" => $record['komponen'],
-        //         "nilai" => $record['nilai'],
-        //         // "gender" => $record['gender']
-        //     );
-        // }
-
         $data = [
             'title' => 'Rupiah | Tabel History Putaran',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel History Putaran',
-            // 'dataPDRB' => $this->putaran->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')->orderBy('tahun', 'id_komponen')->findAll(),
-            // 'wilayah' => $this->putaran->getWilayah(),
-            // 'jenisPDRB' => $this->putaran->getJenisPDRB(),
             'putaran' => $this->putaran->getPutaranTerakhir(),
-
-            // 'coba' => $this->putaran->getByPDRB($jenisPDRB)
         ];
 
         echo view('layouts/header', $data);

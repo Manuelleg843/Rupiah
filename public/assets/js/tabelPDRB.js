@@ -20,14 +20,14 @@ function loadData() {
   // mengganti judul tabel
   judulTable.textContent = tableSelected + " - " + kotaSelected + " - Putaran " + putaranSelected;
 
-  kirimData(jenisPDRB);
+  kirimData(jenisPDRB, kota);
 
 }
 
 loadData(tableSelected, kotaSelected, putaranSelected);
 
 
-function kirimData(jenisPDRB) {
+function kirimData(jenisPDRB, kota) {
   // var tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
   // var kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
   // var putaranSelected = selectPutaran.value;
@@ -36,12 +36,12 @@ function kirimData(jenisPDRB) {
     url: "/tabelPDRB/tabelHistoryPutaran/getData",
     data: {
       jenisPDRB: jenisPDRB,
-
+      kota: kota
     },
     dataType: 'json',
     success: function (data) {
       renderTable(data);
-      // console.log("Sukses! Respons dari server:", hasil);
+      // console.log("Sukses! Respons dari server:", data[kota], "| kota: ");
     },
     error: function (error) {
       // Handle kesalahan jika ada
