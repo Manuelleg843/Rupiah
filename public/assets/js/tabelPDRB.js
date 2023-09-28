@@ -9,7 +9,10 @@ const tableSelected = selectTable.options[selectTable.selectedIndex].textContent
 const kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
 const putaranSelected = selectPutaran.value;
 const submitPeriode = document.getElementById("simpan-periode");
-var checkedValues = {};
+
+window.addEventListener('load', function () {
+  loadData();
+});
 
 // munculin data on load
 function loadData() {
@@ -18,18 +21,21 @@ function loadData() {
   const putaran = selectPutaran.value;
   const jenisPDRB = selectTable.value;
   const kota = selectKota.value;
-
+  var selectedPeriode = [];
+  $('input[type="checkbox"]:checked').each(function () {
+    // selectedPeriode[$(this).attr('name')] = $(this).name();
+    selectedPeriode.push($(this).attr('name'));
+  });
+  console.log(selectedPeriode);
   // mengganti judul tabel
   judulTable.textContent = tableSelected + " - " + kotaSelected + " - Putaran " + putaran;
 
-  kirimData(jenisPDRB, kota, putaran);
+  kirimData(jenisPDRB, kota, putaran, selectedPeriode);
 
 }
 
-loadData();
-
-
-function kirimData(jenisPDRB, kota, putaran) {
+function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
+  //  sampe sini tan: lo mau coba dari sini di get mana aja yang checked; Visible ? kirim ke model buat di get : yaudah
 
   $.ajax({
     type: "POST",
@@ -38,12 +44,12 @@ function kirimData(jenisPDRB, kota, putaran) {
       jenisPDRB: jenisPDRB,
       kota: kota,
       putaran: putaran,
-      // periode: checkedValues
+      periode: selectedPeriode
     },
     dataType: 'json',
     success: function (data) {
-      renderTable(data);
-      // console.log("Sukses! Respons dari server:");
+      // renderTable(data);
+      console.log("Sukses! Respons dari server:", data);
     },
     error: function (error) {
       // Handle kesalahan jika ada
@@ -122,14 +128,17 @@ function numberFormat(number, decimals = 2, decimalSeparator = ',', thousandsSep
 
   return parts.join(decimalSeparator);
 }
+// show or hide column 
+function toggleColumns() {
+  $('.checkbox-periode').each(function () {
+    var columnPeriode = $(this).attr('name');
+    var isVisible = $(this).is(':checked');
 
-// pilih periode 
-// submitPeriode.addEventListener("click", function () {
-//   // get checked value 
-//   $('input[type="checkbox"]:checked').map(function () {
-//     checkedValues[$(this).attr('name')] = $(this).attr('name');
-//   }).get();
-// });
-
-
+    if (isVisible) {
+      $('#PDRBTable th.' + columnPeriode + ', #PDRBTable td.' + columnPeriode).show();
+    } else {
+      $('#PDRBTable th.' + columnPeriode + ', #PDRBTable td.' + columnPeriode).hide();
+    }
+  })
+}
 

@@ -66,16 +66,16 @@ class PutaranModel extends Model
         return $query->get()->getResult();
     }
 
-    public function getData($idPDRB, $kota, $putaran)
+    public function getData($idPDRB, $kota, $putaran, $periode)
     {
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
             ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $idPDRB)
-            ->where('periode', '2023Q1')
+            ->whereIn('periode', $periode)
             ->where('putaran', $putaran)
-            ->orderBy('id_komponen');
+            ->orderBy('periode', 'id_komponen');
         return $builder->get()->getResult();
     }
 
@@ -90,6 +90,7 @@ class PutaranModel extends Model
     public function getAllPeriode()
     {
         $builder = $this->db->table('putaran')
+            ->select()
             ->distinct('periode')
             ->orderBy('tahun', 'desc');
         return $builder->get()->getResult();

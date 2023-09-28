@@ -74,7 +74,7 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form class="p-2" id="selectPeriode">
+                                                <form class="p-2" id="selectPeriode" onload="loadData()">
                                                     <div class=" modal-body">
 
                                                         <div id="checkboxes-container-current-year"></div>
@@ -90,7 +90,7 @@
                                                             </ul>
                                                         </div>
                                                         <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                            <button type="button" class="btn btn-success" data-dismiss="modal" id="simpan-periode">Simpan</button>
+                                                            <button type="button" class="btn btn-success" data-dismiss="modal" id="simpan-periode" onclick="loadData()">Simpan</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -130,15 +130,15 @@
                                     <!-- /.card-body -->
                                     <div class="table-responsive d-flex text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
                                         <table id="PDRBTable" class="table table-bordered table-hover">
-                                            <thead class="text-center table-primary sticky-top">
+                                            <!-- <thead class="text-center table-primary sticky-top">
                                                 <tr>
                                                     <th colspan="2">Komponen</th>
                                                     <th>2023Q1</th>
-                                                    <!-- <th>2023Q2</th> -->
+                                                    <th>2023Q2</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            </tbody>
+                                            </tbody> -->
                                         </table>
                                     </div>
                                     <!-- /.card-body -->

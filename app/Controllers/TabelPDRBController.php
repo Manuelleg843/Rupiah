@@ -82,11 +82,13 @@ class TabelPDRBController extends BaseController
 
     public function getData()
     {
+        $allPeriode = $this->putaran->getAllPeriode();
         $jenisPDRB = $this->request->getPost('jenisPDRB');
         $kota = $this->request->getPost('kota');
         $putaran = $this->request->getPost('putaran');
-        // $periode = $this->request->getPost('periode');
-        $data = $this->putaran->getData($jenisPDRB, $kota, $putaran);
+        $periode = $this->request->getPost('periode');
+
+        $data = $this->putaran->getData($jenisPDRB, $kota, $putaran, $periode);
         echo json_encode($data);
     }
 
@@ -111,7 +113,7 @@ class TabelPDRBController extends BaseController
     {
         $allPeriode = $this->putaran->getAllPeriode();
 
-        return $this->response->setJSON($allPeriode);
+        return $allPeriode;
     }
 
     // export excel
