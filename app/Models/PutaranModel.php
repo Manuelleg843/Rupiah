@@ -68,14 +68,18 @@ class PutaranModel extends Model
 
     public function getData($idPDRB, $kota, $putaran, $periode)
     {
+
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
+            ->select(['putaran.id_komponen', 'komponen_7.komponen', 'nilai', 'periode'])
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $idPDRB)
             ->whereIn('periode', $periode)
             ->where('putaran', $putaran)
-            ->orderBy('periode', 'id_komponen');
+            ->orderBy('id_komponen')
+            ->orderBy('periode');
+
+
         return $builder->get()->getResult();
     }
 

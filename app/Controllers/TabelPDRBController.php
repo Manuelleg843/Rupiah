@@ -82,13 +82,17 @@ class TabelPDRBController extends BaseController
 
     public function getData()
     {
-        $allPeriode = $this->putaran->getAllPeriode();
         $jenisPDRB = $this->request->getPost('jenisPDRB');
         $kota = $this->request->getPost('kota');
         $putaran = $this->request->getPost('putaran');
         $periode = $this->request->getPost('periode');
 
-        $data = $this->putaran->getData($jenisPDRB, $kota, $putaran, $periode);
+        $data = [
+            'dataPDRB' => $this->putaran->getData($jenisPDRB, $kota, $putaran, $periode),
+            'komponen' => $this->komponen->get_data(),
+            'selectedPeriode' => $periode
+        ];
+
         echo json_encode($data);
     }
 
@@ -119,6 +123,13 @@ class TabelPDRBController extends BaseController
     // export excel
     public function exportExcel()
     {
+        // dd($this->getData());
+        $jenisPDRB = $this->request->getPost('jenisPDRB');
+        $kota = $this->request->getPost('kota');
+        $putaran = $this->request->getPost('putaran');
+        $periode = $this->request->getPost('periode');
+
+        dd($periode);
         $dataPDRB = $this->putaran->get_data();
         $spreadsheet = new Spreadsheet();
         $activeWorksheet = $spreadsheet->getActiveSheet();

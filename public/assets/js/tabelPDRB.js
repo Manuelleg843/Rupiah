@@ -22,11 +22,12 @@ function loadData() {
   const jenisPDRB = selectTable.value;
   const kota = selectKota.value;
   var selectedPeriode = [];
+
   $('input[type="checkbox"]:checked').each(function () {
     // selectedPeriode[$(this).attr('name')] = $(this).name();
     selectedPeriode.push($(this).attr('name'));
   });
-  console.log(selectedPeriode);
+
   // mengganti judul tabel
   judulTable.textContent = tableSelected + " - " + kotaSelected + " - Putaran " + putaran;
 
@@ -35,8 +36,6 @@ function loadData() {
 }
 
 function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
-  //  sampe sini tan: lo mau coba dari sini di get mana aja yang checked; Visible ? kirim ke model buat di get : yaudah
-
   $.ajax({
     type: "POST",
     url: "/tabelPDRB/tabelHistoryPutaran/getData",
@@ -48,56 +47,95 @@ function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
     },
     dataType: 'json',
     success: function (data) {
-      // renderTable(data);
-      console.log("Sukses! Respons dari server:", data);
+
+      renderTable(data['dataPDRB'], data['selectedPeriode'], data['komponen']);
+      // console.log("Sukses! Respons dari server:", data['dataPDRB']);
     },
     error: function (error) {
       // Handle kesalahan jika ada
-      console.error("Terjadi kesalahan:", error);
+      console.error("Terjadi kesalahan:", error.message);
     }
   });
 }
 
 // render table
-function renderTable(data) {
-  var table = $('#PDRBTable tbody');
+function renderTable(data, selectedPeriode, komponen) {
+  // container table  
+  // var tableContainer = $('#PDRBTable');
+  var container = document.getElementById("PDRBTableContainer");
 
   // delete table if there is content inside it 
-  table.empty();
+  container.innerHTML = "";
 
-  // loop through json to create rows
-  for (var i = 0; i < data.length; i++) {
-    var rowData = data[i];
-    var id_komponen = rowData.id_komponen;
+  // create elemen tabel 
+  var table = document.createElement("table");
+  table.id = "PDRBTable";
+  table.classList.add('table', 'table-bordered', 'table-hover');
 
-    // styling table
-    var row = '<tr';
-    if (id_komponen == 1 || id_komponen == 2 || id_komponen == 3 || id_komponen == 4 || id_komponen == 5 || id_komponen == 6 || id_komponen == 7 || id_komponen == 8 || id_komponen == 9) {
-      row = row + " style='font-weight: bold;'>"
-    } else {
-      row = row + ">"
-    }
+  // create table header
+  var thead = document.createElement("thead");
+  thead.classList.add("text-center", "table-primary", "sticky-top");
+  var headerRow = document.createElement("tr");
 
-    row = row + '<td colspan="2"';
+  // var headerRow = table.insertRow();
+  var headerKomponen = document.createElement('th');
+  headerKomponen.colSpan = '2';
+  headerKomponen.innerHTML = "Komponen";
+  headerRow.appendChild(headerKomponen);
 
-    if (id_komponen != 1 && id_komponen != 2 && id_komponen != 3 && id_komponen != 4 && id_komponen != 5 && id_komponen != 6 && id_komponen != 7 && id_komponen != 8 && id_komponen != 9) {
-      row = row + "class='pl-5'>"
-    } else {
-      row = row + ">"
-    }
-
-    if (id_komponen == 9) {
-      row = row + rowData.komponen
-    } else {
-      row = row + id_komponen + ". " + rowData.komponen;
-    }
-
-    row = row + '</td>' +
-      '<td style="text-align: right;">' + numberFormat(rowData.nilai) + '</td>' +
-      '</tr>';
-    table.append(row);
+  for (var i = 0; i < selectedPeriode.length; i++) {
+    var columnName = selectedPeriode[i];
+    var headerCell = document.createElement("th");
+    headerCell.innerHTML = columnName;
+    headerRow.appendChild(headerCell);
   }
 
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  var temp = -1;
+  var tbody = document.createElement("tbody");
+  // loop through json to create tbody
+  for (var i = 0; i < komponen.length; i++) {
+    // menghitung banyak kolom pada tabel 
+    var totalColumn = headerRow.childElementCount;
+
+    var id_komponen = komponen[i].id_komponen;
+
+    // insert row 
+    var row = document.createElement('tr');
+    if (id_komponen == 1 || id_komponen == 2 || id_komponen == 3 || id_komponen == 4 || id_komponen == 5 || id_komponen == 6 || id_komponen == 7 || id_komponen == 8 || id_komponen == 9) {
+      row.style = 'font-weight: bold;';
+    }
+
+    for (var col = 0; col < totalColumn; col++) {
+      var cell = document.createElement("td");
+
+      if (col == 0) {
+        cell.colSpan = '2';
+        if (id_komponen != 1 && id_komponen != 2 && id_komponen != 3 && id_komponen != 4 && id_komponen != 5 && id_komponen != 6 && id_komponen != 7 && id_komponen != 8 && id_komponen != 9) {
+          cell.classList = 'pl-5';
+        }
+
+        if (id_komponen == 9) {
+          cell.innerHTML = komponen[i].komponen;
+        } else {
+          cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
+        }
+      } else {
+        temp++;
+        cell.style = "text-align: right;";
+        cell.innerHTML = numberFormat(data[temp].nilai);
+      }
+
+      row.appendChild(cell);
+    }
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(tbody);
+  // memasukkan tabel ke view 
+  container.appendChild(table);
 }
 // dropdown jenis tabel khusus halaman Tabel Ringkasan
 
@@ -128,17 +166,3 @@ function numberFormat(number, decimals = 2, decimalSeparator = ',', thousandsSep
 
   return parts.join(decimalSeparator);
 }
-// show or hide column 
-function toggleColumns() {
-  $('.checkbox-periode').each(function () {
-    var columnPeriode = $(this).attr('name');
-    var isVisible = $(this).is(':checked');
-
-    if (isVisible) {
-      $('#PDRBTable th.' + columnPeriode + ', #PDRBTable td.' + columnPeriode).show();
-    } else {
-      $('#PDRBTable th.' + columnPeriode + ', #PDRBTable td.' + columnPeriode).hide();
-    }
-  })
-}
-

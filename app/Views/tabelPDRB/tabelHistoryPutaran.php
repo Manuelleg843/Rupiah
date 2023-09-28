@@ -128,18 +128,8 @@
                                     <!-- /. card-header -->
 
                                     <!-- /.card-body -->
-                                    <div class="table-responsive d-flex text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                        <table id="PDRBTable" class="table table-bordered table-hover">
-                                            <!-- <thead class="text-center table-primary sticky-top">
-                                                <tr>
-                                                    <th colspan="2">Komponen</th>
-                                                    <th>2023Q1</th>
-                                                    <th>2023Q2</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody> -->
-                                        </table>
+                                    <div id="PDRBTableContainer" class="table-responsive d-flex text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
