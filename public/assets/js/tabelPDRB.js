@@ -5,26 +5,29 @@ const judulTable = document.getElementById("judulTable");
 const modalWilayah = document.getElementById("modalWilayah");
 const judulTableADHB = document.getElementById("judulTableADHB");
 const judulTableADHK = document.getElementById("judulTableADHK");
-const tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
-const kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
-const putaranSelected = selectPutaran.value;
 const submitPeriode = document.getElementById("simpan-periode");
+var tableSelected;
+var kotaSelected;
+var putaran;
+var jenisPDRB;
+var kota;
+var exportExcel = document.getElementById("exportExcel");
 
-window.addEventListener('load', function () {
-  loadData();
-});
+// window.addEventListener('load', function () {
+//   loadData();
+// });
 
 // munculin data on load
 function loadData() {
-  const tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
-  const kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
-  const putaran = selectPutaran.value;
-  const jenisPDRB = selectTable.value;
-  const kota = selectKota.value;
+  tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
+  kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
+  putaran = selectPutaran.value;
+  jenisPDRB = selectTable.value;
+  kota = selectKota.value;
   var selectedPeriode = [];
 
+  console.log(kota);
   $('input[type="checkbox"]:checked').each(function () {
-    // selectedPeriode[$(this).attr('name')] = $(this).name();
     selectedPeriode.push($(this).attr('name'));
   });
 
@@ -47,9 +50,8 @@ function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
     },
     dataType: 'json',
     success: function (data) {
-
       renderTable(data['dataPDRB'], data['selectedPeriode'], data['komponen']);
-      // console.log("Sukses! Respons dari server:", data['dataPDRB']);
+      console.log(data['dataPBRB']);
     },
     error: function (error) {
       // Handle kesalahan jika ada
@@ -61,7 +63,7 @@ function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
 // render table
 function renderTable(data, selectedPeriode, komponen) {
   // container table  
-  // var tableContainer = $('#PDRBTable');
+
   var container = document.getElementById("PDRBTableContainer");
 
   // delete table if there is content inside it 
@@ -137,8 +139,6 @@ function renderTable(data, selectedPeriode, komponen) {
   // memasukkan tabel ke view 
   container.appendChild(table);
 }
-// dropdown jenis tabel khusus halaman Tabel Ringkasan
-
 
 // dropdown putaran
 function createDropdownPutaran(data) {
@@ -166,3 +166,96 @@ function numberFormat(number, decimals = 2, decimalSeparator = ',', thousandsSep
 
   return parts.join(decimalSeparator);
 }
+
+
+function exportData(fileType) {
+  tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
+  putaran = selectPutaran.value;
+  jenisPDRB = selectTable.value;
+  kota = selectKota.value;
+  var selectedPeriode = [];
+
+  $('input[type="checkbox"]:checked').each(function () {
+    selectedPeriode.push($(this).attr('name'));
+  });
+
+  switch (fileType) {
+    case 'excel':
+      var url = "/tabelPDRB/exportExcel/" + tableSelected + "/" + jenisPDRB + "/" + kota + "/" + putaran + "/" + selectedPeriode;
+      break;
+    case 'pdf':
+      var url = "/tabelPDRB/exportPDF/" + tableSelected + "/" + jenisPDRB + "/" + kota + "/" + putaran + "/" + selectedPeriode;
+      break;
+    case 'excelAllPutaran':
+      var url = "/tabelPDRB/excelAllPutaran/" + tableSelected + "/" + jenisPDRB + "/" + kota + "/null" + "/" + selectedPeriode;
+      break;
+
+  }
+
+  window.location.href = url;
+
+}
+
+// generate dropdown jenis tabel halaman tabel ringkasan
+function generateDropdownTabelRingkasan() {
+  const dropdownContainer = document.getElementById("dropdownTabelRingkasan");
+
+  // generate dropdown
+  const select = document.createElement("select");
+  select.classList.add("form-control");
+  select.style = ("width: 100%; max-width: 600px");
+  select.id = "selectTable";
+
+  var options = [
+    { value: "Pilih Jenis Tabel", text: "Pilih Jenis Tabel" },
+    { value: "dikrepansi-ADHB", text: "Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)" },
+    { value: "dikrepansi-ADHK", text: "Tabel 1.12. Diskrepansi PDRB ADHK Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)" },
+    { value: "distribusi-persentase-PDRB-ADHB", text: "Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota" },
+    { value: "distribusi-persentase-PDRB-Total", text: "Tabel 1.14. Distribusi Persentase PDRB Kabupaten Kota Terhadap Total Provinsi" },
+    { value: "perbandingan-pertumbuhan-Q-TO-Q", text: "Tabel 1.15. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Q-TO-Q)" },
+    { value: "perbandingan-pertumbuhan-Y-ON-Y", text: "Tabel 1.16. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Y-ON-Y)" },
+    { value: "perbandingan-pertumbuhan-C-TO-C", text: "Tabel 1.17. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (C-TO-C)" },
+    { value: "indeks-implisit", text: "Tabel 1.18. Indeks Implisit PDRB Provinsi dan Kabupaten/Kota" },
+    { value: "pertumbuhan-indeks-implisit-Q-TO-Q", text: "Tabel 1.19. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Q-TO-Q)" },
+    { value: "pertumbuhan-indeks-implisit-Y-ON-Y", text: "Tabel 1.20. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Y-ON-Y)" },
+    { value: "sumber-pertumbuhan-Q-TO-Q", text: "Tabel 1.23. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Q-TO-Q)" },
+    { value: "sumber-pertumbuhan-Y-ON-Y", text: "Tabel 1.24. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Y-ON-Y)" },
+    { value: "sumber-pertumbuhan-C-TO-C", text: "Tabel 1.25. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (C-TO-C)" },
+    { value: "ringkasan-pertumbuhan-ekstrem", text: "Tabel 1.26. Ringkasan Pertumbuhan Ekstrim Provinsi dan 6 Kabupaten Kota" },
+  ]
+
+  // Loop untuk membuat elemen-elemen option
+  var option;
+  for (var i = 0; i < options.length; i++) {
+    option = document.createElement('option');
+    option.value = options[i].value;
+    option.innerHTML = options[i].text;
+    if (i == 0) {
+      option.hidden = true;
+    }
+    if (i == 1) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  }
+
+  dropdownContainer.appendChild(select);
+
+}
+
+// if (document.getElementById("dropdownTabelRingkasan") != null) {
+//   // window.addEventListener('load', function () {
+//   //   //   loadData();
+//   // });
+//   generateDropdownTabelRingkasan();
+
+// }
+
+if (document.getElementById('selectTable') != null) {
+  document.getElementById('selectTable').addEventListener('change', function () {
+    var tableSelected = this.value;
+    window.location.href = "/tabelPDRB/tabelRingkasan/" + tableSelected;
+  });
+}
+
+

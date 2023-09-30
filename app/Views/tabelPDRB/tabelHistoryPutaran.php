@@ -105,15 +105,15 @@
                                         <div class="row justify-content-end mt-3">
                                             <div class="col-auto">
                                                 <div class="btn-group">
-                                                    <a href="<?= base_url('/tabelPDRB/exportPDF') ?>" target="_self" class="btn btn-outline-danger">
+                                                    <a href="javascript:exportData('pdf')" target="_self" class="btn btn-outline-danger">
                                                         <i class="fa fa-file-pdf"></i>
                                                         <span>Ekspor PDF</span>
                                                     </a>
-                                                    <a href="<?= base_url('/tabelPDRB/exportExcel') ?>" target="_self" class="btn btn-outline-success">
+                                                    <a href="javascript:exportData('excel')" target="_self" class="btn btn-outline-success">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Excel</span>
                                                     </a>
-                                                    <a href="#" target="_self" class="btn btn-outline-secondary">
+                                                    <a href="javascript:exportData('excelAllPutaran')" target="_self" class="btn btn-outline-secondary">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Semua Putaran</span>
                                                     </a>
@@ -140,3 +140,9 @@
                 </div>
             </section>
             <!-- /.content -->
+
+            <script>
+                window.addEventListener('load', function() {
+                    loadData();
+                });
+            </script>

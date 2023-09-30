@@ -75,10 +75,10 @@ class PutaranModel extends Model
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $idPDRB)
             ->whereIn('periode', $periode)
-            ->where('putaran', $putaran)
             ->orderBy('id_komponen')
             ->orderBy('periode');
 
+        $putaran == 'null' ? '' : $builder->where('putaran', $putaran);
 
         return $builder->get()->getResult();
     }

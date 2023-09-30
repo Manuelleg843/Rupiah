@@ -22,23 +22,23 @@
                             <!-- filter-->
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-auto form-group">
+                                    <div class="col-auto form-group" id="dropdownTabelRingkasan">
                                         <select class="form-control" style="width: 100%; max-width: 600px" id="selectTable">
                                             <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                            <option value="1">Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
-                                            <option value="2">Tabel 1.12. Diskrepansi PDRB ADHK Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
-                                            <option value="3">Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota</option>
-                                            <option value="4">Tabel 1.14. Distribusi Persentase PDRB Kabupaten Kota Terhadap Total Provinsi</option>
-                                            <option value="5">Tabel 1.15. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Q-TO-Q)</option>
-                                            <option value="6">Tabel 1.16. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Y-ON-Y)</option>
-                                            <option value="7">Tabel 1.17. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (C-TO-C)</option>
-                                            <option value="8">Tabel 1.18. Indeks Implisit PDRB Provinsi dan Kabupaten/Kota</option>
-                                            <option value="9">Tabel 1.19. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Q-TO-Q)</option>
-                                            <option value="10">Tabel 1.20. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Y-ON-Y)</option>
-                                            <option value="11">Tabel 1.23. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Q-TO-Q)</option>
-                                            <option value="12">Tabel 1.24. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Y-ON-Y)</option>
-                                            <option value="13">Tabel 1.25. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (C-TO-C)</option>
-                                            <option value="14">Tabel 1.26. Ringkasan Pertumbuhan Ekstrim Provinsi dan 6 Kabupaten Kota</option>
+                                            <option value="diskrepansi-ADHB" selected>Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
+                                            <option value="diskrepansi-ADHK">Tabel 1.12. Diskrepansi PDRB ADHK Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
+                                            <option value="distribusi-persentase-PDRB-ADHB">Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota</option>
+                                            <option value="distribusi-persentase-PDRB-Total">Tabel 1.14. Distribusi Persentase PDRB Kabupaten Kota Terhadap Total Provinsi</option>
+                                            <option value="perbandingan-pertumbuhan-Q-TO-Q">Tabel 1.15. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Q-TO-Q)</option>
+                                            <option value="perbandingan-pertumbuhan-Y-ON-Y">Tabel 1.16. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Y-ON-Y)</option>
+                                            <option value="perbandingan-pertumbuhan-C-TO-C">Tabel 1.17. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (C-TO-C)</option>
+                                            <option value="indeks-implisit">Tabel 1.18. Indeks Implisit PDRB Provinsi dan Kabupaten/Kota</option>
+                                            <option value="pertumbuhan-indeks-implisit-Q-TO-Q">Tabel 1.19. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Q-TO-Q)</option>
+                                            <option value="pertumbuhan-indeks-implisit-Y-ON-Y">Tabel 1.20. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Y-ON-Y)</option>
+                                            <option value="sumber-pertumbuhan-Q-TO-Q">Tabel 1.23. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Q-TO-Q)</option>
+                                            <option value="sumber-pertumbuhan-Y-ON-Y">Tabel 1.24. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Y-ON-Y)</option>
+                                            <option value="sumber-pertumbuhan-C-TO-C">Tabel 1.25. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (C-TO-C)</option>
+                                            <option value="ringkasan-pertumbuhan-ekstrem">Tabel 1.26. Ringkasan Pertumbuhan Ekstrim Provinsi dan 6 Kabupaten Kota</option>
                                         </select>
                                     </div>
                                     <div class="col-auto align-items-center">
@@ -67,35 +67,35 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="0" value="0">
+                                                    <input class="form-check-input" type="checkbox" id="0" value="0" checked>
                                                     <label class="form-check-label" for="0">PDRB</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="1" value="1">
+                                                    <input class="form-check-input" type="checkbox" id="1" value="1" checked>
                                                     <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah Tangga</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="2" value="2">
+                                                    <input class="form-check-input" type="checkbox" id="2" value="2" checked>
                                                     <label class="form-check-label" for="2">2. Pengeluaran Konsumsi LNPRT</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="3" value="3">
+                                                    <input class="form-check-input" type="checkbox" id="3" value="3" checked>
                                                     <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="4" value="4">
+                                                    <input class="form-check-input" type="checkbox" id="4" value="4" checked>
                                                     <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="5" value="5">
+                                                    <input class="form-check-input" type="checkbox" id="5" value="5" checked>
                                                     <label class="form-check-label" for="5">5. Perubahan Inventori</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="6" value="6">
+                                                    <input class="form-check-input" type="checkbox" id="6" value="6" checked>
                                                     <label class="form-check-label" for="6">6. Ekspor Luar Negeri</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="7" value="7">
+                                                    <input class="form-check-input" type="checkbox" id="7" value="7" checked>
                                                     <label class="form-check-label" for="7">7. Impor Luar Negeri</label>
                                                 </div>
                                             </div>
@@ -103,8 +103,8 @@
                                                 <div class="dropdown">
                                                     <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilihan</button>
                                                     <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="javascript:checkboxSemua()">Pilih Semua</a></li>
-                                                        <li><a class="dropdown-item" href="#" id="hapusPilihan">Hapus Pilihan</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Periode</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
                                                     </ul>
                                                 </div>
                                                 <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
@@ -181,9 +181,6 @@
                                         <div class="row">
                                             <h2 class="card-title" style="font-weight: bold;" id="judulTableADHB"></h2>
                                         </div>
-                                        <div class="row">
-                                            <!-- <p>Keterangan diskrepansi positif = kota lebih besar, diskrepansi negatif = kota lebih kecil</p> -->
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
@@ -219,41 +216,7 @@
 
                                         </thead>
                                         <tbody>
-                                            <?php
-                                            foreach ($adhb as $row) :
-                                                $id = $row->id_komponen;
-                                                $komponen = $row->komponen;
-                                            ?>
-                                                <tr>
-                                                    <td colspan="2" <?php
-                                                                    $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "class='pl-5'";
-                                                                    echo $bold;
-                                                                    ?>>
-                                                        <?php
-                                                        if ($id == 9) {
-                                                            echo $komponen;
-                                                        } else {
-                                                            echo "            " . $id . ". " . $komponen;
-                                                        }
-                                                        ?>
-                                                    </td>
-                                                    <td class="text-right">0,90</td>
-                                                    <td class="text-right">108.532.731,62</td>
-                                                    <td class="text-right">108.530.731,62</td>
-                                                    <td class="text-right">0,90</td>
-                                                    <td class="text-right">108.532.731,62</td>
-                                                    <td class="text-right">108.530.731,62</td>
-                                                    <td class="text-right">0,90</td>
-                                                    <td class="text-right">108.532.731,62</td>
-                                                    <td class="text-right">108.530.731,62</td>
-                                                    <td class="text-right">0,90</td>
-                                                    <td class="text-right">108.532.731,62</td>
-                                                    <td class="text-right">108.530.731,62</td>
-                                                    <td class="text-right">0,90</td>
-                                                    <td class="text-right">108.532.731,62</td>
-                                                    <td class="text-right">108.530.731,62</td>
-                                                </tr>
-                                            <?php endforeach ?>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -305,42 +268,7 @@
                                             </thead>
                                             <tbody>
 
-                                                <?php
 
-                                                foreach ($adhk as $row) :
-                                                    $id = $row->id_komponen;
-                                                    $komponen = $row->komponen;
-                                                ?>
-                                                    <tr>
-                                                        <td colspan="2" <?php
-                                                                        $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "class='pl-5'";
-                                                                        echo $bold;
-                                                                        ?>>
-                                                            <?php
-                                                            if ($id == 9) {
-                                                                echo $komponen;
-                                                            } else {
-                                                                echo "            " . $id . ". " . $komponen;
-                                                            }
-                                                            ?>
-                                                        </td>
-                                                        <td class="text-right">0,90</td>
-                                                        <td class="text-right">108.532.731,62</td>
-                                                        <td class="text-right">108.530.731,62</td>
-                                                        <td class="text-right">0,90</td>
-                                                        <td class="text-right">108.532.731,62</td>
-                                                        <td class="text-right">108.530.731,62</td>
-                                                        <td class="text-right">0,90</td>
-                                                        <td class="text-right">108.532.731,62</td>
-                                                        <td class="text-right">108.530.731,62</td>
-                                                        <td class="text-right">0,90</td>
-                                                        <td class="text-right">108.532.731,62</td>
-                                                        <td class="text-right">108.530.731,62</td>
-                                                        <td class="text-right">0,90</td>
-                                                        <td class="text-right">108.532.731,62</td>
-                                                        <td class="text-right">108.530.731,62</td>
-                                                    </tr>
-                                                <?php endforeach ?>
                                             </tbody>
 
                                         </table>

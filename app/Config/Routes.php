@@ -27,9 +27,15 @@ $routes->post('/tabelPDRB/tabelHistoryPutaran/getData', 'TabelPDRBController::ge
 $routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->get('/monitoring', 'MonitoringController::index');
 
-// routes ekspor
-$routes->get('/tabelPDRB/exportExcel', 'TabelPDRBController::exportExcel');
-$routes->resource('dataPDRB');
+// halaman tabel ringkasan 
+$routes->get('/tabelPDRB/tabelRingkasan/perbandinganPertumbuhanQ-TO-Q', 'TabelRingkasanController::viewPerbandinganPertumbuhanQ');
+$routes->get('/tabelPDRB/tabelRingkasan/(:segment)', 'TabelRingkasanController::index/$1');
 
-$routes->get('/tabelPDRB/exportPDF', 'TabelPDRBController::exportPDF');
-$routes->resource('dataPDRB');
+// // tabel ringakasan PageController
+// $routes->post('page/redirectToPage', 'PageController::redirectToPage');
+
+
+// routes ekspor
+$routes->get('/tabelPDRB/exportExcel/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportExcel/$1/$2/$3/$4/$5');
+$routes->get('/tabelPDRB/excelAllPutaran/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportExcel/$1/$2/$3/$4/$5');
+$routes->get('/tabelPDRB/exportPDF/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportPDF/$1/$2/$3/$4/$5');
