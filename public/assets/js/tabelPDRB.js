@@ -68,7 +68,7 @@ function loadData() {
 function kirimData(jenisPDRB, kota, putaran, selectedPeriode, selectedKomponen) {
   $.ajax({
     type: "POST",
-    url: "/tabelPDRB/tabelHistoryPutaran/getData",
+    url: '/tabelPDRB/tabelHistoryPutaran/getData',
     data: {
       jenisPDRB: jenisPDRB,
       kota: kota,
