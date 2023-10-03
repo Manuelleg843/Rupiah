@@ -12,6 +12,15 @@ let menutup = () => {
   document
     .getElementById("tabel")
     .setAttribute("class", "table table-bordered table-secondary");
+
+  $.ajax({
+    type: "POST",
+    url: "/monitoring/updateStatus",
+    dataType: "json",
+    error: function (error) {
+      console.error("Terjadi kesalahan:", error);
+    },
+  });
 };
 
 let membuka = () => {
@@ -19,7 +28,7 @@ let membuka = () => {
   var tutup = document.getElementById("buttontutup");
   var detailbuka = document.getElementById("detail_buka");
   var detailtutup = document.getElementById("detail_tutup");
-  // var putaran = document.getElementById("putaran");
+  var putaran = document.getElementById("putaran");
   // var turn = document.getElementById("putaran").innerHTML;
   buka.setAttribute("hidden", "hidden");
   tutup.removeAttribute("hidden");
@@ -35,6 +44,26 @@ let membuka = () => {
   document
     .getElementById("tabel")
     .setAttribute("class", "table table-bordered table-striped");
+
+  $.ajax({
+    type: "POST",
+    url: "/monitoring/updateStatus",
+    dataType: "json",
+    success: function (data) {
+      putaran.innerHTML =
+        "Tahun " +
+        data["tahun"] +
+        "," +
+        " Kuartal " +
+        data["id_kuartal"] +
+        "," +
+        " Putaran " +
+        data["putaran"];
+    },
+    error: function (error) {
+      console.error("Terjadi kesalahan:", error);
+    },
+  });
 };
 
 $(function () {

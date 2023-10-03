@@ -7,8 +7,8 @@ use CodeIgniter\Model;
 class RevisiModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'putaran';
-    protected $primaryKey       = 'id_putaran';
+    protected $table            = 'revisi';
+    protected $primaryKey       = 'id_revisi';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
@@ -20,10 +20,9 @@ class RevisiModel extends Model
         'id_wilayah',
         'id_pdrb',
         'tahun',
-        'putaran',
         'nilai',
+        'uploaded_at',
         'uploaded_by',
-
     ];
 
     // Dates
@@ -233,5 +232,26 @@ class RevisiModel extends Model
         ];
 
         return $response;
+    }
+
+    // Fungsi mendapatkan data final (revisi)
+    public function getDataFinal($idPDRB, $kota, $periode)
+    {
+        $builder = $this->db->table('revisi')
+            ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
+            ->select(['revisi.id_komponen', 'komponen_7.komponen', 'nilai', 'periode', 'id_wilayah', 'id_pdrb'])
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $idPDRB)
+            ->where('periode', $periode)
+            ->orderBy('periode')
+            ->orderBy('id_komponen');
+
+        return $builder->get()->getResult();
+    }
+
+    public function batchUpdate($updateBatchData)
+    {
+        $builder = $this->db->table('revisi');
+        $builder->updateBatch($updateBatchData, ['periode', 'id_wilayah', 'id_pdrb', 'id_komponen']);
     }
 }

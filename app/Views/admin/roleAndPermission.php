@@ -1,5 +1,13 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+    <?php if (session()->getFlashdata('pesan')) : ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= session()->getFlashdata('pesan'); ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif ?>
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -18,7 +26,6 @@
                     <a class="nav-link <?= ($subTajuk == 'User Administrator') ? 'active'  : ''; ?>" href="<?= base_url('/admin/administrator'); ?>">User Administrator</a>
                 </li>
                 <li class="nav-item">
-
                     <a class="nav-link <?= ($subTajuk == 'Role and Permission') ? 'active'  : ''; ?>" href="<?= base_url('/admin/roleAndPermission'); ?>">Role & Permission</a>
                 </li>
             </ul>
@@ -87,6 +94,30 @@
                         </div>
                         <!-- end modal komponen -->
 
+                        <!-- Modal -->
+                        <div id="myPermissionModal" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Edit Permission</h4>
+                                        <button type="button" class="closeModal close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="modal-permission-form" action="<?= base_url('/admin/roleAndPermission/'); ?>" method="post">
+                                            <div class="ml-4 mb-4 d-flex justify-content-start">
+                                                <div id="checkbox-container">
+                                                    <!-- Checkbox akan ditambahkan di sini -->
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin?')">Simpan</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- modal edit roleOperator -->
                         <div class="modal fade" id="modal-editRoleOperator">
                             <div class="modal-dialog modal-komponen">
@@ -153,8 +184,10 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <button disabled type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-editRole">Edit</button>
-
+                                                <?php
+                                                $superAdminPermissionJSON = json_encode($superAdminPermissions);
+                                                ?>
+                                                <button disabled name="id_permission" class="show-permission-modal btn btn-primary btn-sm px-3 mx-1" data-role="1" data-arrayPermission="<?= htmlspecialchars($superAdminPermissionJSON); ?>">Ubah Role</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -167,7 +200,10 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-editRoleAdmin">Edit</button>
+                                                <?php
+                                                $adminPermissionJSON = json_encode($adminPermissions);
+                                                ?>
+                                                <button name="id_permission" class="show-permission-modal btn btn-primary btn-sm px-3 mx-1" data-role="2" data-arrayPermission="<?= htmlspecialchars($adminPermissionJSON); ?>">Ubah Role</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -180,7 +216,10 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-editRoleOperator">Edit</button>
+                                                <?php
+                                                $operatorPermissionJSON = json_encode($operatorPermissions);
+                                                ?>
+                                                <button name="id_permission" class="show-permission-modal btn btn-primary btn-sm px-3 mx-1" data-role="3" data-arrayPermission="<?= htmlspecialchars($operatorPermissionJSON); ?>">Ubah Role</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -193,8 +232,10 @@
                                         </td>
                                         <td>
                                             <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-editRoleOperator">Edit</button>
-
+                                                <?php
+                                                $viewerPermissionJSON = json_encode($viewerPermission);
+                                                ?>
+                                                <button name="id_permission" class="show-permission-modal btn btn-primary btn-sm px-3 mx-1" data-role="4" data-arrayPermission="<?= htmlspecialchars($viewerPermissionJSON); ?>">Ubah Role</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -248,14 +289,6 @@
                                         </td>
                                         <td>
                                             Untuk bisa melakukan upload tabel PDRB
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center" colspan="2">
-                                            <small class="bg-success text-xs p-1 px-3 mx-1 rounded-pill text-white">add-user</small>
-                                        </td>
-                                        <td>
-                                            Untuk bisa menambahkan user baru
                                         </td>
                                     </tr>
                                     <tr>

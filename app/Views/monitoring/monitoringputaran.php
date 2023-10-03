@@ -23,17 +23,17 @@
                     <div class="card">
                         <div class="card-body">
                             <div>
-                                <h4>Putaran 1</h4>
+                                <h4 id='putaran'>Tahun <?= $tahun?>, Kuartal <?= $id_kuartal?>, Putaran <?= $putaran ?></h4>
                             </div>
                             <div class="row mb-3 justify-content-end mr-1">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item ">
-                                        <small id="detail_buka" class="mr-2"><i>Putaran Belum dibuka</i></small>
-                                        <small id="detail_tutup" class="mr-2" hidden><i>Sedang Dalam Putaran </i></small>
-                                        <button id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
+                                        <small id="detail_buka" class="mr-2" <?= ($isActive == 1) ? 'hidden' : '' ?>><i>Putaran Belum dibuka</i></small>
+                                        <small id="detail_tutup" class="mr-2" <?= ($isActive == 0) ? 'hidden' : '' ?>><i>Sedang Dalam Putaran </i></small>
+                                        <button <?= ($isActive == 1) ? 'hidden' : '' ?> id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
                                             Buka Putaran
                                         </button>
-                                        <button hidden id="buttontutup" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tutup">
+                                        <button <?= ($isActive == 0) ? 'hidden' : '' ?> id="buttontutup" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tutup">
                                             Tutup Putaran
                                         </button>
                                     </li>
@@ -42,8 +42,8 @@
 
                             <!-- /.card-header -->
                             <div style="overflow-x: scroll; position:relative;">
-                                <table id="tabel" class="table table-bordered table-secondary">
-                                    <thead id="kepala" class="text-center">
+                                <table id="tabel" class="<?= ($isActive == 1) ? 'table table-bordered table-striped' : 'table table-bordered table-secondary' ?>">
+                                    <thead id="kepala" class="<?= ($isActive == 1) ? 'text-center table-primary' : 'text-center' ?>">
                                         <tr>
                                             <th>Wilayah</th>
                                             <th>Status</th>

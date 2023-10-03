@@ -1,8 +1,32 @@
-// MODAL PILIH PERIODE
+// MODAL PILIH PERIODE (BERANDA, UPLOAD ANGKA PDRB, DAN TABEL-TABEL)
 let quarters = ["Q1", "Q2", "Q3", "Q4"];
 const today = new Date();
 const currentYear = today.getFullYear();
 const currentMonth = today.getMonth() + 1;
+
+// Menambahkan fungsi yg telah dibuat pada halaman agar bisa dipakai,...
+if (document.getElementById("checkboxes-container") != null) {
+  generateCheckboxes();
+  generateTahunDropdown();
+}
+
+if (document.getElementById("checkboxes-container-year") != null) {
+  generateCheckboxes();
+  generateTahunDropdown();
+}
+
+if (document.getElementById("checkboxes-container-current-year") != null) {
+  generateCheckboxesCurrentYear();
+  generateTahunDropdownCurrentYear();
+}
+
+if (document.getElementById("checkboxes-container-3-years") != null) {
+  generateCheckboxes3Year();
+}
+window.addEventListener("load", checkboxQuarter);
+window.addEventListener("load", checkboxYear);
+window.addEventListener("load", checkboxOnlyYear);
+// ..., sampe sini.
 
 // Fungsi generate checkbox untuk tiap tahun dan kuartal,...
 function generateCheckboxes() {
@@ -112,6 +136,8 @@ function generateCheckboxesCurrentYear() {
     checkbox.checked = true;
     checkbox.set
     checkbox.classList.add("form-check-input");
+
+    checkbox;
 
     if (isNaN(quarter)) {
       checkboxLabel.textContent = `${year}${quarter}`;
@@ -340,31 +366,7 @@ function clearCheckbox() {
 }
 // ..., sampe sini.
 
-// Menambahkan fungsi yg telah dibuat pada halaman agar bisa dipakai,...
-if (document.getElementById("checkboxes-container") != null) {
-  generateCheckboxes();
-  generateTahunDropdown();
-}
-
-if (document.getElementById("checkboxes-container-year") != null) {
-  generateCheckboxes();
-  generateTahunDropdown();
-}
-
-if (document.getElementById("checkboxes-container-current-year") != null) {
-  generateCheckboxesCurrentYear();
-  generateTahunDropdownCurrentYear();
-}
-
-if (document.getElementById("checkboxes-container-3-years") != null) {
-  generateCheckboxes3Year();
-}
-window.addEventListener("load", checkboxQuarter);
-window.addEventListener("load", checkboxYear);
-window.addEventListener("load", checkboxOnlyYear);
-// ..., sampe sini.
-
-// CHARTS
+// CHARTS (BERANDA)
 $(function () {
   // ChartJS
   Chart.plugins.register(ChartDataLabels);
@@ -663,12 +665,7 @@ $(function () {
   });
 });
 
-// DROPDOWN SELECT
-$(function () {
-  $(".select2").select2();
-});
-
-// DROPDOWN TAHUNAN/TRIWULANAN pada Beranda
+// DROPDOWN TAHUNAN/TRIWULANAN (BERANDA)
 $(document).ready(function () {
   var optarray = $("#Jenis")
     .children("option")
@@ -692,32 +689,12 @@ $(document).ready(function () {
     .change();
 });
 
-// Toast untuk validasi upload
-// $(".toastsDefaultWarning").click(function () {
-//   $(document).Toasts("create", {
-//     class: "bg-warning toast-warning-validasi",
-//     fixed: false,
-//     title: "Perhatian!",
-//     body: "<b>{ADHB.2023Q1}</b> Komponen (1) tidak sesuai dengan sub-komponennyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.\
-//     <br>{ADHK.2023Q2} Komponen (2) tidak sesuai dengan sub-komponennya.\
-//     <br>{ADHK.2023Q3} Komponen (4) tidak sesuai dengan sub-komponennya.\
-//     <br>{ADHK.2022Q3} Komponen (5) tidak sesuai dengan sub-komponennya.\
-//     <br>{ADHK.2022Q3} Komponen (6) tidak sesuai dengan sub-komponennya.\
-//     <br>{ADHK.2022Q4} Komponen (7) tidak sesuai dengan sub-komponennya.\
-//     <br>{ADHK.2021Q1} Komponen (3) tidak sesuai dengan sub-komponennya.\
-//     <br>{ADHK.2021Q1} Komponen (4) tidak sesuai dengan sub-komponennya.\
-//     <br>{ADHK.2021Q2} Komponen (6) tidak sesuai dengan sub-komponennya.",
-//   });
-// });
-
+// MENAMPILKAN NAMA FILE YANG SUDAH TERPILIH (UPLOAD ANGKA PDRB)
 $("#inputFile").change(function () {
   fileLabel = document.getElementById("inputFileLabel");
-  // Check if a file has been selected
   if (this.files.length > 0) {
-    // Display the selected file name in the label
     fileLabel.textContent = this.files[0].name;
   } else {
-    // No file selected, clear the label
     fileLabel.textContent = "Pilih file";
   }
 });
