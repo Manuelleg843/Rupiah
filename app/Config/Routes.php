@@ -26,7 +26,7 @@ $routes->get('/admin/createUserForm', 'AdminController::viewCreateUserForm');
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelPDRBController::viewTabelRingkasan');
 $routes->get('/tabelPDRB/tabelPerKota', 'TabelPDRBController::viewTabelPerKota');
 $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
-$routes->post('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
+$routes->post('/tabelPDRB/tabelHistoryPutaran/getData', 'TabelPDRBController::getData');
 $routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->get('/monitoring', 'MonitoringController::index');
 

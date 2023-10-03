@@ -50,136 +50,62 @@ class PutaranModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // get periode 
-    public function getPeriode()
+    // get jenis pdrb
+    public function getJenisPDRB($jenisPDRB)
     {
-        $builder = $this->db->table('putaran')
-            ->select('periode')
-            ->groupBy('periode')
-            ->where('periode', '2023Q1');
-        return $builder->get()->getResultArray();
+        $query = $this->db->table('jenis_pdrb')
+            ->where('id_pdrb', $jenisPDRB);
+        return $query->get()->getResult();
     }
 
+    // get wilayah
     public function getWilayah()
     {
-        $builder = $this->db->table('putaran')
-            ->select('id_wilayah')
-            ->groupBy('id_wilayah')
-            ->where('id_wilayah', '3100');
-        return $builder->get()->getResultArray();
+        $query = $this->db->table('wilayah')
+            ->orderBy('id_wilayah');
+        return $query->get()->getResult();
     }
 
-    public function getJenisPDRB()
+    public function getData($jenisPDRB, $kota)
     {
-        $builder = $this->db->table('putaran')
-            ->select('id_pdrb')
-            ->distinct()
-            ->groupBy('id_pdrb');
-        $dataJenis = $builder->get()->getResult();
-        $jenisPDRB = [];
-
-        // dd($dataJenis);
-        foreach ($dataJenis as $key => $value) {
-            // dd($value);
-            $jenisPDRB[] = $value;
-        }
-        // return $builder->get()->getResultArray();\
-        return $jenisPDRB;
-    }
-
-    public function getByPDRB($jenisPDRB)
-    {
-        $builder = $this->db->table('putaran')
-            ->select()
-            ->orderBy('id_komponen');
-        if (isset($jenisPDRB)) {
-            $builder->where('id_pdrb', $jenisPDRB);
-        };
-        return $builder->get()->getResultArray();
-    }
-
-    public function getPutaran()
-    {
-        $builder = $this->db->table('putaran')
-            ->select('putaran')
-            ->groupBy('putaran');
-        return $builder->get()->getResultArray();
-    }
-
-    // get jenis komponen
-    public function getJenisKomponen()
-    {
-        $builder = $this->db->table('putaran')
-            ->distinct('putaran.id_komponen,komponen')
+        $builder = $this->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->orderBy('putaran.id_komponen');
-        return $builder->get()->getResultArray();
+            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $jenisPDRB)
+            ->where('periode', '2023Q1')
+            ->where('putaran', '1')
+            ->orderBy('id_komponen');
+
+        return $builder->get()->getResult();
     }
 
 
-    // get data dari tabel
-    public function get_data()
+    // public function getData()
+    // {
+    //     $builder = $this->table('putaran')
+    //         ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
+    //         ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
+    //         ->where('id_wilayah', '3100')
+    //         ->where('id_pdrb', "1")
+    //         ->where('periode', '2023Q1')
+    //         ->where('putaran', '1')
+    //         ->orderBy('id_komponen');
+
+    //     return $builder->get()->getResult();
+    // }
+
+    public function getByPDRB($idPDRB, $kota)
     {
-        // $where = "periode='2023Q1' OR periode='2023Q2'";
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
             ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
-            ->where('id_wilayah', '3100')
-            ->where('id_pdrb', '1')
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $idPDRB)
             ->where('periode', '2023Q1')
             ->where('putaran', '1')
             ->orderBy('id_komponen');
         return $builder->get()->getResult();
-    }
-
-    public function get_data_2023Q1()
-    {
-
-        $builder = $this->db->table('putaran')
-            ->select('nilai,id_komponen')
-            ->where('id_pdrb', '1')
-            ->where('id_wilayah', '3100')
-            ->where('periode', '2023Q1')
-            ->orderBy('id_komponen');
-
-        return $builder->get()->getResult();
-    }
-
-
-    public function get_pdrb()
-    {
-        $request = service('request');
-        $postData = $request->getPost();
-        $dtpostData = $postData['data'];
-
-        $response = array();
-
-        // read value
-        $draw = $dtpostData['draw'];
-        $start = $dtpostData['start'];
-        $columnIndex = $dtpostData['oder'][0]['column'];
-        $columnName = $dtpostData['columns'][$columnIndex]['data'];
-
-        // custom filter
-        $searchJenisPDRB = $dtpostData['jenisPDRB'];
-
-        $builder = $this->db->table('putaran')
-            ->select();
-        if ($searchJenisPDRB != "") {
-            $builder = $builder->where('id_pdrb', '$searchJenisPBDRB');
-        }
-
-        // fetch records
-        $searchQuery = $this->db->table('putaran')->select('*');
-        if ($searchJenisPDRB != '') {
-            $searchQuery->where('id_pdrb', $searchJenisPDRB);
-        }
-        // $records = $searchQuery->findAll($start);
-        $records = $searchQuery->get();
-
-        // dd($records);
-        $data = array();
-        // return $builder->get()->getResult();
     }
 
     public function getPutaranTerakhir()
@@ -188,18 +114,5 @@ class PutaranModel extends Model
         $currentYear = date("Y");
         $builder = $this->db->query('SELECT DISTINCT putaran FROM Putaran where tahun=' . $currentYear);
         return $builder->getResultArray();
-    }
-
-    public function getByFilter($jenisPDRB)
-    {
-        $builder = $this->db->table('putaran')
-            ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
-            ->where('id_wilayah', '3100')
-            ->where('id_pdrb', $jenisPDRB)
-            ->where('periode', '2023Q1')
-            ->where('putaran', '1')
-            ->orderBy('id_komponen');
-        return $builder->get()->getResult();
     }
 }

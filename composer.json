@@ -13,6 +13,7 @@
         "php": "^7.4 || ^8.0",
         "codeigniter4/framework": "^4.0",
         "dompdf/dompdf": "^2.0",
+        "hermawan/codeigniter4-datatables": "^0.6.1",
         "phpoffice/phpspreadsheet": "^1.29"
     },
     "require-dev": {

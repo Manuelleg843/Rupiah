@@ -13,6 +13,7 @@
 
             <!-- Main content -->
             <section class="content">
+                <input type="hidden" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
@@ -22,7 +23,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-auto form-group">
-                                            <select class="form-control" style="width: 100%;" id="selectTable" onchange="kirimData()">
+                                            <select class="form-control" style="width: 100%;" id="selectTable" onchange="loadData()">
                                                 <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
                                                 <option value="1" selected>Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                                 <option value="2">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
@@ -136,7 +137,6 @@
                                             </thead>
                                             <tbody>
                                             </tbody>
-
                                         </table>
                                     </div>
                                     <!-- /.card-body -->
