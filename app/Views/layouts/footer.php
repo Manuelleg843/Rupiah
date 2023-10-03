@@ -59,6 +59,8 @@
 <script src="<?= base_url('/assets/js/beranda.js'); ?>"></script>
 <!-- tabelPDRB -->
 <script src="<?= base_url('/assets/js/tabelPDRB.js'); ?>"></script>
+<script src="<?= base_url('/assets/js/userMonitoring.js'); ?>"></script>
+<script src="<?= base_url('/assets/js/roleAndPermission.js'); ?>"></script>
 <!-- table Histori putaran -->
 <script src="<?= base_url('/assets/js/tabelHistoriPutaran.js'); ?>"></script>
 <!-- FLOT CHARTS -->

@@ -50,6 +50,12 @@ class PutaranModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    // get all data 
+    public function getAll()
+    {
+        $builder = $this->db->table('putaran')->select();
+        return $builder->get()->getResult();
+    }
     // get jenis pdrb
     public function getJenisPDRB($jenisPDRB)
     {
@@ -66,45 +72,20 @@ class PutaranModel extends Model
         return $query->get()->getResult();
     }
 
-    public function getData($jenisPDRB, $kota)
+    public function getDataHistory($idPDRB, $kota, $putaran, $periode)
     {
-        $builder = $this->table('putaran')
-            ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
-            ->where('id_wilayah', $kota)
-            ->where('id_pdrb', $jenisPDRB)
-            ->where('periode', '2023Q1')
-            ->where('putaran', '1')
-            ->orderBy('id_komponen');
 
-        return $builder->get()->getResult();
-    }
-
-
-    // public function getData()
-    // {
-    //     $builder = $this->table('putaran')
-    //         ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-    //         ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
-    //         ->where('id_wilayah', '3100')
-    //         ->where('id_pdrb', "1")
-    //         ->where('periode', '2023Q1')
-    //         ->where('putaran', '1')
-    //         ->orderBy('id_komponen');
-
-    //     return $builder->get()->getResult();
-    // }
-
-    public function getByPDRB($idPDRB, $kota)
-    {
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'id_wilayah', 'id_pdrb', 'tahun', 'putaran', 'nilai', 'periode'])
+            ->select(['putaran.id_komponen', 'komponen_7.komponen', 'nilai', 'periode'])
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $idPDRB)
-            ->where('periode', '2023Q1')
-            ->where('putaran', '1')
-            ->orderBy('id_komponen');
+            ->whereIn('periode', $periode)
+            ->orderBy('id_komponen')
+            ->orderBy('periode');
+
+        $putaran == 'null' ? '' : $builder->where('putaran', $putaran);
+
         return $builder->get()->getResult();
     }
 
@@ -155,5 +136,38 @@ class PutaranModel extends Model
     public function batchUpdate($updateBatchData) {
         $builder = $this->db->table('putaran');
         $builder->updateBatch($updateBatchData, ['periode', 'id_wilayah', 'id_pdrb', 'putaran', 'id_komponen']);
+    }
+    
+    public function getPutaranTerakhirPeriode($periode)
+    {
+        $builder =  $this->db->query("SELECT MAX(putaran) AS max_putaran FROM Putaran WHERE periode = '$periode'");
+        $row = $builder->getRow();
+        $maxPutaran = $row->max_putaran;
+        return $maxPutaran;
+    }
+
+    public function getAllPeriode()
+    {
+        $builder = $this->db->table('putaran')
+            ->select()
+            ->distinct('periode')
+            ->orderBy('tahun', 'desc');
+        return $builder->get()->getResult();
+    }
+
+    public function getTabel1($periode, $komponen)
+    {
+        $builder = $this->db->table('putaran')
+            ->select()
+            ->where('id_pdrb', "1")
+            ->whereIn('id_komponen', $komponen)
+            ->orderBy('periode', 'ASC')
+            ->orderBy('id_komponen', 'ASC')
+            ->orderBy('id_wilayah', 'ASC');
+        foreach ($periode as $value) {
+            $putaran =  $this->getPutaranTerakhirPeriode($value);
+            $builder->where('periode', $value)->where('putaran', $putaran);
+        }
+        return $builder->get()->getResult();
     }
 }
