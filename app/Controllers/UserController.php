@@ -122,6 +122,7 @@ class UserController extends BaseController
             return $role;
         };
 
+        // Data yang akan disimpan di session
         $data = [
             'niplama' => $user['niplama'],
             'nama' => $user['gelar_depan'] . ' ' . $user['nama'] . ' ' . $user['gelar_belakang'],

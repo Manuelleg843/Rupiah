@@ -55,11 +55,11 @@
                             <!-- search component -->
                             <div class=" col-lg-6">
                                 <div class="form-group">
-                                    <form action="#">
+                                    <form action="" method="post">
                                         <div class="input-group">
-                                            <input type="search" class="form-control" placeholder="Cari User...">
+                                            <input type="search" class="form-control" name="keyword" placeholder="Cari User...">
                                             <div class="input-group-append">
-                                                <button type="submit" class="btn btn-default">
+                                                <button type="submit" name="submit" class="btn btn-default">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                             </div>
@@ -71,41 +71,29 @@
                         </div>
                         <!-- filter ended -->
 
-                        <!-- modal tambah admin -->
-                        <div class="modal fade" id="modal-ubahRole">
-                            <div class="modal-dialog modal-komponen">
+                        <!-- modal ubah role -->
+                        <div id="roleModal" class="modal">
+                            <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Tambah Admin</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <h4 class="modal-title">Ubah Role</h4>
+                                        <button type="button" class="close-ubah-role close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="proses-form.php" method="post">
+                                        <form id="modal-form" action="<?= base_url('/admin/administrator/'); ?>" method="POST">
                                             <div class="form-group">
                                                 <label for="dropdownSelect">Pilih Salah Satu:</label>
-                                                <select class="form-control" id="dropdownSelect" name="selectedOption">
-                                                    <option selected value="item1">Admin</option>
-                                                    <option value="item2">Operator</option>
-                                                    <option value="item3">Viewer</option>
-                                                </select>
+                                                <select class="form-control" name="id_role" id="dropdown-role"></select>
                                             </div>
-                                            <!-- Tambahkan elemen form lain sesuai dengan kebutuhan -->
-                                            <div class="modal-footer d-flex justify-content-end">
-                                                <div>
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                    <input type="button" class="btn btn-primary" data-dismiss="modal" value="Simpan">
-                                                </div>
-                                            </div>
+                                            <button type="submit" class="btn btn-primary" onclick="return confirm('Apakah anda yakin?')">Simpan</button>
                                         </form>
                                     </div>
                                 </div>
-                                <!-- /.modal-content -->
                             </div>
-                            <!-- /.modal-dialog -->
                         </div>
-                        <!-- end modal komponen -->
+                        <!-- end modal ubah role -->
 
                         <!-- card body -->
                         <div class="card-body table-responsive " style="overflow-y: scroll; height: 400px; position:relative; overflow-x:scroll;">
@@ -159,7 +147,7 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex justify-content-center">
-                                                    <button type="button" class="btn btn-primary btn-sm px-3 mx-1" data-toggle="modal" data-target="#modal-ubahRole">Ubah Role</button>
+                                                    <button name="id_role" class="show-role-modal btn btn-primary btn-sm px-3 mx-1" data-niplama="<?= $user['niplama']; ?>" data-role="<?= $user['id_role']; ?>">Ubah Role</button>
                                                     <form class="d-inline" action="<?= base_url('/admin/administrator'); ?>/<?= $user['niplama']; ?>" method="POST">
                                                         <?= csrf_field(); ?>
                                                         <input type="hidden" name="_method" value="DELETE">

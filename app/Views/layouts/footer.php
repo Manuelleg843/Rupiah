@@ -57,6 +57,10 @@
 <script src="<?= base_url('/assets/plugins/select2/js/select2.full.min.js'); ?>"></script>
 <!-- tabelPDRB -->
 <script src="<?= base_url('/assets/js/tabelPDRB.js'); ?>"></script>
+<script src="<?= base_url('/assets/js/userMonitoring.js'); ?>"></script>
+<script src="<?= base_url('/assets/js/roleAndPermission.js'); ?>"></script>
+<!-- table Histori putaran -->
+<script src="<?= base_url('/assets/js/tabelHistoriPutaran.js'); ?>"></script>
 <!-- FLOT CHARTS -->
 <script src="<?= base_url('/assets/plugins/flot/jquery.flot.js'); ?>"></script>
 <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->

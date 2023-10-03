@@ -8,6 +8,11 @@ class MonitoringController extends BaseController
 {
     public function index()
     {
+        // cek apakah sudah login
+        if (!session()->get('email')) {
+            return redirect()->to('/login');
+        };
+
         //
         $data = [
             'title' => 'Rupiah | Monitoring',

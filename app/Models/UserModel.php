@@ -22,4 +22,11 @@ class UserModel extends Model
 
         return $data;
     }
+
+    public function search($keyword)
+    {
+        $builder = $this->table('master_pegawai');
+        $builder->like('nama', $keyword);
+        return $builder;
+    }
 }
