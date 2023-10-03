@@ -96,7 +96,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
       periode: selectedPeriode,
       komponen: selectedKomponen
     },
-    dataType: "json",
+    dataType: 'json',
     success: function (data) {
       switch (jenisTable) {
         case '11':
@@ -116,7 +116,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
     error: function (error) {
       // Handle kesalahan jika ada
       console.error("Terjadi kesalahan:", error);
-    },
+    }
   });
 }
 
@@ -292,29 +292,24 @@ function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
 
 // dropdown putaran
 function createDropdownPutaran(data) {
-  const selectElement = document.createElement("select");
+  const selectElement = document.createElement('select');
   selectElement.classList.add("form-control");
   selectElement.id.add("selectPutaran");
 
-  data.forEach((item) => {
-    const option = document.createElement("option");
+  data.forEach(item => {
+    const option = document.createElement('option');
     option.value = item.value; // Set the value attribute
     option.textContent = item.label; // Set the visible text
     selectElement.appendChild(option);
   });
 
   // Append the select element to the desired location in the DOM
-  document.getElementById("selectPutaranContainer").appendChild(selectElement);
+  document.getElementById('selectPutaranContainer').appendChild(selectElement);
 }
 
-function numberFormat(
-  number,
-  decimals = 2,
-  decimalSeparator = ",",
-  thousandsSeparator = "."
-) {
+function numberFormat(number, decimals = 2, decimalSeparator = ',', thousandsSeparator = '.') {
   number = parseFloat(number).toFixed(decimals);
-  number = number.toString().replace(".", decimalSeparator);
+  number = number.toString().replace('.', decimalSeparator);
 
   var parts = number.split(decimalSeparator);
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator);
