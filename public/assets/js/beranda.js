@@ -6,6 +6,7 @@ const currentMonth = today.getMonth() + 1;
 
 // Fungsi generate checkbox untuk tiap tahun dan kuartal,...
 function generateCheckboxes() {
+  const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
   const checkboxesContainer = document.getElementById("checkboxes-container");
   const checkboxesContainerYear = document.getElementById(
     "checkboxes-container-year"
@@ -13,6 +14,7 @@ function generateCheckboxes() {
 
   // Generate checkboxes for each year and quarter
   for (let year = currentYear; year >= 2010; year--) {
+    var i = 1;
     if (!(checkboxesContainerYear == null)) {
       quarters.push(year);
     }
@@ -38,6 +40,15 @@ function generateCheckboxes() {
         checkbox.name = `${year}${quarter}`;
         checkbox.id = `checkbox${year}${quarter}`;
         checkbox.value = `option${year}${quarter}`;
+
+
+        if (document.title == "Rupiah | Tabel Ringkasan") {
+          if (year == currentYear) {
+            if (i == currentQuarter - 1) {
+              checkbox.checked = true;
+            }
+          }
+        }
       } else {
         checkboxLabel.textContent = `${quarter}`;
         checkboxLabel.setAttribute("for", `checkbox${quarter}`);
@@ -50,7 +61,19 @@ function generateCheckboxes() {
       col.appendChild(checkbox);
       col.appendChild(checkboxLabel);
       row.appendChild(col);
+
+      i++;
     });
+
+    if (currentQuarter == 1) {
+      var Q4yearBefore = document.getElementById(`checkbox${currentYear - 1}4`);
+      var yearBefore = document.getElementById(`checkbox${currentYear - 1}`);
+      if (Q4yearBefore && yearBefore) {
+        Q4yearBefore.checked = true;
+        yearBefore.checked = true;
+      }
+
+    }
 
     if (checkboxesContainerYear == null) {
       checkboxesContainer.appendChild(row);
@@ -98,7 +121,13 @@ function generateCheckboxesCurrentYear() {
       checkbox.id = `checkbox${year}${quarter}`;
       checkbox.className = 'checkbox-periode';
       checkbox.value = `option${year}${quarter}`;
-      checkbox.checked = true;
+      if (document.title == "Rupiah | Tabel Ringkasan") {
+        if (year == currentYear) {
+          if (i < currentQuarter) {
+            checkbox.checked = true;
+          }
+        }
+      }
     } else {
       checkboxLabel.textContent = `${quarter}`;
       checkboxLabel.setAttribute("for", `checkbox${quarter}`);
@@ -106,7 +135,7 @@ function generateCheckboxesCurrentYear() {
       checkbox.name = `${quarter}`;
       checkbox.id = `checkbox${quarter}`;
       checkbox.value = `option${quarter}`;
-      checkbox.checked = true;
+      // checkbox.checked = true;
     }
 
     col.appendChild(checkbox);

@@ -48,8 +48,28 @@ class Komponen7Model extends Model
         $builder = $this->db->query('SELECT * FROM komponen_7 ORDER BY id_komponen ASC');
 
         return $builder->getResult();
-        // $builder = $this->table('komponen_7');
-        // $query   = $builder->get();
-        // return $query->getResult();
+    }
+
+    public function getById($komponen)
+    {
+        $builder = $this->db->table('komponen_7')
+            ->select();
+        // ->whereIn('id_komponen', $komponen);
+
+        $subKomponen_1 = ['1a', '1b', '1c', '1d', '1d', '1e', '1f', '1g'];
+        $subKomponen_4 = ['4a', '4b'];
+
+        foreach ($komponen as $value) {
+            if ($value == '1') {
+                $komponen = array_merge($komponen, $subKomponen_1);
+            }
+            if ($value == '4') {
+                $komponen = array_merge($komponen, $subKomponen_4);
+            }
+        }
+        $builder->whereIn('id_komponen', $komponen)
+            ->orderBy('id_komponen', 'ASC');
+
+        return $builder->get()->getResultArray();
     }
 }

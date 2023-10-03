@@ -23,7 +23,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-auto form-group">
-                                            <select class="form-control" style="width: 100%;" id="selectTable" onchange="loadData()">
+                                            <select class="form-control" style="width: 100%;" id="selectTableHistory">
                                                 <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
                                                 <option value="1" selected>Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                                 <option value="2">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
@@ -75,7 +75,7 @@
                                                     </button>
                                                 </div>
                                                 <form class="p-2" id="selectPeriode" onload="loadData()">
-                                                    <div class=" modal-body">
+                                                    <div class=" modal-body" id="periode-checkboxes-container">
 
                                                         <div id="checkboxes-container-current-year"></div>
 

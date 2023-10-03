@@ -34,18 +34,18 @@ class TabelPDRBController extends BaseController
 
     public function index()
     {
-        //
-        $data = [
-            'title' => 'Rupiah | Tabel Ringkasan',
-            'tajuk' => 'tabelPDRB',
-            'subTajuk' => 'tabelRingkasan'
-        ];
+        // //
+        // $data = [
+        //     'title' => 'Rupiah | Tabel Ringkasan',
+        //     'tajuk' => 'tabelPDRB',
+        //     'subTajuk' => 'tabelRingkasan'
+        // ];
 
-        echo view('layouts/header', $data);
-        echo view('layouts/navbar');
-        echo view('layouts/sidebar', $data);
-        echo view('tabelPDRB/diskrepansi-ADHB');
-        echo view('layouts/footer');
+        // echo view('layouts/header', $data);
+        // echo view('layouts/navbar');
+        // echo view('layouts/sidebar', $data);
+        // echo view('tabelPDRB/diskrepansi-ADHB');
+        // echo view('layouts/footer');
     }
 
     public function viewTabelRingkasan()
@@ -92,7 +92,7 @@ class TabelPDRBController extends BaseController
         $periode = $this->request->getPost('periode');
 
         $data = [
-            'dataPDRB' => $this->putaran->getData($jenisPDRB, $kota, $putaran, $periode),
+            'dataPDRB' => $this->putaran->getDataHistory($jenisPDRB, $kota, $putaran, $periode),
             'komponen' => $this->komponen->get_data(),
             'selectedPeriode' => $periode
         ];

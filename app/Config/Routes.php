@@ -20,7 +20,6 @@ $routes->get('/admin/administrator', 'AdminController::viewAdministrator');
 $routes->delete('/admin/administrator/(:num)', 'AdminController::deleteUser/$1');
 $routes->get('/admin/roleAndPermission', 'AdminController::viewRoleAndPermission');
 $routes->get('/admin/createUserForm', 'AdminController::viewCreateUserForm');
-$routes->get('/tabelPDRB/tabelRingkasan', 'TabelPDRBController::viewTabelRingkasan');
 $routes->get('/tabelPDRB/tabelPerKota', 'TabelPDRBController::viewTabelPerKota');
 $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
 $routes->post('/tabelPDRB/tabelHistoryPutaran/getData', 'TabelPDRBController::getData');
@@ -28,8 +27,10 @@ $routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->get('/monitoring', 'MonitoringController::index');
 
 // halaman tabel ringkasan 
+$routes->get('/tabelPDRB/tabelRingkasan', 'TabelRingkasanController::index');
 $routes->get('/tabelPDRB/tabelRingkasan/perbandinganPertumbuhanQ-TO-Q', 'TabelRingkasanController::viewPerbandinganPertumbuhanQ');
-$routes->get('/tabelPDRB/tabelRingkasan/(:segment)', 'TabelRingkasanController::index/$1');
+$routes->get('/tabelPDRB/tabelRingkasan/(:segment)', 'TabelRingkasanController::redirectPage/$1');
+$routes->post('/tabelPDRB/tabelRingkasan/getData', 'TabelRingkasanController::getData');
 
 // // tabel ringakasan PageController
 // $routes->post('page/redirectToPage', 'PageController::redirectToPage');
