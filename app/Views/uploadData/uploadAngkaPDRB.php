@@ -13,15 +13,15 @@
                 <!-- filter berdasarkan kota -->
                 <div class="col-auto mt-4">
                     <div class="form-group">
-                        <select class="form-control" style="width: 100%;" id="pilihKota">
+                        <select class="form-control" style="width: 100%;" id="selectKota">
                             <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                            <option value="DKI Jakarta">Provinsi DKI Jakarta</option>
-                            <option value="Kepulauan Seribu">Kepulauan Seribu</option>
-                            <option value="Jakarta Pusat">Jakarta Pusat</option>
-                            <option value="Jakarta Utara">Jakarta Utara</option>
-                            <option value="Jakarta Barat">Jakarta Barat</option>
-                            <option value="Jakarta Selatan">Jakarta Selatan</option>
-                            <option value="Jakarta Timur">Jakarta Timur</option>
+                            <option value="3100" selected>Provinsi DKI Jakarta</option>
+                            <option value="3101">Kepulauan Seribu</option>
+                            <option value="3171">Jakarta Selatan</option>
+                            <option value="3172">Jakarta Timur</option>
+                            <option value="3173">Jakarta Pusat</option>
+                            <option value="3174">Jakarta Barat</option>
+                            <option value="3175">Jakarta Utara</option>
                         </select>
                     </div>
                 </div>
@@ -32,6 +32,7 @@
                     </button>
                 </div>
             </div>
+            <!-- pesan error download -->
             <div class="row">
                 <?php if (session()->has('msg')) : ?>
                     <div class="text-danger col">
@@ -47,7 +48,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h4 class="modal-title" id="modalWilayah"></h4>
+                    <h4 class="modal-title" id="judulModal">Upload PDRB - Provinsi DKI Jakarta</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -59,7 +60,7 @@
                                 <label for="downloadTemplate">1. Download Format Template Upload Terbaru</label>
                                 <div id="checkboxes-container-3-years" class="ml-2 mb-2"></div>
                                 <button type="submit" class="btn btn-warning">Download Template</button>
-                                <input type="hidden" id="kotaSelected" name="kotaSelected" hidden>
+                                <input type="hidden" id="kotaJudulModal" name="kotaJudulModal" hidden>
                             </div>
                         </form>
                         <form method="post" action="<?= base_url('/uploadExcel'); ?>" enctype="multipart/form-data">
@@ -103,87 +104,34 @@
                             <div class="row mt-2 justify-content-between">
                                 <div class="col-auto">
                                     <div class="form-group">
-                                        <select class="form-control" style="width: 100%;">
+                                        <select class="form-control" style="width: 100%;" id="selectTable" onchange="loadData()">
                                             <option hidden>Pilih Jenis Tabel</option>
-                                            <option>Tabel PDRB Atas Harga Berlaku (Juta Rupiah)</option>
-                                            <option>Tabel PDRB Atas Harga Konstan (Juta Rupiah)</option>
+                                            <option value="1" selected>Tabel PDRB Atas Harga Berlaku (Juta Rupiah)</option>
+                                            <option value="2">Tabel PDRB Atas Harga Konstan (Juta Rupiah)</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-auto">
                                     <div class="btn-group">
-                                        <a href="#" target="_blank" class="btn btn-outline-danger">
+                                        <!-- <a href="/uploadData/eksporPDF"> -->
+                                        <button id="export-button" class="btn btn-outline-danger">
                                             <i class="fa fa-file-pdf"></i>
                                             <span>Ekspor PDF</span>
-                                        </a>
-                                        <a href="#" target="_blank" class="btn btn-outline-success">
+                                        </button>
+                                        <!-- </a> -->
+                                        <button class="btn btn-outline-success">
                                             <i class="fa fa-file-excel"></i>
                                             <span>Ekspor Excel</span>
-                                        </a>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- /.card-header -->
-                            <div class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                <table id="tabelPDRB" class="table table-bordered table-hover">
-                                    <thead class="text-center table-primary sticky-top">
-                                        <tr>
-                                            <th colspan="2">Komponen</th>
-                                            <th>2023Q1</th>
-                                            <th>2023Q2</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga (1.a. s/d 1.l.)</td>
-                                            <td>Rp</td>
-                                            <td>Rp</td>
-                                        </tr>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">2. Pengeluaran Konsumsi LNPRT</td>
-                                            <td>Rp</td>
-                                            <td>Rp </td>
-                                        </tr>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">3. Pengeluaran Konsumsi Pemerintah (3.a. + 3.b.)</td>
-                                            <td>Rp</td>
-                                            <td>Rp</td>
-                                        </tr>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">4. Pembentukan Modal Tetap Bruto (4.a. + 4.b.)</td>
-                                            <td>Rp</td>
-                                            <td>Rp</td>
-                                        </tr>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">5. Perubahan Inventori</td>
-                                            <td>Rp</td>
-                                            <td>Rp</td>
-                                        </tr>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">6. Ekspor Luar Negeri (6.a. + 6.b.)</td>
-                                            <td>Rp</td>
-                                            <td>Rp</td>
-                                        </tr>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">7. Ekspor Luar Negeri (7.a. + 7.b.)</td>
-                                            <td>Rp</td>
-                                            <td>Rp</td>
-                                        </tr>
-                                        <tr style="height:5px; line-height:5px">
-                                            <td colspan="2" style="font-weight: bold;">8. Net Ekspor Antar Daerah (8.a. + 8.b.)</td>
-                                            <td>Rp</td>
-                                            <td>Rp</td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr style="height:5px; line-height:5px">
-                                            <th colspan="2" style="font-weight: bold;">PDRB</th>
-                                            <th>Rp</th>
-                                            <th>Rp</th>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                            <div class="card-header">
+                                <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
+                            </div>
+                            <div id="PDRBTableContainer" class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -194,13 +142,23 @@
         </div>
     </section>
     <!-- /.content -->
+    <!-- jQuery -->
+    <script src="<?= base_url('/assets/plugins/jquery/jquery.min.js'); ?>"></script>
     <script>
-        // Mengambil wilayah yang sudah terpilih
-        const kotaSelected = document.getElementById("kotaSelected");
-        pilihKota.addEventListener("change", function() {
-            varKotaSelected = this.value;
-
-            modalWilayah.textContent = "Upload PDRB - " + varKotaSelected;
-            kotaSelected.setAttribute("value", varKotaSelected);
-        });
+        // Menampilkan pesan error setelah upload (jika ada)
+        $(document).ready(function() {
+            <?php
+            $errorMsg = session()->getFlashdata('errorMsg');
+            if (isset($errorMsg) && is_array($errorMsg) && count($errorMsg) > 0) :
+            ?>
+                var errorMessage = <?php echo json_encode(implode("<br>", $errorMsg)); ?>;
+                $(document).Toasts('create', {
+                    class: "bg-warning toast-warning-validasi",
+                    fixed: false,
+                    title: "Perhatian!",
+                    body: errorMessage,
+                });
+                console.log('errorMessage')
+            <?php endif; ?>
+        })
     </script>

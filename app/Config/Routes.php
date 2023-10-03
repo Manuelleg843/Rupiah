@@ -15,7 +15,9 @@ $routes->get('/UserController/logout', 'UserController::logout');
 $routes->post('/downloadExcel', 'DownloadExcelController::download');
 $routes->post('/uploadExcel', 'UploadExcelController::upload');
 $routes->get('/beranda', 'Beranda::index');
-$routes->get('/uploadData/angkaPDRB', 'DataUploadController::viewUploadAngkaPDRB');
+$routes->get('/uploadData/angkaPDRB', 'DataUploadController::index');
+$routes->post('/uploadData/angkaPDRB/getData', 'DataUploadController::getData');
+$routes->post('/uploadData/eksporPDF', 'DataUploadController::eksporPDF');
 $routes->get('/admin/administrator', 'AdminController::viewAdministrator');
 $routes->delete('/admin/administrator/(:num)', 'AdminController::deleteUser/$1');
 $routes->get('/admin/roleAndPermission', 'AdminController::viewRoleAndPermission');
@@ -26,6 +28,7 @@ $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHi
 $routes->post('/tabelPDRB/tabelHistoryPutaran/getData', 'TabelPDRBController::getData');
 $routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->get('/monitoring', 'MonitoringController::index');
+$routes->post('/monitoring/updateStatus', 'MonitoringController::updateStatus');
 
 // routes ekspor
 $routes->get('/tabelPDRB/exportExcel', 'TabelPDRBController::exportExcel');

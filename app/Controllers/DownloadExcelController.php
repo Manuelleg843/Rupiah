@@ -2,36 +2,42 @@
 
 namespace App\Controllers;
 
-
 use App\Controllers\BaseController;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use App\Models\Komponen7Model;
+use App\Models\WilayahModel;
 
 class DownloadExcelController extends BaseController
 {
+    protected $komponen7Model;
+    protected $wilayahModel;
+
+    public function __construct()
+    {
+        $this->komponen7Model = new Komponen7Model();
+        $this->wilayahModel = new WilayahModel();
+    }
+
     // Fungsi untuk download excel sesuai dengan checkbox yang dipilih
     public function download()
     {
         // Jika tidak ada wilayah atau checkbox yang dipilih, maka akan diarahkan kembali ke halaman upload data
         $postData = $this->request->getPost();
-
-        if ($postData['kotaSelected'] == "") {
+        if ($postData['kotaJudulModal'] == "") {
             return redirect()->to('/uploadData/angkaPDRB')->with('msg', 'Pilih wilayah dan periode untuk download template.');
         } else if (count($postData) <= 1) {
             return redirect()->to('/uploadData/angkaPDRB')->with('msg', 'Pilih wilayah dan periode untuk download template.');
         }
 
         // Mengambil wilayah terpilih dari array postData
-        $wilayahTerpilih = array_pop($postData);
+        $wilayahTerpilih = $this->wilayahModel->where('id_wilayah', array_pop($postData))->first()['wilayah'];
 
         // Konfigurasi untuk generate excel
         require_once ROOTPATH . 'vendor/autoload.php';
-
         $filename = 'Template Upload PDRB - ' . $wilayahTerpilih . '.xlsx';
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $filename . '"');
-
         $mySpreadsheet = new Spreadsheet();
         $mySpreadsheet->removeSheetByIndex(0);
 
@@ -55,8 +61,7 @@ class DownloadExcelController extends BaseController
         array_push($sheet2Data, $columnHeaders);
 
         // Mengambil komponen PDRB serta deskripsinya dari database
-        $komponen7Model = new Komponen7Model();
-        $komponen7DataObj = $komponen7Model->get_data();
+        $komponen7DataObj = $this->komponen7Model->get_data();
         $komponen7Data = [];
         foreach ($komponen7DataObj as $row) {
             $komponen7Data[] = (array)$row;
@@ -65,25 +70,19 @@ class DownloadExcelController extends BaseController
         // Menambahkan deskripsi komponen sebagai baris pada excel
         foreach ($komponen7Data as $komponen) {
             $deskripsi = "";
-            if (key($komponen7Data) != array_key_last($komponen7Data)) {
-                foreach ($komponen as $kolom) {
-                    $deskripsi .= $kolom;
-                    if (key($komponen) != array_key_last($komponen)) {
-                        $deskripsi .= ". ";
-                    }
-
-                    next($komponen);
+            foreach ($komponen as $kolom) {
+                $deskripsi .= $kolom;
+                if (key($komponen) != array_key_last($komponen)) {
+                    $deskripsi .= ". ";
                 }
-                array_push($sheet1Data, [$deskripsi]);
-                array_push($sheet2Data, [$deskripsi]);
-            } else {
-                array_push($sheet1Data, [$komponen['komponen']]);
-                array_push($sheet2Data, [$komponen['komponen']]);
+                next($komponen);
             }
-
+            array_push($sheet1Data, [$deskripsi]);
+            array_push($sheet2Data, [$deskripsi]);
             next($komponen7Data);
         }
 
+        // Mengisi data pada excel
         $worksheet1->fromArray([$title]);
         $worksheet1->fromArray([['ADHB']], null, 'A2');
         $worksheet1->fromArray([[$wilayahTerpilih]], null, 'A3');
@@ -95,7 +94,6 @@ class DownloadExcelController extends BaseController
 
         // Menebalkan judul tabel
         $cellAddresses = ['A1', 'A2', 'A3'];
-
         foreach ($cellAddresses as $cellAddress) {
             $cell = $worksheet1->getCell($cellAddress);
             $cell->getStyle()->getFont()->setBold(true);
@@ -106,7 +104,6 @@ class DownloadExcelController extends BaseController
 
         // Mengatur lebar kolom
         $worksheets = [$worksheet1, $worksheet2];
-
         foreach ($worksheets as $worksheet) {
             foreach ($worksheet->getColumnIterator() as $column) {
                 $worksheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
