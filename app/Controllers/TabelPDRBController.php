@@ -102,9 +102,6 @@ class TabelPDRBController extends BaseController
 
     public function viewTabelHistoryPutaran()
     {
-        if (!session()->get('email')) {
-            return redirect()->to('/login');
-        }
 
         $data = [
             'title' => 'Rupiah | Tabel History Putaran',
