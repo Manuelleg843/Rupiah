@@ -104,7 +104,7 @@
                             <div class="row mt-2 justify-content-between">
                                 <div class="col-auto">
                                     <div class="form-group">
-                                        <select class="form-control" style="width: 100%;" id="selectTable" onchange="loadData()">
+                                        <select class="form-control" style="width: 100%;" id="selectTableUpload" onchange="loadData()">
                                             <option hidden>Pilih Jenis Tabel</option>
                                             <option value="1" selected>Tabel PDRB Atas Harga Berlaku (Juta Rupiah)</option>
                                             <option value="2">Tabel PDRB Atas Harga Konstan (Juta Rupiah)</option>
