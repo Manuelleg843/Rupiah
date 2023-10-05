@@ -249,6 +249,20 @@ class RevisiModel extends Model
         return $builder->get()->getResult();
     }
 
+    public function getDataFinalMod($idPDRB, $kota, $periode)
+    {
+        $builder = $this->db->table('revisi')
+            ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
+            ->select(['revisi.id_komponen', 'komponen_7.komponen', 'nilai', 'periode', 'id_wilayah', 'id_pdrb'])
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $idPDRB)
+            ->where('periode', $periode)
+            ->orderBy('periode')
+            ->orderBy('id_komponen');
+
+        return $builder->get()->getResultObject();
+    }
+
     public function batchUpdate($updateBatchData)
     {
         $builder = $this->db->table('revisi');

@@ -16,11 +16,12 @@ var exportExcel = document.getElementById("exportExcel");
 
 // munculin data on load
 function loadData() {
-  var tableJenisPDRB = document.getElementById("selectTableHistory");
+  var tableHistory = document.getElementById("selectTableHistory");
   var tableRingkasan = document.getElementById("selectTableRingkasan");
-  if (tableJenisPDRB) {
-    tableSelected = tableJenisPDRB.options[tableJenisPDRB.selectedIndex].textContent;
-    jenisPDRB = tableJenisPDRB.value;
+
+  if (tableHistory) {
+    tableSelected = tableHistory.options[tableHistory.selectedIndex].textContent;
+    jenisPDRB = tableHistory.value;
   };
   if (tableRingkasan) {
     tableSelected = tableRingkasan.options[tableRingkasan.selectedIndex].textContent;
@@ -38,7 +39,7 @@ function loadData() {
   var selectedPeriode = [];
 
   if (submitPeriode) {
-    $('#periode-checkboxes-container input[type="checkbox"]:checked').each(function () {
+    $('.checkboxes-periode input[type="checkbox"]:checked').each(function () {
       selectedPeriode.push($(this).attr('name'));
     });
 
@@ -61,8 +62,6 @@ function loadData() {
       kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen);
       break;
   }
-  // kirimData(jenisPDRB, kota, putaran, selectedPeriode, selectedKomponen);
-
 }
 
 function kirimData(jenisPDRB, kota, putaran, selectedPeriode, selectedKomponen) {
@@ -87,14 +86,13 @@ function kirimData(jenisPDRB, kota, putaran, selectedPeriode, selectedKomponen) 
   });
 }
 
-function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
+function kirimDataRingkasan(jenisTable, selectedPeriode) {
   $.ajax({
     type: "POST",
     url: "/tabelPDRB/tabelRingkasan/getData/",
     data: {
-      jenisPDRB: jenisTable,
-      periode: selectedPeriode,
-      komponen: selectedKomponen
+      jenisTable: jenisTable,
+      periode: selectedPeriode
     },
     dataType: 'json',
     success: function (data) {
@@ -102,14 +100,19 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
         case '11':
           console.log(data);
           break;
-        case "15":
+        case '13':
           console.log(data);
-          // renderTable_ringkasan15(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
+          // renderTable_ringkasan(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
           break;
-        case "17":
+        case '15':
+          renderTable_ringkasan(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
+          break;
+        case '16':
+           renderTable_ringkasan(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
+          break;
+        case '18':
           console.log(data);
-          // renderTable_ringkasan15(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
-          break;
+          break; 
       }
 
     },
@@ -199,9 +202,9 @@ function renderTable(data, selectedPeriode, komponen) {
   container.appendChild(table);
 }
 
-function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
+function renderTable_ringkasan(data, komponen, selectedPeriode, wilayah) {
   // container table  
-  var container = document.getElementById("pertumbuhanQ-container");
+  var container = document.getElementById("ringkasan-container");
 
   // delete table if there is content inside it 
   container.innerHTML = "";
@@ -247,7 +250,8 @@ function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
   var tbody = document.createElement("tbody");
   var temp = -1;
   var totalColumn = headerRow2.childElementCount + 1;
-  console.log(totalColumn)
+
+  // loop through json to create tbody
   // loop through json to create tbody
   for (var i = 0; i < komponen.length; i++) {
     // menghitung banyak kolom pada tabel 
@@ -261,8 +265,8 @@ function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
     }
 
     for (var col = 0; col < totalColumn; col++) {
+      console.log(totalColumn);
       var cell = document.createElement("td");
-
 
       if (col == 0) {
         cell.colSpan = '2';
@@ -278,12 +282,13 @@ function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
         temp++;
         cell.style = "text-align: right;";
         cell.classList.add('w-50');
-        cell.innerHTML = numberFormat(data[0].nilai);
+        cell.innerHTML = numberFormat(data[temp].nilai);
       }
       row.appendChild(cell);
     }
     tbody.appendChild(row);
   }
+
 
   table.appendChild(tbody);
   // memasukkan tabel ke view 
@@ -395,8 +400,9 @@ function generateDropdownTabelRingkasan() {
 
 if (document.getElementById('selectTableRingkasan') != null) {
   document.getElementById('selectTableRingkasan').addEventListener('change', function () {
-    var tableSelected = this.value;
-    tableSelected == 'diskrepansi-ADHB' ? window.location.href = "/tabelPDRB/tabelRingkasan/" : window.location.href = "/tabelPDRB/tabelRingkasan/" + tableSelected;
+    // var tableSelected = this.value;
+    loadData();
+    // tableSelected == 'diskrepansi-ADHB' ? window.location.href = "/tabelPDRB/tabelRingkasan/" : window.location.href = "/tabelPDRB/tabelRingkasan/" + tableSelected;
   });
 }
 

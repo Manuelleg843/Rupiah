@@ -34,12 +34,7 @@ $routes->post('/monitoring/updateStatus', 'MonitoringController::updateStatus');
 
 // halaman tabel ringkasan 
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelRingkasanController::index');
-$routes->get('/tabelPDRB/tabelRingkasan/perbandinganPertumbuhanQ-TO-Q', 'TabelRingkasanController::viewPerbandinganPertumbuhanQ');
-$routes->get('/tabelPDRB/tabelRingkasan/(:segment)', 'TabelRingkasanController::redirectPage/$1');
 $routes->post('/tabelPDRB/tabelRingkasan/getData', 'TabelRingkasanController::getData');
-
-// // tabel ringakasan PageController
-// $routes->post('page/redirectToPage', 'PageController::redirectToPage');
 
 
 // routes ekspor
