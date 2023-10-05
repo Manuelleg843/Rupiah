@@ -3,9 +3,12 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
+            <div class="row">
+                <div class="col-xs">
                     <h1 class="m-0"><?= $tajuk ?></h1>
+                </div>
+                <div class="col align-self-center">
+                    <span>*Angka Sementara</span>
                 </div>
             </div>
             <!-- /.row -->
@@ -19,82 +22,129 @@
         <div class="container-fluid">
             <!-- LATEST STATISTICS -->
             <div class="row">
+                <!-- Card ADHB -->
                 <div class="col-lg col-md-6 col-sm-6">
                     <div class="card card-small bg-primary card-stats">
                         <div class="card-body d-flex p-0">
                             <div class="d-flex flex-column m-auto">
                                 <div class="text-center">
                                     <span class="text-white">Atas Dasar Harga Berlaku</span>
-                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">857,22
-                                        Triliun</h6>
-                                    <span class="text-white">Diskrepansi -2,57%</span>
+                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">
+                                        <?php
+                                        echo number_format($adhb[0]->nilai, 0, ',', '.');
+                                        ?>
+                                    </h6>
+                                    <span class="text-white">
+                                        <?php
+                                        echo 'Diskrepansi ' . number_format($Diskrepansi_adhb, 2, ',', '.') . '%';
+                                        ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Card ADHK -->
                 <div class="col-lg col-md-6 col-sm-6">
                     <div class="card card-small bg-primary card-stats">
                         <div class="card-body d-flex p-0">
                             <div class="d-flex flex-column m-auto">
                                 <div class="text-center">
                                     <span class="text-white">Atas Dasar Harga Konstan</span>
-                                    <h6 class="my-3 text-white number-stats" style=" line-height: 2rem; font-size: 2rem;">510,34
-                                        Triliun</h6>
-                                    <span class="text-white">Diskrepansi 0,76%</span>
+                                    <h6 class="my-3 text-white number-stats" style=" line-height: 2rem; font-size: 2rem;">
+                                        <?php
+                                        echo number_format($adhk[0]->nilai, 0, ',', '.');
+                                        ?>
+                                    </h6>
+                                    <span class="text-white">
+                                        <?php
+                                        echo 'Diskrepansi ' . number_format($Diskrepansi_adhk, 2, ',', '.') . '%';
+                                        ?>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Card Pertumbuhan Y ON Y -->
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="card card-small bg-primary card-stats">
                         <div class="card-body d-flex p-0">
                             <div class="d-flex flex-column m-auto">
                                 <div class="text-center">
                                     <span class="text-white">Y-ON-Y</span>
-                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">5,13%</h6>
+                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">
+                                        <?php
+                                        echo number_format($hasil_Y_ON_Y, 2, ',', '.') . '%';
+                                        ?>
+                                    </h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Card Pertumbuhan Q TO Q -->
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="card card-small bg-primary card-stats">
                         <div class="card-body d-flex p-0">
                             <div class="d-flex flex-column m-auto">
                                 <div class="text-center">
                                     <span class="text-white">Q-TO-Q</span>
-                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">1,25%</h6>
+                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">
+                                        <?php
+                                        echo number_format($hasil_Q_TO_Q, 2, ',', '.') . '%';
+                                        ?>
+                                    </h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- Card Pertumbuhan C TO C -->
                 <div class="col-lg-2 col-md-4 col-sm-6">
                     <div class="card card-small bg-primary card-stats">
                         <div class="card-body d-flex p-0">
                             <div class="d-flex flex-column m-auto">
                                 <div class="text-center">
                                     <span class="text-white">C-TO-C</span>
-                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">5,04%</h6>
+                                    <h6 class="my-3 text-white number-stats" style="line-height: 2rem; font-size: 2rem;">
+                                        <?php
+                                        echo number_format($hasil_C_TO_C, 2, ',', '.') . '%';
+                                        ?>
+                                    </h6>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Last Update -->
             <div class="row d-flex justify-content-between">
                 <div class="col card py-2 last-update mx-2">
                     <div class="row">
-                        <div class="col">Tahun 2023, Triwulan 2, Putaran 4</div>
-                        <div class="col d-flex justify-content-end">(Last Update 2023-08-05 16:04:28)</div>
+                        <div class="col">
+                            <?php
+                            if ($adhb[0]->id_kuartal > "4") {
+                                echo 'Tahun ' . $adhb[0]->tahun . ', Triwulan 4, Putaran ' . $adhb[0]->putaran;
+                            } else {
+                                echo 'Tahun ' . $adhb[0]->tahun . ', Triwulan ' . $adhb[0]->id_kuartal . ', Putaran ' . $adhb[0]->putaran;
+                            }
+                            ?>
+                        </div>
+                        <div class="col d-flex justify-content-end">
+                            <?php
+                            echo '(Last Update ' . $adhb[0]->uploaded_at . ' )'; // caranya pasang waktu gimana
+                            ?>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- BAR CHART -->
+            <!-- BAR CHART (Last Update) -->
             <div class="row">
+                <!-- BarChart  Y ON Y -->
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
@@ -109,7 +159,7 @@
                     </div>
                     <!-- /.card -->
                 </div>
-
+                <!-- BarChart  Q TO Q -->
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
@@ -124,7 +174,7 @@
                     </div>
                     <!-- /.card -->
                 </div>
-
+                <!-- BarChart  C TO C -->
                 <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
@@ -146,16 +196,17 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
+                        <!-- Filter -->
                         <div class="card-header">
                             <form action="" class="d-flex align-items-center">
                                 <select name="Grafik" id="Grafik" class="mr-3 py-2">
-                                    <option value="Grafik_Pertumbuhan_PDRB">Grafik Pertumbuhan PDRB</option>
-                                    <option value="Grafik_Pertumbuhan_PKRT">Grafik Pertumbuhan PKRT</option>
-                                    <option value="Grafik_Pertumbuhan_PK-LNRT">Grafik Pertumbuhan PK-LNRT</option>
-                                    <option value="Grafik_Pertumbuhan_PKB">Grafik Pertumbuhan PKB</option>
-                                    <option value="Grafik_Pertumbuhan_PMTB">Grafik Pertumbuhan PKB</option>
-                                    <option value="Grafik_Pertumbuhan_PKB">Grafik Pertumbuhan Ekspor</option>
-                                    <option value="Grafik_Pertumbuhan_PMTB">Grafik Pertumbuhan Impor</option>
+                                    <option value="PDRB">Grafik Pertumbuhan PDRB</option>
+                                    <option value="PKRT">Grafik Pertumbuhan PKRT</option>
+                                    <option value="PK-LNPRT">Grafik Pertumbuhan PK-LNPRT</option>
+                                    <option value="PKP">Grafik Pertumbuhan PKP</option>
+                                    <option value="PMTB">Grafik Pertumbuhan PMTB</option>
+                                    <option value="Ekspor">Grafik Pertumbuhan Ekspor</option>
+                                    <option value="Impor">Grafik Pertumbuhan Impor</option>
                                 </select>
                                 <select name="Jangka" id="Jangka" class="mr-3 py-2">
                                     <option value="Triwulan">Triwulan</option>
@@ -215,8 +266,9 @@
                                 </div>
                             </form>
                         </div>
+                        <!-- Grafik -->
                         <div class="card-body">
-                            <div id="line-chart" style="height: 300px;"></div>
+                            <canvas id="lineChart" style="height: 281px; width: 649px;"></canvas>
                         </div>
                         <!-- /.card-body-->
                     </div>
@@ -226,3 +278,9 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script>
+        window.addEventListener('load', function() {
+            TerimaData();
+        });
+    </script>

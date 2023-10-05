@@ -15,6 +15,7 @@ $routes->get('/UserController/logout', 'UserController::logout');
 $routes->post('/downloadExcel', 'DownloadExcelController::download');
 $routes->post('/uploadExcel', 'UploadExcelController::upload');
 $routes->get('/beranda', 'Beranda::index');
+$routes->get('/beranda/ShowChart', 'Beranda::Chart');
 $routes->get('/uploadData/angkaPDRB', 'DataUploadController::index');
 $routes->post('/uploadData/angkaPDRB/getData', 'DataUploadController::getData');
 $routes->post('/uploadData/eksporPDF', 'DataUploadController::eksporPDF');

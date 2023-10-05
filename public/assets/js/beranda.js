@@ -65,7 +65,6 @@ function generateCheckboxes() {
         checkbox.id = `checkbox${year}${quarter}`;
         checkbox.value = `option${year}${quarter}`;
 
-
         if (document.title == "Rupiah | Tabel Ringkasan") {
           if (year == currentYear) {
             if (i == currentQuarter - 1) {
@@ -96,7 +95,6 @@ function generateCheckboxes() {
         Q4yearBefore.checked = true;
         yearBefore.checked = true;
       }
-
     }
 
     if (checkboxesContainerYear == null) {
@@ -134,7 +132,7 @@ function generateCheckboxesCurrentYear() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = true;
-    checkbox.set
+    checkbox.set;
     checkbox.classList.add("form-check-input");
 
     checkbox;
@@ -145,7 +143,7 @@ function generateCheckboxesCurrentYear() {
 
       checkbox.name = `${year}${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
-      checkbox.className = 'checkbox-periode';
+      checkbox.className = "checkbox-periode";
       checkbox.value = `option${year}${quarter}`;
       if (document.title == "Rupiah | Tabel Ringkasan") {
         if (year == currentYear) {
@@ -367,9 +365,32 @@ function clearCheckbox() {
 // ..., sampe sini.
 
 // CHARTS (BERANDA)
-$(function () {
+function TerimaData() {
+  $.ajax({
+    type: "GET",
+    url: "/beranda/ShowChart",
+    dataType: "json",
+    success: function (data) {
+      let dataFloat = [];
+      dataArray = Object.values(data);
+      for (const element of dataArray) {
+        dataFloat.push(element.map((str) => parseFloat(str)));
+      }
+      renderChart(dataFloat[0], dataFloat[1], dataFloat[2]);
+    },
+    error: function (error) {
+      // Handle kesalahan jika ada
+      console.error("Terjadi kesalahan:", error);
+    },
+  });
+}
+
+function renderChart(dataY, dataQ, dataC) {
   // ChartJS
-  Chart.plugins.register(ChartDataLabels);
+  // Chart.plugins.register(ChartDataLabels);
+
+  console.log("yoooo");
+  console.log(dataY);
 
   // Bar Charts
   var barChartYOY = $("#barChartYOY").get(0).getContext("2d");
@@ -384,7 +405,7 @@ $(function () {
       {
         backgroundColor: "#dc3545",
         borderColor: "#dc3545",
-        data: [5.26, 9.53, 6.06, 4.22, 6.18, -2.26],
+        data: dataY,
       },
     ],
   };
@@ -395,7 +416,7 @@ $(function () {
       {
         backgroundColor: "#007bff",
         borderColor: "#007bff",
-        data: [3.68, 8.97, 40.71, 0.44, -4.65, -4.35],
+        data: dataQ,
       },
     ],
   };
@@ -406,7 +427,7 @@ $(function () {
       {
         backgroundColor: "#28a745",
         borderColor: "#28a745",
-        data: [4.73, 8.77, 4.28, 2.75, 11.95, 2.1],
+        data: dataC,
       },
     ],
   };
@@ -485,185 +506,64 @@ $(function () {
 
   // Flot
   // Line Chart
-
-  // PDRB
-  var PDRBtahunan = [
-    [2011, 6.73],
-    [2012, 6.53],
-    [2013, 6.07],
-    [2014, 5.91],
-    [2015, 5.91],
-    [2016, 5.87],
-    [2017, 6.2],
-    [2018, 6.11],
-    [2019, 5.82],
-    [2020, -2.39],
-    [2021, 3.56],
-    [2022, 5.25],
-    [2023, null],
-  ];
-  var PDRBctoc = [
-    [0, 0.94],
-    [1, 4.1],
-    [2, 3.53],
-    [3, 3.56],
-    [4, 4.61],
-    [5, 5.11],
-    [6, 5.39],
-    [7, 5.25],
-    [8, 4.95],
-    [9, 5.04],
-    [10, null],
-    [11, null],
-  ];
-  var PDRBqtoq = [
-    [0, -0.32],
-    [1, 0.12],
-    [2, 0.09],
-    [3, 3.75],
-    [4, 0.62],
-    [5, 1.07],
-    [6, 0.39],
-    [7, 2.69],
-    [8, 0.72],
-    [9, 1.25],
-    [10, null],
-    [11, null],
-  ];
-  var PDRByony = [
-    [0, -1.94],
-    [1, 10.92],
-    [2, 2.42],
-    [3, 3.63],
-    [4, 4.61],
-    [5, 5.61],
-    [6, 5.93],
-    [7, 4.85],
-    [8, 4.95],
-    [9, 5.13],
-    [10, null],
-    [11, null],
-  ];
-
-  // PKRT
-  var PKRTtahunan = [
-    [2011, 6.82],
-    [2012, 6.22],
-    [2013, 5.78],
-    [2014, 5.54],
-    [2015, 5.31],
-    [2016, 5.54],
-    [2017, 5.68],
-    [2018, 6.03],
-    [2019, 6.05],
-    [2020, -2.23],
-    [2021, 3.54],
-    [2022, 5.64],
-    [2023, null],
-  ];
-  var PKRTctoc = [
-    [0, -1.58],
-    [1, 3.13],
-    [2, 3.52],
-    [3, 3.54],
-    [4, 4.09],
-    [5, 4.61],
-    [6, 5.6],
-    [7, 5.64],
-    [8, 4.18],
-    [9, 4.73],
-    [10, null],
-    [11, null],
-  ];
-  var PKRTqtoq = [
-    [0, 1.06],
-    [1, 1.6],
-    [2, -2.48],
-    [3, 3.44],
-    [4, 1.56],
-    [5, 2.61],
-    [6, -0.16],
-    [7, 1.63],
-    [8, 0.06],
-    [9, 3.68],
-    [10, null],
-    [11, null],
-  ];
-  var PKRTyony = [
-    [0, -1.58],
-    [1, 8.22],
-    [2, 4.34],
-    [3, 3.58],
-    [4, 4.09],
-    [5, 5.12],
-    [6, 7.62],
-    [7, 5.74],
-    [8, 4.18],
-    [9, 5.26],
-    [10, null],
-    [11, null],
-  ];
-
-  var line_data = {
-    data: PDRBtahunan,
-    color: "#FF0000",
+  var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+  var ChartData = {
+    labels: [
+      2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022,
+    ],
+    datasets: [
+      {
+        fill: false,
+        backgroundColor: "rgb(255,0,0)",
+        borderColor: "rgb(255,0,0)",
+        pointStyle: "circle",
+        pointRadius: 5,
+        pointHoverRadius: 10,
+        data: [
+          6.73,
+          6.53,
+          6.07,
+          5.91,
+          5.91,
+          5.87,
+          6.2,
+          6.11,
+          5.82,
+          -2.39,
+          3.56,
+          5.25,
+          null,
+        ],
+      },
+    ],
   };
-
-  var p = $.plot("#line-chart", [line_data], {
-    grid: {
-      hoverable: true,
-      borderColor: "#f3f3f3",
-      borderWidth: 1,
-      tickColor: "#f3f3f3",
-    },
-    series: {
-      shadowSize: 0,
-      lines: {
-        show: true,
-      },
-      points: {
-        show: true,
+  var ChartOptions = {
+    maintainAspectRatio: false,
+    responsive: true,
+    plugins: {
+      datalabels: {
+        anchor: "end",
+        align: "bottom",
+        // formatter: Math.round.toFixed(2),
+        font: {
+          weight: "bold",
+          size: 10,
+        },
       },
     },
-    lines: {
-      fill: false,
-      color: ["#3c8dbc", "#f56954"],
+    legend: {
+      display: false,
     },
-    yaxis: {
-      show: true,
+    labels: {
+      usePointStyle: true,
     },
-    xaxis: {
-      show: true,
-      tickFormatter: function (val) {
-        return "Tahun " + val;
-      },
-    },
+  };
+  var lineChart = new Chart(lineChartCanvas, {
+    type: "line",
+    data: ChartData,
+    options: ChartOptions,
   });
-
-  // Initialize tooltip on hover
-  $('<div class="tooltip-inner" id="line-chart-tooltip"></div>')
-    .css({
-      position: "absolute",
-      display: "none",
-      opacity: 0.6,
-    })
-    .appendTo("body");
-  $("#line-chart").bind("plothover", function (event, pos, item) {
-    if (item) {
-      var x = item.datapoint[0].toFixed(0),
-        y = item.datapoint[1].toFixed(2);
-      $("#line-chart-tooltip")
-        .html("Tahun " + x + "<br>" + y)
-        .css({
-          top: item.pageY + 5,
-          left: item.pageX + 5,
-        })
-        .fadeIn(200);
-    } else {
-      $("#line-chart-tooltip").hide();
-    }
-  });
-});
+}
 
 // DROPDOWN TAHUNAN/TRIWULANAN (BERANDA)
 $(document).ready(function () {
