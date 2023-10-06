@@ -65,7 +65,10 @@ function generateCheckboxes() {
         checkbox.id = `checkbox${year}${quarter}`;
         checkbox.value = `option${year}${quarter}`;
 
-        if (document.title == "Rupiah | Tabel Ringkasan") {
+        if (
+          document.title == "Rupiah | Tabel Ringkasan" ||
+          document.title == "Rupiah | Tabel Per Kota"
+        ) {
           if (year == currentYear) {
             if (i == currentQuarter - 1) {
               checkbox.checked = true;
