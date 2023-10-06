@@ -1,4 +1,3 @@
-// const selectTable = document.getElementById("selectTable");
 const selectKota = document.getElementById("selectKota");
 const selectPutaran = document.getElementById("selectPutaran");
 const judulTable = document.getElementById("judulTable");
@@ -8,6 +7,10 @@ const judulTableADHK = document.getElementById("judulTableADHK");
 const submitPeriode = document.getElementById("simpan-periode");
 const submitKomponen = document.getElementById("simpan-komponen");
 const subJudul = document.createElement("p");
+const judulModal = document.getElementById("judulModal");
+const kotaJudulModal = document.getElementById("kotaJudulModal");
+const eksporButton = document.getElementById("export-button");
+const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
 var tableSelected;
 var kotaSelected;
 var putaran;
@@ -19,6 +22,7 @@ var exportExcel = document.getElementById("exportExcel");
 function loadData() {
   var tableJenisPDRB = document.getElementById("selectTableHistory");
   var tableRingkasan = document.getElementById("selectTableRingkasan");
+  var tableUpload = document.getElementById("selectTableUpload");
   if (tableJenisPDRB) {
     tableSelected =
       tableJenisPDRB.options[tableJenisPDRB.selectedIndex].textContent;
@@ -28,6 +32,30 @@ function loadData() {
     tableSelected =
       tableRingkasan.options[tableRingkasan.selectedIndex].textContent;
     jenisTable = tableRingkasan.options[tableRingkasan.selectedIndex].id;
+
+    let checkboxContainer;
+    if (["15", "17", "19", "20", "21", "22", "23"].includes(jenisTable)) {
+      if (document.getElementById("checkboxes-container-year")) {
+        checkboxContainer = document.getElementById("checkboxes-container-year");
+        checkboxContainer.innerHTML = "";
+        checkboxContainer.id = "checkboxes-container";
+        generateCheckboxes();
+        generateTahunDropdown();
+      }
+    } else {
+      if(document.getElementById("checkboxes-container")){
+        checkboxContainer = document.getElementById("checkboxes-container");
+        checkboxContainer.innerHTML = "";
+        checkboxContainer.id = "checkboxes-container-year";
+        generateCheckboxes();
+        generateTahunDropdown();
+      }
+    }
+  };
+  if (tableUpload) {
+    tableSelected = tableUpload.options[tableUpload.selectedIndex].textContent;
+    jenisPDRB = tableUpload.options[tableUpload.selectedIndex].id;
+    jenisPDRB = tableUpload.value;
   }
   if (selectKota) {
     kotaSelected = selectKota.options[selectKota.selectedIndex].textContent;
@@ -41,11 +69,34 @@ function loadData() {
   var selectedPeriode = [];
 
   if (submitPeriode) {
-    $('#periode-checkboxes-container input[type="checkbox"]:checked').each(
-      function () {
-        selectedPeriode.push($(this).attr("name"));
-      }
-    );
+    $('.checkboxes-periode input[type="checkbox"]:checked').each(function () {
+      selectedPeriode.push($(this).attr('name'));
+    });
+  }
+
+  // menampilkan periode default untuk tabel di halaman upload
+  if (document.title == "Rupiah | Upload Data") {
+    switch (currentQuarter) {
+      case 1:
+        for (let i = currentYear - 2; i < currentYear; i++) {
+          // currentYear sudah dideklarasi di file beranda.js
+          selectedPeriode.push(i + "Q1", i + "Q2", i + "Q3", i + "Q4", i);
+        }
+        break;
+      case 2:
+        selectedPeriode = [currentYear + "Q1"];
+        break;
+      case 3:
+        selectedPeriode = [currentYear + "Q1", currentYear + "Q2"];
+        break;
+      case 4:
+        selectedPeriode = [
+          currentYear + "Q1",
+          currentYear + "Q2",
+          currentYear + "Q3",
+        ];
+        break;
+    }
   }
 
   // mengganti judul tabel
@@ -69,8 +120,11 @@ function loadData() {
       }
       kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen);
       break;
+    case "Rupiah | Upload Data":
+      judulTable.textContent=tableSelected + " - " + kotaSelected;
+      kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode);
+      break;
   }
-  // kirimData(jenisPDRB, kota, putaran, selectedPeriode, selectedKomponen);
 }
 
 function kirimData(
@@ -82,7 +136,7 @@ function kirimData(
 ) {
   $.ajax({
     type: "POST",
-    url: "/tabelPDRB/tabelHistoryPutaran/getData",
+    url: '/tabelPDRB/tabelHistoryPutaran/getData',
     data: {
       jenisPDRB: jenisPDRB,
       kota: kota,
@@ -214,6 +268,26 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
   });
 }
 
+function kirimDataTabelUpload (jenisPDRB, kota, selectedPeriode) {
+  $.ajax({
+    type: "POST",
+    url: "/uploadData/angkaPDRB/getData",
+    data: {
+      jenisPDRB: jenisPDRB,
+      kota: kota,
+      periode: selectedPeriode,
+    },
+    dataType: "json",
+    success: function (data) {
+      renderTable(data["dataPDRB"], data["selectedPeriode"], data["komponen"]);
+    },
+    error: function (error) {
+      // Handle kesalahan jika ada
+      console.error("Terjadi kesalahan:", error);
+    },
+  });
+}
+
 // render table
 function renderTable(data, selectedPeriode, komponen) {
   // container table
@@ -300,7 +374,13 @@ function renderTable(data, selectedPeriode, komponen) {
       } else {
         temp++;
         cell.style = "text-align: right;";
+        if (document.title == "Rupiah | Upload Data") {
+          cell.innerHTML = data[col - 1][i]
+            ? numberFormat(data[col - 1][i].nilai)
+            : "";
+        } else {
         cell.innerHTML = numberFormat(data[temp].nilai);
+        }
       }
 
       row.appendChild(cell);
@@ -389,6 +469,7 @@ function renderTable_ringkasan(
     }
 
     for (var col = 0; col < totalColumn; col++) {
+      console.log(totalColumn);
       var cell = document.createElement("td");
 
       if (col == 0) {
@@ -548,6 +629,7 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
     }
     tbody.appendChild(row);
   }
+  
 
   table.appendChild(tbody);
   // memasukkan tabel ke view
@@ -586,6 +668,7 @@ function numberFormat(
   return parts.join(decimalSeparator);
 }
 
+// ekspor excel
 function exportData(fileType) {
   tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
   putaran = selectPutaran.value;
@@ -639,6 +722,34 @@ function exportData(fileType) {
   }
 
   window.location.href = url;
+}
+
+// ekspor pdf
+if (eksporButton != null) {
+  eksporButton.addEventListener("click", function () {
+    let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17]
+
+    let doc = new jspdf.jsPDF()
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'bold')
+    doc.text(judulTable.textContent, 14, 10)
+    doc.autoTable({ 
+      html: '#PDRBTable',
+      columnStyles: { 
+        0: { cellWidth: 100 }, 
+      },
+      theme: 'grid',
+      didParseCell: function(hookData) {
+        if (komponenIndex.includes(hookData.row.index)) {
+          hookData.cell.styles.fontStyle = 'bold';
+        }
+      },
+      horizontalPageBreak: true,
+      horizontalPageBreakRepeat: 0 
+    })
+    let filename = judulTable.textContent + '.pdf'
+    doc.save(filename)
+  });
 }
 
 // generate dropdown jenis tabel halaman tabel ringkasan
@@ -743,4 +854,25 @@ if (document.getElementById("selectTableHistory") != null) {
     .addEventListener("change", function () {
       loadData();
     });
+}
+
+if(document.title=="Rupiah | Upload Data"){
+  window.addEventListener("load", function () {
+    loadData();
+  });
+}
+
+// dropdown kota
+if (selectKota != null) {
+  // Menampilkan judul modal sesuai wilayah yang terpilih
+  if (kotaJudulModal != null && judulModal != null) {
+  kotaJudulModal.setAttribute("value", "3100");
+  selectKota.addEventListener("change", function () {
+    judulModal.textContent = "Upload PDRB - " + this.selectedOptions[0].text;
+    kotaJudulModal.setAttribute("value", this.value);
+    });
+  }
+  selectKota.addEventListener("change", function () {
+    loadData();
+  });
 }

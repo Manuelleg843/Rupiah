@@ -30,12 +30,11 @@ $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHi
 $routes->post('/tabelPDRB/tabelHistoryPutaran/getData', 'TabelPDRBController::getData');
 $routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->get('/monitoring', 'MonitoringController::index');
-$routes->post('/monitoring/updateStatus', 'MonitoringController::updateStatus');
+$routes->get('/monitoring/updateStatus', 'MonitoringController::updateStatus');
 
 // halaman tabel ringkasan 
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelRingkasanController::index');
 $routes->post('/tabelPDRB/tabelRingkasan/getData', 'TabelRingkasanController::getData');
-
 
 // routes ekspor
 $routes->get('/tabelPDRB/exportExcel/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportExcel/$1/$2/$3/$4/$5');
