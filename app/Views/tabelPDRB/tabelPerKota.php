@@ -74,7 +74,7 @@
                                         </div>
                                         <form action="" class="p-2" id="selectPeriode" onload="loadData()">
                                             <div class="modal-body">
-                                                <div id="checkboxes-container-year" class="periode-checkboxes-container">
+                                                <div id="checkboxes-container-year" class="checkboxes-periode">
                                                 </div>
                                             </div>
                                         </form>

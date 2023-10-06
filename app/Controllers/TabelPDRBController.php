@@ -148,7 +148,8 @@ class TabelPDRBController extends BaseController
             case '1':
                 # code...
                 foreach ($periodes as $periode) {
-                    if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
+                    $cekdata = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
+                    if ($cekdata) {
                         $dataPDRB[] = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
                     } else {
                         $putaran = $this->putaran->getPutaranTerakhirPeriode($periode);
@@ -159,7 +160,7 @@ class TabelPDRBController extends BaseController
             case '2':
                 # code...
                 foreach ($periodes as $periode) {
-                    if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
+                    if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periodes)) {
                         $dataPDRB[] = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
                     } else {
                         $putaran = $this->putaran->getPutaranTerakhirPeriode($periode);

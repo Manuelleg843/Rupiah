@@ -37,14 +37,16 @@ function loadData() {
     let checkboxContainer;
     if (["15", "17", "19", "20", "21", "22", "23"].includes(jenisTable)) {
       if (document.getElementById("checkboxes-container-year")) {
-        checkboxContainer = document.getElementById("checkboxes-container-year");
+        checkboxContainer = document.getElementById(
+          "checkboxes-container-year"
+        );
         checkboxContainer.innerHTML = "";
         checkboxContainer.id = "checkboxes-container";
         generateCheckboxes();
         generateTahunDropdown();
       }
     } else {
-      if(document.getElementById("checkboxes-container")){
+      if (document.getElementById("checkboxes-container")) {
         checkboxContainer = document.getElementById("checkboxes-container");
         checkboxContainer.innerHTML = "";
         checkboxContainer.id = "checkboxes-container-year";
@@ -52,7 +54,7 @@ function loadData() {
         generateTahunDropdown();
       }
     }
-  };
+  }
   if (tableUpload) {
     tableSelected = tableUpload.options[tableUpload.selectedIndex].textContent;
     jenisPDRB = tableUpload.options[tableUpload.selectedIndex].id;
@@ -76,7 +78,7 @@ function loadData() {
 
   if (submitPeriode) {
     $('.checkboxes-periode input[type="checkbox"]:checked').each(function () {
-      selectedPeriode.push($(this).attr('name'));
+      selectedPeriode.push($(this).attr("name"));
     });
   }
 
@@ -132,7 +134,7 @@ function loadData() {
       break;
     case "Rupiah | Tabel Per Kota":
       judulTable.textContent = tableSelected + " - " + kotaSelected;
-      kirmdataPerKota(jenisPDRB, kota, selectedPeriode, selectedKomponen);
+      kirmdataPerKota(jenisPDRB, kota, selectedPeriode);
       break;
   }
 }
@@ -165,8 +167,7 @@ function kirimData(
   });
 }
 
-function kirmdataPerKota(jenisPDRB, kota, selectedPeriode, selectedKomponen) {
-  console.info(selectedPeriode);
+function kirmdataPerKota(jenisPDRB, kota, selectedPeriode) {
   $.ajax({
     type: "POST",
     url: "/tabelPDRB/getDataPerKota",
@@ -174,10 +175,10 @@ function kirmdataPerKota(jenisPDRB, kota, selectedPeriode, selectedKomponen) {
       jenisPDRB: jenisPDRB,
       kota: kota,
       selectedPeriode: selectedPeriode,
-      komponen: selectedKomponen,
     },
     dataType: "json",
     success: function (data) {
+      console.log(data);
       renderTablePerKota(
         data["dataPDRB"],
         data["selectedPeriode"],
@@ -208,7 +209,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
           // console.log(data);
           break;
         case "13":
-          // console.log(data);
+          console.log(data);
           renderTable_ringkasan(
             data["dataRingkasan"],
             data["komponen"],
@@ -305,7 +306,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
   });
 }
 
-function kirimDataTabelUpload (jenisPDRB, kota, selectedPeriode) {
+function kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode) {
   $.ajax({
     type: "POST",
     url: "/uploadData/angkaPDRB/getData",
@@ -650,10 +651,12 @@ function renderTable_ringkasan(
                 ? numberFormat(data[temp].nilai)
                 : "";
             }
+          } else {
+            cell.innerHTML = data[temp].nilai
+              ? numberFormat(data[temp].nilai)
+              : "";
           }
         }
-
-        console.log(typeof data[temp].nilai);
       }
       row.appendChild(cell);
     }
@@ -785,7 +788,6 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
     }
     tbody.appendChild(row);
   }
-  
 
   table.appendChild(tbody);
   // memasukkan tabel ke view
@@ -883,28 +885,28 @@ function exportData(fileType) {
 // ekspor pdf
 if (eksporButton != null) {
   eksporButton.addEventListener("click", function () {
-    let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17]
+    let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17];
 
-    let doc = new jspdf.jsPDF()
-    doc.setFontSize(12)
-    doc.setFont('helvetica', 'bold')
-    doc.text(judulTable.textContent, 14, 10)
-    doc.autoTable({ 
-      html: '#PDRBTable',
-      columnStyles: { 
-        0: { cellWidth: 100 }, 
+    let doc = new jspdf.jsPDF();
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.text(judulTable.textContent, 14, 10);
+    doc.autoTable({
+      html: "#PDRBTable",
+      columnStyles: {
+        0: { cellWidth: 100 },
       },
-      theme: 'grid',
-      didParseCell: function(hookData) {
+      theme: "grid",
+      didParseCell: function (hookData) {
         if (komponenIndex.includes(hookData.row.index)) {
-          hookData.cell.styles.fontStyle = 'bold';
+          hookData.cell.styles.fontStyle = "bold";
         }
       },
       horizontalPageBreak: true,
-      horizontalPageBreakRepeat: 0 
-    })
-    let filename = judulTable.textContent + '.pdf'
-    doc.save(filename)
+      horizontalPageBreakRepeat: 0,
+    });
+    let filename = judulTable.textContent + ".pdf";
+    doc.save(filename);
   });
 }
 
