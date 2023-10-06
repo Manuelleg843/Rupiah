@@ -755,41 +755,6 @@ class TabelRingkasanController extends BaseController
         return $dataOutput;
     }
 
-
-
-    // 1. TABEL DISKREPANSI PDRB AHDB 
-    // private function ringkasan_tabel1($periode, $komponen)
-    // {
-    //     $idWilayah = $this->wilayah->findAll();
-    //     $selectedKomponen = $this->komponen->getById($komponen);
-    //     $namaKomponen = [];
-    //     $komponenArr = [];
-    //     foreach ($selectedKomponen as $value) {
-    //         array_push($komponenArr, $value['id_komponen']);
-    //         array_push($namaKomponen, $value['komponen']);
-    //     }
-    //     $data = $this->putaran->getTabel1($periode, $komponenArr);
-
-    //     // hitung diskrepansi 
-    //     // 1. sum total kab/kota
-    //     $totalKabKot = [];
-    //     $temp = 0;
-    //     foreach ($selectedKomponen as $value) {
-    //         $total = 0;
-    //         for ($j = 0; $j < sizeof($idWilayah) - 1; $j++) {
-    //             if ($data[$temp]->id_wilayah == "3100") {
-    //                 $temp++;
-    //             } else {
-    //                 $total += $data[$temp]->nilai;
-    //                 $temp++;
-    //             }
-    //         }
-    //         array_push($totalKabKota, $total);
-    //     }
-
-    //     return $totalKabKot;
-    // }
-
     public function getData()
     {
         $jenisTabel = $this->request->getPost('jenisTable');
@@ -798,8 +763,6 @@ class TabelRingkasanController extends BaseController
         $komponen = $this->komponen->findAll();
         $kota = $this->wilayah->findAll();
         $wilayah = [];
-        // $kota_tabel14 = $this->wilayah->whereNotIn('id_wilayah', [3100])->findAll();
-
         if ($jenisTabel == "14") {
             $wilayah = $this->wilayah->whereNotIn('id_wilayah', [3100])->findAll();
         } else {
@@ -844,6 +807,7 @@ class TabelRingkasanController extends BaseController
             'dataRingkasan' => $dataRingkasan,
             'selectedPeriode' => $periode,
             'wilayah' => $wilayah,
+            'jenisTabel' => $jenisTabel,
         ];
 
         echo json_encode($data);

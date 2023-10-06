@@ -113,7 +113,7 @@
 
                                     <!-- judul tabel -->
                                     <div class="card-header">
-                                        <div class="row">
+                                        <div class="row" id="judulTable-container">
                                             <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                                         </div>
                                     </div>
