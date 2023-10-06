@@ -24,10 +24,10 @@
                                 <div class="row">
                                     <div class="col-auto form-group" id="dropdownTabelRingkasan">
                                         <select class="form-control" style="width: 100%; max-width: 600px" id="selectTableRingkasan">
-                                            <!-- <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option> -->
-                                            <option value="diskrepansi-ADHB" id="11" selected>Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
+                                            <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
+                                            <option value="diskrepansi-ADHB" id="11">Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
                                             <option value="diskrepansi-ADHK" id="12">Tabel 1.12. Diskrepansi PDRB ADHK Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
-                                            <option value="distribusi-persentase-PDRB-ADHB" id="13">Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota</option>
+                                            <option value="distribusi-persentase-PDRB-ADHB" id="13" selected>Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota</option>
                                             <option value="distribusi-persentase-PDRB-Total" id="14">Tabel 1.14. Distribusi Persentase PDRB Kabupaten Kota Terhadap Total Provinsi</option>
                                             <option value="perbandingan-pertumbuhan-Q-TO-Q" id="15">Tabel 1.15. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Q-TO-Q)</option>
                                             <option value="perbandingan-pertumbuhan-Y-ON-Y" id="16">Tabel 1.16. Perbandingan Pertumbuhan Ekonomi Provinsi DKI Jakarta dan 6 Kabupaten/Kota (Y-ON-Y)</option>
@@ -42,6 +42,11 @@
                                         </select>
                                     </div>
                                     <div class="col-auto align-items-center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-komponen">
+                                            Pilih Komponen
+                                        </button>
+                                    </div>
+                                    <div class="col-auto align-items-center">
                                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-periode">
                                             Pilih Periode
                                         </button>
@@ -49,6 +54,66 @@
                                 </div>
 
                                 <!-- filter end -->
+
+                                <!-- modal komponen -->
+                                <div class="modal fade" id="modal-komponen">
+                                    <div class="modal-dialog modal-komponen">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Komponen</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="komponen-checkboxes-container">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="0" value="0" checked>
+                                                    <label class="form-check-label" for="0">PDRB</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="1" value="1" checked>
+                                                    <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah Tangga</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="2" value="2" checked>
+                                                    <label class="form-check-label" for="2">2. Pengeluaran Konsumsi LNPRT</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="3" value="3" checked>
+                                                    <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="4" value="4" checked>
+                                                    <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="5" value="5" checked>
+                                                    <label class="form-check-label" for="5">5. Perubahan Inventori</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="6" value="6" checked>
+                                                    <label class="form-check-label" for="6">6. Ekspor Luar Negeri</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="7" value="7" checked>
+                                                    <label class="form-check-label" for="7">7. Impor Luar Negeri</label>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer d-flex justify-content-between">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilihan</button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Periode</a></li>
+                                                        <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
+                                                    </ul>
+                                                </div>
+                                                <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                    <button type="button" class="btn btn-success" data-dismiss="modal" id="simpan-komponen" onclick="loadData()">Simpan</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <!-- modal periode -->
                                 <div class="modal fade" id="modal-periode" tabindex="-1" aria-labelledby="modal-periodeLabel" aria-hidden="true">
@@ -92,7 +157,7 @@
                                 </div>
                                 <!-- /.modal periode-->
 
-                                <!-- TABEL ADHB -->
+                                <!-- TABEL 1.15 -->
                                 <!-- card-header adhb -->
                                 <div class="mt-2" style="border-top: 1px solid #ccc;">
                                     <!-- export -->
@@ -113,16 +178,16 @@
 
                                     <!-- judul tabel -->
                                     <div class="card-header">
-                                        <div class="row" id="judulTable-container">
+                                        <div class="row">
                                             <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /.card-header -->
 
-                                <div id="ringkasan-container" class="table-responsive text-nowrap diskrepansi" style="overflow-y: scroll; height: 400px; overflow-x:scroll; ">
+                                <div id="ringkasan-container" class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll; ">
+
                                 </div>
-                                <!-- tabel adhb end -->
                             </div>
                         </div>
                     </div>

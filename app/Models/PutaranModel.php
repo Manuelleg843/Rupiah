@@ -72,6 +72,38 @@ class PutaranModel extends Model
         return $query->get()->getResult();
     }
 
+    // get data final 
+    public function getDataFinal($idPDRB, $kota, $periode)
+    {
+        $builder = $this->db->table('putaran')
+            ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
+            ->select(['putaran.id_komponen', 'komponen_7.komponen', 'nilai', 'periode', 'id_wilayah', 'id_pdrb'])
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $idPDRB)
+            ->where('periode', $periode)
+            ->orderBy('periode')
+            ->orderBy('id_komponen');
+
+        return $builder->get()->getResult();
+    }
+
+    public function getDataFinalMod($idPDRB, $kota, $periode)
+    {
+        $putaranMax = $this->getPutaranTerakhirbyWilayah($kota, $periode);
+        $builder = $this->db->table('putaran')
+            ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
+            ->select(['putaran.id_komponen', 'komponen_7.komponen', 'nilai', 'periode', 'id_wilayah', 'id_pdrb'])
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $idPDRB)
+            ->where('periode', $periode)
+            ->where('putaran', $putaranMax)
+            ->orderBy('periode')
+            ->orderBy('id_komponen');
+
+        return $builder->get()->getResultObject();
+    }
+
+
     public function getDataHistory($idPDRB, $kota, $putaran, $periode)
     {
 
@@ -153,6 +185,13 @@ class PutaranModel extends Model
             ->distinct('periode')
             ->orderBy('tahun', 'desc');
         return $builder->get()->getResult();
+    }
+
+    public function getObject()
+    {
+        $builder = $this->db->table('putaran')
+            ->select();
+        return $builder->get()->getResultObject();
     }
 
     public function getTabel1($periode, $komponen)

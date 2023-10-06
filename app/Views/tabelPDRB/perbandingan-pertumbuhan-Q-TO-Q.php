@@ -127,7 +127,7 @@
                                             </div>
                                             <div class="modal-body" id="periode-checkboxes-container">
                                                 <form action="" class="p-2">
-                                                    <div id="checkboxes-container-year"></div>
+                                                    <div id="checkboxes-container-year" class="checkboxes-periode"></div>
                                                 </form>
                                             </div>
                                             <div class="modal-footer d-flex justify-content-between">
@@ -185,7 +185,7 @@
                                 </div>
                                 <!-- /.card-header -->
 
-                                <div id="pertumbuhanQ-container" class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll; ">
+                                <div id="tabel-container" class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll; ">
 
                                 </div>
                             </div>
