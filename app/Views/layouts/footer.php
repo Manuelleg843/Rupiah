@@ -55,6 +55,10 @@
 <script src="<?= base_url('/assets/jsgrid/jsgrid.min.js'); ?>"></script>
 <!-- Select2 -->
 <script src="<?= base_url('/assets/plugins/select2/js/select2.full.min.js'); ?>"></script>
+<!-- jsPDF -->
+<script src="<?= base_url('/assets/plugins/jspdf/jspdf.umd.min.js'); ?>"></script>
+<!-- jsPDF Autotable -->
+<script src="<?= base_url('/assets/plugins/jspdf-autotable/jspdf.plugin.autotable.min.js'); ?>"></script>
 <!-- beranda -->
 <script src="<?= base_url('/assets/js/beranda.js'); ?>"></script>
 <!-- tabelPDRB -->
@@ -84,7 +88,6 @@
 <script src="<?= base_url('/assets/js/monitoring.js'); ?>"></script>
 <!-- SweetAlert2 -->
 <script src="<?= base_url('/assets/plugins/sweetalert2/sweetalert2.min.js'); ?>"></script>
-
 <!-- custom script -->
 </body>
 

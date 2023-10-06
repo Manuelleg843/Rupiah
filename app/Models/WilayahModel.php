@@ -38,4 +38,11 @@ class WilayahModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getAll()
+    {
+        $builder = $this->db->table('wilayah')->select()->orderBy('id_wilayah', 'ASC');
+
+        return $builder->get()->getResultArray();
+    }
 }
