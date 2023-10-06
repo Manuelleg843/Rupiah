@@ -451,36 +451,16 @@ class PutaranModel extends Model
         return $builder->get()->getResult();
     }
 
-    public function get_data()
+    public function get_data_rilis_wilayah_periode($kota, $jenisPDRB, $periode) //cara buat otomatis satker
     {
+        $putaranMax = $this->getPutaranTerakhirPeriode($periode);
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['periode', 'putaran.id_komponen', 'komponen_7.komponen', 'putaran', 'id_wilayah', 'id_pdrb', 'tahun', 'nilai', 'periode'])
-            ->where('id_wilayah', '3100')
-            ->where('id_pdrb', '1')
-            ->where('periode', '2023Q1')
-            ->where('putaran', '1')
-            ->orderBy('id_komponen');
-        return $builder->get()->getResult();
-    }
-
-    public function getDataGabungan()
-    {
-        $builder = $this->db->table('putaran')
             ->select()
-            ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->where('id_pdrb', '1')
-            ->where('id_wilayah', '3100');
-        return $builder->get()->getResult();
-    }
-
-    public function get_data_2023Q1()
-    {
-        $builder = $this->db->table('putaran')
-            ->select('nilai,id_komponen')
-            ->where('id_pdrb', '1')
-            ->where('id_wilayah', '3100')
-            ->where('periode', '2023Q1')
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $jenisPDRB)
+            ->where('periode', $periode)
+            ->where('putaran', $putaranMax)
             ->orderBy('id_komponen');
         return $builder->get()->getResult();
     }

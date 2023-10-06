@@ -20,6 +20,14 @@ if (document.getElementById("checkboxes-container-current-year") != null) {
   generateTahunDropdownCurrentYear();
 }
 
+if (
+  document.getElementById("checkboxes-container-current-year-min2kuartal") !=
+  null
+) {
+  generateCheckboxesCurrentYearMin2Kuartal();
+  generateTahunDropdownCurrentYear();
+}
+
 if (document.getElementById("checkboxes-container-3-years") != null) {
   generateCheckboxes3Year();
 }
@@ -112,6 +120,70 @@ function generateCheckboxesCurrentYear() {
   quarters.splice(-popCount, popCount);
   const checkboxesContainerCurrentYear = document.getElementById(
     "checkboxes-container-current-year"
+  );
+
+  if (quarters.length == 4) {
+    quarters.push(year);
+  }
+
+  const row = document.createElement("div");
+  row.classList.add("row");
+
+  quarters.forEach((quarter) => {
+    const col = document.createElement("div");
+    col.classList.add("col");
+    col.classList.add("form-check", "form-check-inline");
+
+    const checkboxLabel = document.createElement("label");
+    checkboxLabel.classList.add("form-check-label");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = true;
+    checkbox.set;
+    checkbox.classList.add("form-check-input");
+
+    checkbox;
+
+    if (isNaN(quarter)) {
+      checkboxLabel.textContent = `${year}${quarter}`;
+      checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
+
+      checkbox.name = `${year}${quarter}`;
+      checkbox.id = `checkbox${year}${quarter}`;
+      checkbox.className = "checkbox-periode";
+      checkbox.value = `option${year}${quarter}`;
+      if (document.title == "Rupiah | Tabel Ringkasan") {
+        if (year == currentYear) {
+          if (i < currentQuarter) {
+            checkbox.checked = true;
+          }
+        }
+      }
+    } else {
+      checkboxLabel.textContent = `${quarter}`;
+      checkboxLabel.setAttribute("for", `checkbox${quarter}`);
+
+      checkbox.name = `${quarter}`;
+      checkbox.id = `checkbox${quarter}`;
+      checkbox.value = `option${quarter}`;
+      // checkbox.checked = true;
+    }
+
+    col.appendChild(checkbox);
+    col.appendChild(checkboxLabel);
+    row.appendChild(col);
+  });
+
+  checkboxesContainerCurrentYear.appendChild(row);
+}
+
+function generateCheckboxesCurrentYearMin2Kuartal() {
+  const year = currentYear;
+  popCount = 4 - Math.ceil(currentMonth / 3) + 2;
+  quarters.splice(-popCount, popCount);
+  const checkboxesContainerCurrentYear = document.getElementById(
+    "checkboxes-container-current-year-min2kuartal"
   );
 
   if (quarters.length == 4) {
@@ -374,8 +446,9 @@ function TerimaData() {
       let dataFloat = [];
       dataArray = Object.values(data);
       for (const element of dataArray) {
-        dataFloat.push(element.map((str) => parseFloat(str)));
+        dataFloat.push(element.map((str) => parseFloat(str).toFixed(2)));
       }
+      console.log(dataFloat);
       renderChart(dataFloat[0], dataFloat[1], dataFloat[2]);
     },
     error: function (error) {
@@ -383,6 +456,21 @@ function TerimaData() {
       console.error("Terjadi kesalahan:", error);
     },
   });
+}
+
+function numberFormat(
+  number,
+  decimals = 2,
+  decimalSeparator = ",",
+  thousandsSeparator = "."
+) {
+  number = parseFloat(number).toFixed(decimals);
+  number = number.toString().replace(".", decimalSeparator);
+
+  var parts = number.split(decimalSeparator);
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandsSeparator);
+
+  return parts.join(decimalSeparator);
 }
 
 function renderChart(dataY, dataQ, dataC) {

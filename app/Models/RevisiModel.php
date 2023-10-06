@@ -49,6 +49,20 @@ class RevisiModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    // get data by periode and wilayah
+    public function get_data_revisi_wilayah_periode($kota, $jenisPDRB, $periode) //cara buat otomatis satker
+    {
+        $putaranMax = $this->getPutaranTerakhirPeriode($periode);
+        $builder = $this->db->table('revisi')
+            ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
+            ->select()
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $jenisPDRB)
+            ->where('periode', $periode)
+            ->orderBy('id_komponen');
+        return $builder->get()->getResult();
+    }
+
     // get periode 
     public function getPeriode()
     {
@@ -110,7 +124,6 @@ class RevisiModel extends Model
             ->orderBy('id_komponen');
         return $builder->get()->getResult();
     }
-
 
     public function get_pdrb()
     {

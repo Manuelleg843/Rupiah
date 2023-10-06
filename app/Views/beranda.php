@@ -7,8 +7,8 @@
                 <div class="col-xs">
                     <h1 class="m-0"><?= $tajuk ?></h1>
                 </div>
-                <div class="col align-self-center">
-                    <span>*Angka Sementara</span>
+                <div class="col">
+                    <small id="detail_tutup" <?= ($isActive == 0) ? 'hidden' : '' ?>>*Angka Sementara</small>
                 </div>
             </div>
             <!-- /.row -->
@@ -212,7 +212,7 @@
                                     <option value="Triwulan">Triwulan</option>
                                     <option value="Tahunan"> Tahunan</option>
                                 </select>
-                                <select name="Jenis" id="Jenis" class="mr-3 py-2">
+                                <select style="width:80px;" name="Jenis" id="Jenis" class="mr-3 py-2">
                                     <!-- Untuk Tahunan -->
                                     <option value="Tahunan_YONY">Y-ON-Y</option>
                                     <!-- Untuk Triwulan -->

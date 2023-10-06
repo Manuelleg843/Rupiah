@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
 use App\Models\DiskrepansiModel;
+use App\Models\StatusModel;
 
 use function App\Helpers\is_logged_in;
 
@@ -175,6 +176,7 @@ class Beranda extends BaseController
             $hasil_C_TO_C = ($C_TO_C[0]->nilai + $C_TO_C_minus1[0]->nilai + $C_TO_C_minus2[0]->nilai + $C_TO_C_minus3[0]->nilai) - ($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai + $C_TO_C_Year_minus3[0]->nilai) / abs($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai + $C_TO_C_Year_minus3[0]->nilai) * 100;
         }
 
+        $statusModel = new StatusModel();
         $data = [
             'title' => 'Beranda',
             'tajuk' => 'Beranda',
@@ -186,6 +188,7 @@ class Beranda extends BaseController
             'hasil_Y_ON_Y' => $hasil_Y_ON_Y,
             'hasil_Q_TO_Q' => $hasil_Q_TO_Q,
             'hasil_C_TO_C' => $hasil_C_TO_C,
+            'isActive' => $statusModel->where('id_status', 1)->first()['is_active'],
         ];
 
         echo view('layouts/header', $data);
