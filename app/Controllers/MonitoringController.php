@@ -3,11 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\PutaranModel;
 use App\Models\StatusModel;
+use App\Models\WilayahModel;
 
 class MonitoringController extends BaseController
 {
+    protected $putaranModel;
     protected $statusModel;
+    protected $wilayahModel;
     protected $isActive;
     protected $tahun;
     protected $id_kuartal;
@@ -15,7 +19,9 @@ class MonitoringController extends BaseController
 
     public function __construct()
     {
+        $this->putaranModel = new PutaranModel();
         $this->statusModel = new StatusModel();
+        $this->wilayahModel = new WilayahModel();
 
         $this->isActive = $this->statusModel->where('id_status', 1)->first()['is_active'];
         $this->tahun = $this->statusModel->where('id_status', 1)->first()['tahun'];
@@ -33,18 +39,24 @@ class MonitoringController extends BaseController
             return redirect()->to('/login');
         };
 
-        //
         $data = [
             'title' => 'Rupiah | Monitoring',
             'tajuk' => 'Monitoring Putaran',
             'subTajuk' => '',
         ];
 
+        $wilayah = array_map('current', $this->wilayahModel->orderBy('id_wilayah', 'ASC')->select('wilayah')->findAll());
+        $wilayahId = array_map('current', $this->wilayahModel->orderBy('id_wilayah', 'ASC')->select('id_wilayah')->findAll());
+        $sudahUpload = $this->putaranModel->sudahUpload($this->tahun, $this->id_kuartal, $this->putaran, $wilayahId);
         $monitoring = [
             'isActive' => $this->isActive,
             'tahun' => $this->tahun,
             'id_kuartal' => $this->id_kuartal,
             'putaran' => $this->putaran,
+            'wilayah' => $wilayah,
+            'status' => $sudahUpload['status'],
+            'waktu_upload' => $sudahUpload['upload_at'],
+            'diupload_oleh' => $sudahUpload['upload_by'],
         ];
 
         echo view('layouts/header', $data);
@@ -78,11 +90,6 @@ class MonitoringController extends BaseController
             $this->statusModel->update(['id_status' => 1], ['is_active' => 0]);
         }
 
-        $data = [
-            'tahun' => $this->statusModel->where('id_status', 1)->first()['tahun'],
-            'id_kuartal' => $this->statusModel->where('id_status', 1)->first()['id_kuartal'],
-            'putaran' => $this->statusModel->where('id_status', 1)->first()['putaran']
-        ];
-        echo json_encode($data);
+        return redirect()->back();
     }
 }
