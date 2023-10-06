@@ -6,9 +6,6 @@ use App\Controllers\BaseController;
 use App\Models\PutaranModel;
 use App\Models\RevisiModel;
 use App\Models\Komponen7Model;
-use \Dompdf\Dompdf;
-use Dompdf\Options;
-use Exception;
 
 class DataUploadController extends BaseController
 {
@@ -71,47 +68,5 @@ class DataUploadController extends BaseController
             'selectedPeriode' => $periode
         ];
         echo json_encode($data);
-    }
-
-    public function eksporPDF()
-    {
-        require_once ROOTPATH . 'vendor/autoload.php';
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tableTitle']) && isset($_POST['tableContent'])) {
-            // Create a PDF with DOMPDF
-            $options = new Options();
-            $options->set('isHtml5ParserEnabled', true);
-            // $options->setDpi(300);
-            $dompdf = new Dompdf($options);
-
-            $styling = "<style>
-            #judulTable {
-                font-weight: bold;
-                font-size: 20px;
-            }
-
-            table {
-                border-collapse: collapse;
-                width: 100%;
-            }
-        
-            th {
-                border: 1px solid black;
-                text-align: center;
-            }
-
-            td {
-                border: 1px solid black;
-                text-align: left;
-            }
-            </style>";
-            $tableContent = $styling . $_POST['tableTitle'] . $_POST['tableContent'];
-            $dompdf->loadHtml($tableContent);
-            $dompdf->setPaper('A4', 'landscape');
-            $dompdf->render();
-
-            // Output the PDF to the client
-            $dompdf->stream('exported_table.pdf', ['Attachment' => 1]);
-            exit();
-        }
     }
 }

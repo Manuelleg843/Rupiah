@@ -227,6 +227,40 @@ function generateCheckboxes3Year() {
     quarters.pop();
   }
 }
+
+function generateCheckboxesYearOnly() {
+  const checkboxesContainerYearOnly = document.getElementById(
+    "checkboxes-container-year-only"
+  );
+
+  // Generate checkboxes for each year and quarter
+  const row = document.createElement("div");
+  row.classList.add("row");
+  for (let year = currentYear; year >= 2010; year--) {
+    const col = document.createElement("div");
+    col.classList.add("col");
+    col.classList.add("form-check", "form-check-inline");
+
+    const checkboxLabel = document.createElement("label");
+    checkboxLabel.classList.add("form-check-label");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("form-check-input");
+
+    checkboxLabel.textContent = `${year}`;
+    checkboxLabel.setAttribute("for", `checkbox${year}`);
+
+    checkbox.name = `${year}`;
+    checkbox.id = `checkbox${year}`;
+    checkbox.value = `option${year}`;
+
+    col.appendChild(checkbox);
+    col.appendChild(checkboxLabel);
+    row.appendChild(col);
+    checkboxesContainerYearOnly.appendChild(row);
+  }
+}
 // ...sampe sini.
 
 // Fungsi generate menu dropdown untuk tiap tahun,...
@@ -676,18 +710,33 @@ $(document).ready(function () {
         option: "<option value='" + this.value + "'>" + this.text + "</option>",
       };
     });
-  $("#Jangka")
-    .change(function () {
-      $("#Jenis").children("option").remove();
-      var addoptarr = [];
-      for (i = 0; i < optarray.length; i++) {
-        if (optarray[i].value.indexOf($(this).val()) > -1) {
-          addoptarr.push(optarray[i].option);
-        }
+  $("#Jangka").change(function () {
+    $("#Jenis").children("option").remove();
+    var addoptarr = [];
+    for (i = 0; i < optarray.length; i++) {
+      if (optarray[i].value.indexOf($(this).val()) > -1) {
+        addoptarr.push(optarray[i].option);
       }
-      $("#Jenis").html(addoptarr.join(""));
-    })
-    .change();
+    }
+    $("#Jenis").html(addoptarr.join(""));
+
+    let checkboxContainer;
+    if (document.getElementById("checkboxes-container")) {
+      checkboxContainer = document.getElementById("checkboxes-container");
+      checkboxContainer.innerHTML = "";
+      checkboxContainer.id = "checkboxes-container-year-only";
+      generateCheckboxesYearOnly();
+      generateTahunDropdown();
+    } else if (document.getElementById("checkboxes-container-year-only")) {
+      checkboxContainer = document.getElementById(
+        "checkboxes-container-year-only"
+      );
+      checkboxContainer.innerHTML = "";
+      checkboxContainer.id = "checkboxes-container";
+      generateCheckboxes();
+      generateTahunDropdown();
+    }
+  });
 });
 
 // MENAMPILKAN NAMA FILE YANG SUDAH TERPILIH (UPLOAD ANGKA PDRB)

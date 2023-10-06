@@ -33,7 +33,25 @@ function loadData() {
     tableSelected =
       tableRingkasan.options[tableRingkasan.selectedIndex].textContent;
     jenisTable = tableRingkasan.options[tableRingkasan.selectedIndex].id;
-  }
+    let checkboxContainer;
+    if (["15", "17", "19", "20", "21", "22", "23"].includes(jenisTable)) {
+      if (document.getElementById("checkboxes-container-year")) {
+        checkboxContainer = document.getElementById("checkboxes-container-year");
+        checkboxContainer.innerHTML = "";
+        checkboxContainer.id = "checkboxes-container";
+        generateCheckboxes();
+        generateTahunDropdown();
+      }
+    } else {
+      if(document.getElementById("checkboxes-container")){
+        checkboxContainer = document.getElementById("checkboxes-container");
+        checkboxContainer.innerHTML = "";
+        checkboxContainer.id = "checkboxes-container-year";
+        generateCheckboxes();
+        generateTahunDropdown();
+      }
+    }
+  };
   if (tableUpload) {
     tableSelected = tableUpload.options[tableUpload.selectedIndex].textContent;
     jenisPDRB = tableUpload.options[tableUpload.selectedIndex].id;
@@ -56,11 +74,9 @@ function loadData() {
   var selectedPeriode = [];
 
   if (submitPeriode) {
-    $('.periode-checkboxes-container input[type="checkbox"]:checked').each(
-      function () {
-        selectedPeriode.push($(this).attr("name"));
-      }
-    );
+    $('.checkboxes-periode input[type="checkbox"]:checked').each(function () {
+      selectedPeriode.push($(this).attr('name'));
+    });
   }
 
   if (submitKomponen) {
@@ -178,7 +194,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
     type: "POST",
     url: "/tabelPDRB/tabelRingkasan/getData/",
     data: {
-      jenisPDRB: jenisTable,
+      jenisTable: jenisTable,
       periode: selectedPeriode,
       komponen: selectedKomponen,
     },
@@ -188,11 +204,15 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
         case "11":
           console.log(data);
           break;
-        case "15":
+        case '13':
           console.log(data);
-          // renderTable_ringkasan15(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
+          // renderTable_ringkasan(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
           break;
-        case "17":
+        case '15':
+          console.log(data['dataRingkasan']);
+          renderTable_ringkasan(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
+          break;
+        case '17':
           console.log(data);
           // renderTable_ringkasan15(data['dataRingkasan'], data['komponen'], data['selectedPeriode'], data['wilayah']);
           break;
@@ -205,9 +225,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
   });
 }
 
-function kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode) {
-  console.log("1:" + jenisPDRB, "2:" + kota, "3:" + selectedPeriode);
-
+function kirimDataTabelUpload (jenisPDRB, kota, selectedPeriode) {
   $.ajax({
     type: "POST",
     url: "/uploadData/angkaPDRB/getData",
@@ -218,7 +236,6 @@ function kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode) {
     },
     dataType: "json",
     success: function (data) {
-      console.log(data);
       renderTable(data["dataPDRB"], data["selectedPeriode"], data["komponen"]);
     },
     error: function (error) {
@@ -435,9 +452,9 @@ function renderTablePerKota(data, selectedPeriode, komponen) {
   container.appendChild(table);
 }
 
-function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
-  // container table
-  var container = document.getElementById("pertumbuhanQ-container");
+function renderTable_ringkasan(data, komponen, selectedPeriode, wilayah, jenisTabel) {
+  // container table  
+  var container = document.getElementById("ringkasan-container");
 
   // delete table if there is content inside it
   container.innerHTML = "";
@@ -483,7 +500,6 @@ function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
   var tbody = document.createElement("tbody");
   var temp = -1;
   var totalColumn = headerRow2.childElementCount + 1;
-  console.log(totalColumn);
   // loop through json to create tbody
   for (var i = 0; i < komponen.length; i++) {
     // menghitung banyak kolom pada tabel
@@ -507,6 +523,7 @@ function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
     }
 
     for (var col = 0; col < totalColumn; col++) {
+      console.log(totalColumn);
       var cell = document.createElement("td");
 
       if (col == 0) {
@@ -532,13 +549,33 @@ function renderTable_ringkasan15(data, komponen, selectedPeriode, wilayah) {
       } else {
         temp++;
         cell.style = "text-align: right;";
-        cell.classList.add("w-50");
-        cell.innerHTML = numberFormat(data[0].nilai);
+        cell.classList.add("col-6");
+        if (document.title == "Rupiah | Upload Data") {
+          cell.innerHTML = data[col - 1][i]
+            ? numberFormat(data[col - 1][i].nilai)
+            : "";
+        } else {
+          if (jenisTabel == "15" || jenisTabel == "16" || jenisTabel == "17") {
+            if (data[temp].nilai > 5 || data[temp].nilai < -5) {
+              cell.classList.add("text-danger");
+              cell.innerHTML = data[temp].nilai
+                ? `*${numberFormat(data[temp].nilai)}`
+                : "";
+            } else {
+              cell.innerHTML = data[temp].nilai
+                ? numberFormat(data[temp].nilai)
+                : "";
+            }
+          }
+        }
+
+        console.log(typeof data[temp].nilai);
       }
       row.appendChild(cell);
     }
     tbody.appendChild(row);
   }
+  
 
   table.appendChild(tbody);
   // memasukkan tabel ke view
@@ -636,56 +673,28 @@ function exportData(fileType) {
 // ekspor pdf
 if (eksporButton != null) {
   eksporButton.addEventListener("click", function () {
-    let table = document.getElementById("PDRBTable").outerHTML; // mengambil tabel yang sudah ter-generate
-    let title = judulTable.outerHTML; // mengambil judul tabel
-    console.log(table);
+    let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17]
 
-    $.ajax({
-      type: "POST",
-      url: "/uploadData/eksporPDF",
-      data: { tableTitle: title, tableContent: table },
-      xhrFields: {
-        responseType: "blob", // to avoid binary data being mangled on charset conversion
+    let doc = new jspdf.jsPDF()
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'bold')
+    doc.text(judulTable.textContent, 14, 10)
+    doc.autoTable({ 
+      html: '#PDRBTable',
+      columnStyles: { 
+        0: { cellWidth: 100 }, 
       },
-      success: function (blob, status, xhr) {
-        var filename = "";
-        var disposition = xhr.getResponseHeader("Content-Disposition");
-        if (disposition && disposition.indexOf("attachment") !== -1) {
-          var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-          var matches = filenameRegex.exec(disposition);
-          if (matches != null && matches[1])
-            filename = matches[1].replace(/['"]/g, "");
-        }
-
-        if (typeof window.navigator.msSaveBlob !== "undefined") {
-          window.navigator.msSaveBlob(blob, filename); // IE workaround for "HTML7007:One or more blob URLs..."
-        } else {
-          var URL = window.URL || window.webkitURL;
-          var downloadUrl = URL.createObjectURL(blob);
-
-          if (filename) {
-            var a = document.createElement("a");
-            if (typeof a.download === "undefined") {
-              window.location.href = downloadUrl;
-            } else {
-              a.href = downloadUrl;
-              a.download = filename;
-              document.body.appendChild(a);
-              a.click();
-            }
-          } else {
-            window.location.href = downloadUrl;
-          }
-
-          setTimeout(function () {
-            URL.revokeObjectURL(downloadUrl);
-          }, 100);
+      theme: 'grid',
+      didParseCell: function(hookData) {
+        if (komponenIndex.includes(hookData.row.index)) {
+          hookData.cell.styles.fontStyle = 'bold';
         }
       },
-      error: function (error) {
-        console.error("Terjadi kesalahan:", error);
-      },
-    });
+      horizontalPageBreak: true,
+      horizontalPageBreakRepeat: 0 
+    })
+    let filename = judulTable.textContent + '.pdf'
+    doc.save(filename)
   });
 }
 
@@ -781,10 +790,7 @@ if (document.getElementById("selectTableRingkasan") != null) {
   document
     .getElementById("selectTableRingkasan")
     .addEventListener("change", function () {
-      var tableSelected = this.value;
-      tableSelected == "diskrepansi-ADHB"
-        ? (window.location.href = "/tabelPDRB/tabelRingkasan/")
-        : (window.location.href = "/tabelPDRB/tabelRingkasan/" + tableSelected);
+      loadData();
     });
 }
 
