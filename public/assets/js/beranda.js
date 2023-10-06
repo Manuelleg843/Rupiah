@@ -65,8 +65,10 @@ function generateCheckboxes() {
         checkbox.id = `checkbox${year}${quarter}`;
         checkbox.value = `option${year}${quarter}`;
 
-
-        if (document.title == "Rupiah | Tabel Ringkasan") {
+        if (
+          document.title == "Rupiah | Tabel Ringkasan" ||
+          document.title == "Rupiah | Tabel Per Kota"
+        ) {
           if (year == currentYear) {
             if (i == currentQuarter - 1) {
               checkbox.checked = true;
@@ -96,7 +98,6 @@ function generateCheckboxes() {
         Q4yearBefore.checked = true;
         yearBefore.checked = true;
       }
-
     }
 
     if (checkboxesContainerYear == null) {
@@ -134,7 +135,7 @@ function generateCheckboxesCurrentYear() {
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = true;
-    checkbox.set
+    checkbox.set;
     checkbox.classList.add("form-check-input");
 
     checkbox;
@@ -145,7 +146,7 @@ function generateCheckboxesCurrentYear() {
 
       checkbox.name = `${year}${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
-      checkbox.className = 'checkbox-periode';
+      checkbox.className = "checkbox-periode";
       checkbox.value = `option${year}${quarter}`;
       if (document.title == "Rupiah | Tabel Ringkasan") {
         if (year == currentYear) {
