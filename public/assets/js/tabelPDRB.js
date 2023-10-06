@@ -23,6 +23,8 @@ function loadData() {
   var tableJenisPDRB = document.getElementById("selectTableHistory");
   var tableRingkasan = document.getElementById("selectTableRingkasan");
   var tableUpload = document.getElementById("selectTableUpload");
+  let tablePerkota = document.getElementById("selectTablePerkota");
+
   if (tableJenisPDRB) {
     tableSelected =
       tableJenisPDRB.options[tableJenisPDRB.selectedIndex].textContent;
@@ -32,7 +34,6 @@ function loadData() {
     tableSelected =
       tableRingkasan.options[tableRingkasan.selectedIndex].textContent;
     jenisTable = tableRingkasan.options[tableRingkasan.selectedIndex].id;
-
     let checkboxContainer;
     if (["15", "17", "19", "20", "21", "22", "23"].includes(jenisTable)) {
       if (document.getElementById("checkboxes-container-year")) {
@@ -63,6 +64,11 @@ function loadData() {
   }
   if (selectPutaran) {
     putaran = selectPutaran.value;
+  }
+  if (tablePerkota) {
+    tableSelected =
+      tablePerkota.options[tablePerkota.selectedIndex].textContent;
+    jenisPDRB = tablePerkota.value;
   }
 
   var selectedKomponen = [];
@@ -121,8 +127,12 @@ function loadData() {
       kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen);
       break;
     case "Rupiah | Upload Data":
-      judulTable.textContent=tableSelected + " - " + kotaSelected;
+      judulTable.textContent = tableSelected + " - " + kotaSelected;
       kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode);
+      break;
+    case "Rupiah | Tabel Per Kota":
+      judulTable.textContent = tableSelected + " - " + kotaSelected;
+      kirmdataPerKota(jenisPDRB, kota, selectedPeriode, selectedKomponen);
       break;
   }
 }
@@ -136,7 +146,7 @@ function kirimData(
 ) {
   $.ajax({
     type: "POST",
-    url: '/tabelPDRB/tabelHistoryPutaran/getData',
+    url: "/tabelPDRB/tabelHistoryPutaran/getData",
     data: {
       jenisPDRB: jenisPDRB,
       kota: kota,
@@ -151,6 +161,33 @@ function kirimData(
     error: function (error) {
       // Handle kesalahan jika ada
       console.error("Terjadi kesalahan:", error.message);
+    },
+  });
+}
+
+function kirmdataPerKota(jenisPDRB, kota, selectedPeriode, selectedKomponen) {
+  console.info(selectedPeriode);
+  $.ajax({
+    type: "POST",
+    url: "/tabelPDRB/getDataPerKota",
+    data: {
+      jenisPDRB: jenisPDRB,
+      kota: kota,
+      selectedPeriode: selectedPeriode,
+      komponen: selectedKomponen,
+    },
+    dataType: "json",
+    success: function (data) {
+      renderTablePerKota(
+        data["dataPDRB"],
+        data["selectedPeriode"],
+        data["komponen"]
+      );
+      console.log(data["dataPDRB"]);
+    },
+    error: function (error) {
+      // Handle kesalahan jika ada
+      console.error("Terjadi kesalahan:", error);
     },
   });
 }
@@ -288,6 +325,108 @@ function kirimDataTabelUpload (jenisPDRB, kota, selectedPeriode) {
   });
 }
 
+function renderTablePerKota(data, selectedPeriode, komponen) {
+  // container table
+  const container = document.getElementById("tabelPerkota");
+
+  // delete table if there is content inside it
+  container.innerHTML = "";
+
+  // create elemen tabel
+  const table = document.createElement("table");
+  table.id = "tabelPerkota";
+  table.classList.add("table", "table-bordered", "table-hover");
+
+  // create table header
+  const thead = document.createElement("thead");
+  thead.classList.add("text-center", "table-primary", "sticky-top");
+  const headerRow = document.createElement("tr");
+
+  // var headerRow = table.insertRow();
+  const headerKomponen = document.createElement("th");
+  headerKomponen.colSpan = "2";
+  headerKomponen.rowSpan = "2";
+  headerKomponen.innerHTML = "Komponen";
+  headerRow.appendChild(headerKomponen);
+
+  for (let i = 0; i < selectedPeriode.length; i++) {
+    const columnName = selectedPeriode[i];
+    const headerCell = document.createElement("th");
+    headerCell.innerHTML = columnName;
+    headerRow.appendChild(headerCell);
+  }
+
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  // create table body
+  const tbody = document.createElement("tbody");
+  let temp = -1;
+  const totalColumn = headerRow.childElementCount;
+  // loop through json to create tbody
+  for (var i = 0; i < komponen.length; i++) {
+    // menghitung banyak kolom pada tabel
+
+    const id_komponen = komponen[i].id_komponen;
+
+    // insert row
+    const row = document.createElement("tr");
+    if (
+      id_komponen == 1 ||
+      id_komponen == 2 ||
+      id_komponen == 3 ||
+      id_komponen == 4 ||
+      id_komponen == 5 ||
+      id_komponen == 6 ||
+      id_komponen == 7 ||
+      id_komponen == 8 ||
+      id_komponen == 9
+    ) {
+      row.style = "font-weight: bold;";
+    }
+
+    for (let col = 0; col < totalColumn; col++) {
+      const cell = document.createElement("td");
+
+      if (col == 0) {
+        cell.colSpan = "2";
+        if (
+          id_komponen != 1 &&
+          id_komponen != 2 &&
+          id_komponen != 3 &&
+          id_komponen != 4 &&
+          id_komponen != 5 &&
+          id_komponen != 6 &&
+          id_komponen != 7 &&
+          id_komponen != 8 &&
+          id_komponen != 9
+        ) {
+          cell.classList = "pl-5";
+        }
+        if (id_komponen == 9) {
+          cell.innerHTML = komponen[i].komponen;
+        } else {
+          cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
+        }
+      } else {
+        temp++;
+        cell.style = "text-align: right;";
+        cell.classList.add("w-50");
+        // cell.innerHTML = numberFormat(data[col - 1][i].nilai);
+        cell.innerHTML = data[col - 1][i]
+          ? numberFormat(data[col - 1][i].nilai)
+          : "";
+      }
+      row.appendChild(cell);
+    }
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(tbody);
+  // memasukkan tabel ke view
+  container.appendChild(table);
+}
+
 // render table
 function renderTable(data, selectedPeriode, komponen) {
   // container table
@@ -379,7 +518,7 @@ function renderTable(data, selectedPeriode, komponen) {
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-        cell.innerHTML = numberFormat(data[temp].nilai);
+          cell.innerHTML = numberFormat(data[temp].nilai);
         }
       }
 
@@ -469,7 +608,6 @@ function renderTable_ringkasan(
     }
 
     for (var col = 0; col < totalColumn; col++) {
-      console.log(totalColumn);
       var cell = document.createElement("td");
 
       if (col == 0) {
@@ -575,7 +713,6 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   var tbody = document.createElement("tbody");
   var temp = -1;
   var totalColumn = headerRow2.childElementCount + 1;
-
   // loop through json to create tbody
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
@@ -623,7 +760,26 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
         temp++;
         cell.style = "text-align: right;";
         cell.classList.add("col-6");
-        cell.innerHTML = numberFormat(data[temp].nilai);
+        if (document.title == "Rupiah | Upload Data") {
+          cell.innerHTML = data[col - 1][i]
+            ? numberFormat(data[col - 1][i].nilai)
+            : "";
+        } else {
+          if (jenisTabel == "15" || jenisTabel == "16" || jenisTabel == "17") {
+            if (data[temp].nilai > 5 || data[temp].nilai < -5) {
+              cell.classList.add("text-danger");
+              cell.innerHTML = data[temp].nilai
+                ? `*${numberFormat(data[temp].nilai)}`
+                : "";
+            } else {
+              cell.innerHTML = data[temp].nilai
+                ? numberFormat(data[temp].nilai)
+                : "";
+            }
+          }
+        }
+
+        console.log(typeof data[temp].nilai);
       }
       row.appendChild(cell);
     }
@@ -856,7 +1012,19 @@ if (document.getElementById("selectTableHistory") != null) {
     });
 }
 
-if(document.title=="Rupiah | Upload Data"){
+if (document.title == "Rupiah | Upload Data") {
+  window.addEventListener("load", function () {
+    loadData();
+  });
+}
+
+if (document.title == "Rupiah | Tabel Per Kota") {
+  window.addEventListener("load", function () {
+    loadData();
+  });
+}
+
+if (document.title == "Rupiah | Tabel Ringkasan") {
   window.addEventListener("load", function () {
     loadData();
   });
@@ -866,10 +1034,10 @@ if(document.title=="Rupiah | Upload Data"){
 if (selectKota != null) {
   // Menampilkan judul modal sesuai wilayah yang terpilih
   if (kotaJudulModal != null && judulModal != null) {
-  kotaJudulModal.setAttribute("value", "3100");
-  selectKota.addEventListener("change", function () {
-    judulModal.textContent = "Upload PDRB - " + this.selectedOptions[0].text;
-    kotaJudulModal.setAttribute("value", this.value);
+    kotaJudulModal.setAttribute("value", "3100");
+    selectKota.addEventListener("change", function () {
+      judulModal.textContent = "Upload PDRB - " + this.selectedOptions[0].text;
+      kotaJudulModal.setAttribute("value", this.value);
     });
   }
   selectKota.addEventListener("change", function () {

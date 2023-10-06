@@ -6,12 +6,14 @@ use App\Controllers\BaseController;
 use App\Models\DiskrepansiModel;
 use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
+use App\Models\RevisiModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use \Dompdf\Dompdf;
 use Dompdf\Options;
 use Exception;
 use Hermawan\DataTables\DataTable;
+use PhpOffice\PhpSpreadsheet\Shared\Trend\Trend;
 use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -24,12 +26,14 @@ class TabelPDRBController extends BaseController
     protected $nilaiDiskrepansi;
     protected $komponen;
     protected $putaran;
+    protected $revisi;
 
     public function __construct()
     {
         $this->nilaiDiskrepansi = new DiskrepansiModel();
         $this->komponen = new Komponen7Model();
         $this->putaran = new PutaranModel();
+        $this->revisi = new RevisiModel();
     }
 
     public function index()
@@ -69,20 +73,150 @@ class TabelPDRBController extends BaseController
 
     public function viewTabelPerKota()
     {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
         //
         $data = [
             'title' => 'Rupiah | Tabel Per Kota',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel PDRB Per Kota (PKRT 7 Komponen)',
-            'komponen' => $this->putaran->get_data(),
+            'komponen' => $this->komponen->get_data(),
         ];
 
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('tabelPDRB/tabelPerKota');
+        echo view('tabelPDRB/tabelPerKota', $data);
         echo view('layouts/footer');
     }
+
+    private function countTable3($periodes, $jenisPDRB, $kota)
+    {
+        $dataPDRBDistribusiPersentase = [];
+        foreach ($periodes as $periode) {
+            // Tempat data disimpan
+            $dataPDRBDistribusiPersentasePeriodei = [];
+
+            // pengecekan apakah data sudah final atau belum
+            if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
+                // mengambil data final (mengambil dari tabel revisi)
+                $dataPDRB = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
+
+                // menghitung total PDRB
+                $totalPDRB = $dataPDRB[17]->nilai;
+
+                // looping untuk menghitung persentase
+                foreach ($dataPDRB as $komponen) {
+                    $komponen->nilai = $komponen->nilai / $totalPDRB;
+                    array_push($dataPDRBDistribusiPersentasePeriodei, $komponen);
+                }
+
+                // memasukkan data ke array
+                array_push($dataPDRBDistribusiPersentase, $dataPDRBDistribusiPersentasePeriodei);
+            } else {
+                // mengambil putaran terakhir dari periode (mengambil dari tabel putaran)
+                $putaran = $this->putaran->getPutaranTerakhirPeriode($periode);
+
+                // mengambil data final berdasarkan putaran yang telah di ambil (mengambil dari tabel putaran)
+                $dataPDRB = $this->putaran->getDataFinal($jenisPDRB, $kota, $putaran, $periode);
+
+                // menghitung total PDRB
+                $totalPDRB = $dataPDRB[17]->nilai;
+
+                // looping untuk menghitung persentase
+                foreach ($dataPDRB as $komponen) {
+                    $komponen->nilai = $komponen->nilai / $totalPDRB;
+                    array_push($dataPDRBDistribusiPersentase, $dataPDRBDistribusiPersentasePeriodei);
+                }
+            }
+        }
+
+        return $dataPDRBDistribusiPersentase;
+    }
+
+    public function getDataTabelPerKota()
+    {
+        $jenisPDRB = $this->request->getPost('jenisPDRB');
+        $kota = $this->request->getPost('kota');
+        $periodes = $this->request->getPost('selectedPeriode');
+        sort($periodes);
+
+
+        switch ($jenisPDRB) {
+            case '1':
+                # code...
+                foreach ($periodes as $periode) {
+                    if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
+                        $dataPDRB[] = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
+                    } else {
+                        $putaran = $this->putaran->getPutaranTerakhirPeriode($periode);
+                        $dataPDRB[] = $this->putaran->getDataFinal($jenisPDRB, $kota, $putaran, $periode);
+                    }
+                }
+                break;
+            case '2':
+                # code...
+                foreach ($periodes as $periode) {
+                    if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
+                        $dataPDRB[] = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
+                    } else {
+                        $putaran = $this->putaran->getPutaranTerakhirPeriode($periode);
+                        $dataPDRB[] = $this->putaran->getDataFinal($jenisPDRB, $kota, $putaran, $periode);
+                    }
+                }
+                break;
+            case '3':
+                $dataPDRB = $this->countTable3($periodes, '1', $kota);
+                break;
+            case '4':
+                # code...
+                break;
+            case '5':
+                # code...
+                break;
+            case '6':
+                # code...
+                break;
+            case '7':
+                # code...
+                break;
+            case '8':
+                # code...
+                break;
+            case '9':
+                # code...
+                break;
+            case '10':
+                # code...
+                break;
+            case '11':
+                # code...
+                break;
+            case '12':
+                # code...
+                break;
+            default:
+                # code...
+                break;
+        }
+
+
+
+        $data = [
+            'dataPDRB' => $dataPDRB,
+            'komponen' => $this->komponen->get_data(),
+            'selectedPeriode' => $periodes,
+            'wilayah' => $kota,
+        ];
+
+
+        echo json_encode($data);
+    }
+
+
+
 
     public function getData()
     {

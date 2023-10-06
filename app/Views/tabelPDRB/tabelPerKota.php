@@ -21,9 +21,8 @@
                         <!-- filter-->
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-auto form-group">
-                                    <select class="form-control" style="width: 100%;" id="selectTable">
-                                        <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
+                                <div class="col-auto form-group" onchange="loadData()">
+                                    <select class="form-control" style="width: 100%;" id="selectTablePerkota">
                                         <option value="1">Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option value="2">Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option value="3">Tabel 3.3. Tabel Distribusi Persentase PDRB ADHB</option>
@@ -38,22 +37,22 @@
                                         <option value="12">Tabel 3.12. Sumber Pertumbuhan Ekonomi (C-TO-C)</option>
                                     </select>
                                 </div>
-                                <div class="col-auto form-group">
+                                <div class="col-auto form-group" onchange="loadData()">
                                     <select class="form-control" style="width: 100%;" id="selectKota">
-                                        <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                        <option value="Provinsi DKI Jakarta">Provinsi DKI Jakarta</option>
-                                        <option value="Kepulauan Seribu">Kepulauan Seribu</option>
-                                        <option value="Jakarta Pusat">Jakarta Pusat</option>
-                                        <option value="Jakarta Utara">Jakarta Utara</option>
-                                        <option value="Jakarta Barat">Jakarta Barat</option>
-                                        <option value="Jakarta Selatan">Jakarta Selatan</option>
-                                        <option value="Jakarta Timur">Jakarta Timur</option>
+                                        <option value="<?= session()->get('id_satker'); ?>" hidden><?= session()->get('satker'); ?></option>
+                                        <?php if (session()->get('id_satker') == 3100) { ?>
+                                            <option value="3100">Provinsi DKI Jakarta</option>
+                                            <option value="3101">Kepulauan Seribu</option>
+                                            <option value="3173">Jakarta Pusat</option>
+                                            <option value="3175">Jakarta Utara</option>
+                                            <option value="3174">Jakarta Barat</option>
+                                            <option value="3171">Jakarta Selatan</option>
+                                            <option value="3172">Jakarta Timur</option>
+                                        <?php } else { ?>
+                                            <option value="3100">Provinsi DKI Jakarta</option>
+                                            <option value="<?= session()->get('id_satker'); ?>"><?= session()->get('satker'); ?></option>
+                                        <?php } ?>
                                     </select>
-                                </div>
-                                <div class="col-auto align-items-center">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-komponen">
-                                        Pilih Komponen
-                                    </button>
                                 </div>
                                 <div class="col-auto align-items-center">
                                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-periode">
@@ -62,81 +61,6 @@
                                 </div>
                             </div>
                             <!-- filter end-->
-
-                            <!-- modal komponen -->
-                            <div class="modal fade" id="modal-komponen">
-                                <div class="modal-dialog modal-komponen">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Komponen</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="1" value="1">
-                                                <label class="form-check-label" for="1">1. Pengeluaran Konsumsi Rumah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="2" value="2">
-                                                <label class="form-check-label" for="2">2. Pengeluaran Konsumsi LNPRT</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="3" value="3">
-                                                <label class="form-check-label" for="3">3. Pengeluaran Konsumsi Pemerintah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="4" value="4">
-                                                <label class="form-check-label" for="4">4. Pembentukan Modal Tetap Bruto</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="5" value="5">
-                                                <label class="form-check-label" for="5">5. Perubahan Inventori</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="6" value="6">
-                                                <label class="form-check-label" for="6">6. Ekspor Luar Negeri</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="7" value="7">
-                                                <label class="form-check-label" for="7">7. Impor Luar Negeri</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="8" value="8">
-                                                <label class="form-check-label" for="8">8. Net Ekspor Antar Daerah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="9" value="9">
-                                                <label class="form-check-label" for="9">9. Ekspor Antar Daerah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="10" value="10">
-                                                <label class="form-check-label" for="10">10. Impor Antar Daerah</label>
-                                            </div>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="11" value="11">
-                                                <label class="form-check-label" for="11">11. PDRB</label>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer d-flex justify-content-between">
-                                            <div class="dropdown">
-                                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilihan</button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="javascript:checkboxSemua()">Pilih Semua</a></li>
-                                                    <li><a class="dropdown-item" href="#" id="hapusPilihan">Hapus Pilihan</a></li>
-                                                </ul>
-                                            </div>
-                                            <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- /.modal-content -->
-                                </div>
-                                <!-- /.modal-dialog -->
-                            </div>
-                            <!-- end modal komponen -->
 
                             <!-- modal periode -->
                             <div class="modal fade" id="modal-periode" tabindex="-1" aria-labelledby="modal-periodeLabel" aria-hidden="true">
@@ -148,11 +72,12 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
-                                            <form action="" class="p-2">
-                                                <div id="checkboxes-container-year"></div>
-                                            </form>
-                                        </div>
+                                        <form action="" class="p-2" id="selectPeriode" onload="loadData()">
+                                            <div class="modal-body">
+                                                <div id="checkboxes-container-year" class="periode-checkboxes-container">
+                                                </div>
+                                            </div>
+                                        </form>
                                         <div class="modal-footer d-flex justify-content-between">
                                             <div class="dropdown">
                                                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Periode</button>
@@ -171,8 +96,9 @@
                                                     <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
                                                 </ul>
                                             </div>
-                                            <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                <button type="button" class="btn btn-success" data-dismiss="modal">Simpan</button>
+                                            <div>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="loadData()" id="simpan-periode">Simpan</button>
                                             </div>
                                         </div>
                                     </div>
@@ -208,58 +134,10 @@
                             </div>
                             <!-- /.card-header -->
 
-                            <!-- card body -->
-                            <div class="table-responsive" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-                                <table id="TablePerKota" class="table table-bordered table-hover ">
-                                    <thead class="text-center table-primary sticky-top">
-                                        <tr>
-                                            <th colspan="2">Komponen</th>
-                                            <th>2023Q1</th>
-                                            <th>2023Q2</th>
-                                            <th>2023Q3</th>
-                                            <th>2023Q4</th>
-                                            <th>2023</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        foreach ($komponen as $row) :
-                                            $id = $row->id_komponen;
-                                            $komponen = $row->komponen;
-                                        ?>
-                                            <tr>
-                                                <td colspan="2" <?php
-                                                                $bold = ($id == 1 || $id == 2 || $id == 3 || $id == 4 || $id == 5 || $id == 6 || $id == 7 || $id == 8 || $id == 9) ? " style='font-weight: bold;'" : "class='pl-5'";
-                                                                echo $bold;
-                                                                ?>>
-                                                    <?php
-                                                    if ($id == 9) {
-                                                        echo $komponen;
-                                                    } else {
-                                                        echo "            " . $id . ". " . $komponen;
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <td>108.532.731,62</td>
-                                                <td>108.532.731,62</td>
-                                                <td>108.532.731,62</td>
-                                                <td>108.532.731,62</td>
-                                                <td>108.532.731,62</td>
-                                            </tr>
-                                        <?php endforeach ?>
-                                        <!-- <tr>
-                                            <td colspan="2" style="font-weight: bold;">1. Pengeluaran Konsumsi Rumah Tangga</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                            <td>0,00</td>
-                                        </tr> -->
 
-                                    </tbody>
-                                </table>
+                            <div id="tabelPerkota" class="table-responsive d-flex text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+
                             </div>
-                            <!-- /.card-body -->
                         </div>
 
                     </div>
@@ -268,3 +146,9 @@
         </div>
     </section>
     <!-- /.content -->
+
+    <script>
+        window.addEventListener('load', function() {
+            loadData();
+        });
+    </script>
