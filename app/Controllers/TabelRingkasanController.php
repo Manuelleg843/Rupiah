@@ -296,71 +296,89 @@ class TabelRingkasanController extends BaseController
     }
 
     // 3. Distribusi Persentase PDRB ADHB 
-    private function ringkasan_tabel3($obj,  $komponen, $kota, $periode)
+    private function ringkasan_tabel3($obj, $kota, $periode)
     {
 
-        $id_wilayah = [];
-        foreach ($kota as $value) {
-            array_push($id_wilayah, $value['id_wilayah']);
-        }
-        sort($id_wilayah);
+        // sort data by periode ascending
+        $dataCurrent = $this->sortData($obj, 3, true);
 
-        $data = [];
-        foreach ($id_wilayah as $value) {
-            $arr = $this->filter_id_wilayah($obj, $value);
-            $data = array_merge($data, $arr);
-        }
+        // memisahkan data komponen 9 
+        $dataKomp9 = $this->filter_id_komponen($dataCurrent, '9');
 
-        $data = $this->filter_id_pdrb($data, "1");
-
-        $dataSelected = [];
-        foreach ($periode as $value) {
-            $arr = $this->filter_periode($data, $value);
-            $dataSelected = array_merge($dataSelected, $arr);
+        $nilaiKomp9 = [];
+        foreach ($dataKomp9 as $data) {
+            $nilaiKomp9[] = $data->nilai;
         }
 
-        $dataSelected = $this->sortData($dataSelected, 3, true);
-        // UNTUK SETIAP PERIODE, AMBIL DATA PUTARAN MAX NYA AJA
-        $dataSelected = $this->putaranmax($dataSelected);
 
-        $pdrb_total = $this->filter_id_komponen($dataSelected, "9");
+        // MENGHITUNG persentase distribusi
         $dataOutput = [];
-        // return $pdrb_total;
+        $i = 0;
+        $j = 0;
+        $dataNew = [];
+        foreach ($dataCurrent as $data) {
 
-        // DI FOREACH UNTUK TIAP TAHUNQ
-        foreach ($this->allTahunQ as $value) {
-            $dataTahun = $this->filter_periode($dataSelected, $value);
-            $dataTahunTotal = $this->filter_periode($pdrb_total, $value); // GUARANTEE 1 KALAU DATABASENYA BENAR
-
-            // HARUSNYA GINI APPROACH YANG BENER, TAPI GATAU KENAPA SALAH
-            // $nilaiTahun = $dataTahunTotal[0]->nilai;
-
-            $nilaiTahun = 1;
-            // foreach dikit ga ngaruh, orang cuma 1 nilai
-            foreach ($dataTahunTotal as $value) {
-                $nilaiTahun = $value->nilai;
+            // mengecek apakah sudah 18 iterasi, kalo ya maka $j++, karena $dataKomp9Before harus berganti ke next komponen
+            if ($i != 0) {
+                if (($i % 18) == 0) {
+                    $j++;
+                }
             }
 
-            // for each aja 
-            $dataUra = [];
-
-            $dataUra = array_filter($dataTahun, function ($item) use ($nilaiTahun) {
-                return $item->nilai /= $nilaiTahun;
-            });
-
-            $dataOutput = array_merge($dataOutput, $dataUra);
+            $dataNew = $data;
+            $dataNew->nilai = $dataNew->nilai / $nilaiKomp9[$j];
+            $dataOutput[] = $dataNew;
+            $i++;
         }
 
-        $dataOutput = $this->sortData($dataOutput, 3, true);
-        $dataOutput = $this->sortData($dataOutput, 2);
+        $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
 
+        return $dataOutput;
+    }
+
+    // ini masih belum bener 
+    // 4. Distribusi PDRB kota terhadap provinsi 
+    private function ringkasan_tabel4($obj, $kota, $periode)
+    {
+        // sort data by periode ascending
+        $dataCurrent = $this->sortData($obj, 3, true);
+
+        //   memisahkan data provinsi dan data kota 
+        $dataKota = $this->filter_id_wilayah($dataCurrent, '3100', true);
+        $dataProv = $this->filter_id_wilayah($dataCurrent, '3100');
+
+        $nilaiProv = [];
+        foreach ($dataProv as $data) {
+            $nilaiProv[] = $data->nilai;
+        }
+
+        // return $dataKota;
+
+        // menghitung nilai distribusi 
+        $dataOutput = [];
+        $i = 0;
+        $dataNew = [];
+        foreach ($dataKota as $data) {
+
+            $dataNew = $data;
+            $dataNew->nilai = $dataNew->nilai / $nilaiProv[$i] * 100;
+            $dataOutput[] = $dataNew;
+
+
+            $i == sizeof($nilaiProv) - 1 ? $i = 0 :  $i++;;
+        }
+
+        $dataOutput = $this->sortData($dataOutput, 3);
+        $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
 
         return $dataOutput;
     }
 
     // 5. Pertumbuhan PDRB ADHK (Q-TO-Q)
-    private function ringkasan_tabel5($obj, $komponen, $kota, $periode)
+    private function ringkasan_tabel5($obj, $kota, $periode)
     {
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3, true);
@@ -389,13 +407,13 @@ class TabelRingkasanController extends BaseController
 
         // MENGHITUNG NILAI PERTUMBUHAN (DATA OUTPUT)
         $dataOutput = [];
-        $pointer = 0;
+        $i = 0;
         $dataNew = [];
-        foreach ($dataCurrent as $value) {
-            $dataNew = $value;
-            $dataNew->nilai = (($dataNew->nilai  - $dataBefore[$pointer]->nilai) * 100) / abs($dataBefore[$pointer]->nilai);
+        foreach ($dataCurrent as $data) {
+            $dataNew = $data;
+            $dataNew->nilai = (($dataNew->nilai  - $dataBefore[$i]->nilai) * 100) / abs($dataBefore[$i]->nilai);
             $dataOutput[] = $dataNew;
-            $pointer++;
+            $i++;
         }
 
         $dataOutput = $this->sortData($dataOutput, 3);
@@ -406,7 +424,7 @@ class TabelRingkasanController extends BaseController
     }
 
     // 6. Pertumbuhan PDRB ADHK (Y-ON-Y)
-    private function ringkasan_tabel6($obj, $komponen, $kota, $periode)
+    private function ringkasan_tabel6($obj, $kota, $periode)
     {
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3, true);
@@ -432,13 +450,13 @@ class TabelRingkasanController extends BaseController
 
         // MENGHITUNG NILAI PERTUMBUHAN (DATA OUTPUT)
         $dataOutput = [];
-        $pointer = 0;
+        $i = 0;
         $dataNew = [];
-        foreach ($dataCurrent as $value) {
-            $dataNew = $value;
-            $dataNew->nilai = (($dataNew->nilai  - $dataBefore[$pointer]->nilai) * 100) / abs($dataBefore[$pointer]->nilai);
+        foreach ($dataCurrent as $data) {
+            $dataNew = $data;
+            $dataNew->nilai = (($dataNew->nilai  - $dataBefore[$i]->nilai) * 100) / abs($dataBefore[$i]->nilai);
             $dataOutput[] = $dataNew;
-            $pointer++;
+            $i++;
         }
 
         $dataOutput = $this->sortData($dataOutput, 3);
@@ -447,6 +465,297 @@ class TabelRingkasanController extends BaseController
 
         return $dataOutput;
     }
+
+    // 8. Indeks Implisit PDRB 
+    private function ringkasan_tabel8($adhb, $adhk, $kota, $periode)
+    {
+        // sort data by periode ascending
+        $dataADHB = $this->sortData($adhb, 3, true);
+        $dataADHK = $this->sortData($adhk, 3, true);
+
+        // menghitung nilai indeks implisit
+        $dataOutput = [];
+        $i = 0;
+        $dataNew = [];
+        foreach ($dataADHB as $data) {
+            $dataNew = $data;
+            $dataNew->nilai = $dataNew->nilai / $dataADHK[$i]->nilai;
+            $dataOutput[] = $dataNew;
+            $i++;
+        }
+        $dataOutput = $this->sortData($dataOutput, 3);
+        $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
+
+        return $dataOutput;
+    }
+
+    // 9. Pertumbuhan indeks implisit (Q-T-Q)
+    private function ringkasan_tabel9($adhb, $adhk, $kota, $periode)
+    {
+        // sort data by periode ascending
+        $dataADHB = $this->sortData($adhb, 3, true);
+        $dataADHK = $this->sortData($adhk, 3, true);
+
+        // membuat array untuk periode sebelumnya 
+        $periodeBeforeADHB = [];
+        $periodeBeforeADHK = [];
+        $QBefore = 0;
+        foreach ($periode as $value) {
+            if (strlen($value) == 6) {
+                $Q = substr($value, -1);
+                $tahun =  substr($value, 0, 4);
+                if ($Q == 1) {
+                    $tahunBefore = $tahun - 1;
+                    $QBefore = $tahunBefore . 'Q4';
+                } else {
+                    $Qmin1 = $Q - 1;
+                    $QBefore = $tahun . 'Q' . $Qmin1;
+                }
+                array_push($periodeBeforeADHB, $QBefore);
+                array_push($periodeBeforeADHK, $QBefore);
+            }
+        }
+
+        // get data by periodeBefore 
+        $dataBeforeADHB = $this->getAllData($periodeBeforeADHB, '1', $kota);
+        $dataBeforeADHK = $this->getAllData($periodeBeforeADHK, '2', $kota);
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 3, true);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 3, true);
+
+        // Menghitung indeks implisit tiap periode
+        $periodeCurrent = [];
+        $periodeBefore = [];
+        $i = 0;
+        $dataNew = [];
+        $dataNewPeriodeBefore = [];
+        foreach ($dataADHB as $data) {
+            // menghitung indeks implisit current periode 
+            $dataNew = $data;
+            $dataNew->nilai = $dataNew->nilai / $dataADHK[$i]->nilai;
+            $periodeCurrent[] = $dataNew;
+
+            // menghitung indeks implisit periode sebelumnya 
+            $dataNewPeriodeBefore = $dataBeforeADHB[$i];
+            $dataNewPeriodeBefore->nilai = $dataNewPeriodeBefore->nilai / $dataBeforeADHK[$i]->nilai;
+            $periodeBefore[] = $dataNewPeriodeBefore;
+
+            $i++;
+        }
+
+        // menghitung nilai pertumbuhan indeks implisit
+        $dataOutput = [];
+        $i = 0;
+        $temp = [];
+        foreach ($periodeCurrent as $data) {
+            $temp = $data;
+            $temp->nilai = (($temp->nilai  - $periodeBefore[$i]->nilai) * 100) / abs($periodeBefore[$i]->nilai);
+            $dataOutput[] = $temp;
+            $i++;
+        }
+
+        $dataOutput = $this->sortData($dataOutput, 3);
+        $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
+
+        return $dataOutput;
+    }
+
+    // 10. Pertumbuhan indeks implisit (Y-ON-Y)
+    private function ringkasan_tabel10($adhb, $adhk, $kota, $periode)
+    {
+        // sort data by periode ascending
+        $dataADHB = $this->sortData($adhb, 3, true);
+        $dataADHK = $this->sortData($adhk, 3, true);
+
+        // membuat array untuk periode sebelumnya 
+        $periodeBeforeADHB = [];
+        $periodeBeforeADHK = [];
+        $QBefore = 0;
+        foreach ($periode as $value) {
+            if (strlen($value) == 6) {
+                $Q = substr($value, -1);
+                $tahun =  substr($value, 0, 4);
+                $tahunBefore = $tahun - 1;
+                $QBefore = $tahunBefore . 'Q' . $Q;
+            } else {
+                $QBefore = $value - 1 . "";
+            }
+
+            array_push($periodeBeforeADHB, $QBefore);
+            array_push($periodeBeforeADHK, $QBefore);
+        }
+
+        // get data by periodeBefore 
+        $dataBeforeADHB = $this->getAllData($periodeBeforeADHB, '1', $kota);
+        $dataBeforeADHK = $this->getAllData($periodeBeforeADHK, '2', $kota);
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 3, true);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 3, true);
+
+        // Menghitung indeks implisit tiap periode
+        $periodeCurrent = [];
+        $periodeBefore = [];
+        $i = 0;
+        $dataNew = [];
+        $dataNewPeriodeBefore = [];
+        foreach ($dataADHB as $data) {
+            // menghitung indeks implisit current periode 
+            $dataNew = $data;
+            $dataNew->nilai = $dataNew->nilai / $dataADHK[$i]->nilai;
+            $periodeCurrent[] = $dataNew;
+
+            // menghitung indeks implisit periode sebelumnya 
+            $dataNewPeriodeBefore = $dataBeforeADHB[$i];
+            $dataNewPeriodeBefore->nilai = $dataNewPeriodeBefore->nilai / $dataBeforeADHK[$i]->nilai;
+            $periodeBefore[] = $dataNewPeriodeBefore;
+
+            $i++;
+        }
+
+        // menghitung nilai pertumbuhan indeks implisit
+        $dataOutput = [];
+        $i = 0;
+        $temp = [];
+        foreach ($periodeCurrent as $data) {
+            $temp = $data;
+            $temp->nilai = (($temp->nilai  - $periodeBefore[$i]->nilai) * 100) / abs($periodeBefore[$i]->nilai);
+            $dataOutput[] = $temp;
+            $i++;
+        }
+
+        $dataOutput = $this->sortData($dataOutput, 3);
+        $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
+
+        return $dataOutput;
+    }
+
+    // 11. Sumber pertumbuhan (Q-T-Q) 
+    private function ringkasan_tabel11($obj, $kota, $periode)
+    {
+        // sort data by periode ascending
+        $dataCurrent = $this->sortData($obj, 3, true);
+
+        // membuat array untuk periode sebelumnya 
+        $periodeBefore = [];
+        $QBefore = 0;
+        foreach ($periode as $value) {
+            if (strlen($value) == 6) {
+                $Q = substr($value, -1);
+                $tahun =  substr($value, 0, 4);
+                if ($Q == 1) {
+                    $tahunBefore = $tahun - 1;
+                    $QBefore = $tahunBefore . 'Q4';
+                } else {
+                    $Qmin1 = $Q - 1;
+                    $QBefore = $tahun . 'Q' . $Qmin1;
+                }
+                array_push($periodeBefore, $QBefore);
+            }
+        }
+
+        // get data by periodeBefore 
+        $dataBefore = $this->getAllData($periodeBefore, '2', $kota);
+        $dataBefore = $this->sortData($dataBefore, 3, true);
+
+        // memisahkan data komponen 9 
+        $dataKomp9Before = $this->filter_id_komponen($dataBefore, '9');
+
+        $nilaiKomp9 = [];
+        foreach ($dataKomp9Before as $data) {
+            $nilaiKomp9[] = $data->nilai;
+        }
+
+        // return $dataCurrent;
+        // menghitung sumber pertumbuhan 
+        $dataOutput = [];
+        $i = 0;
+        $j = 0;
+        $dataNew = [];
+        foreach ($dataCurrent as $data) {
+
+            // mengecek apakah sudah 18 iterasi, kalo ya maka $j++, karena $dataKomp9Before harus berganti ke next komponen
+            if ($i != 0) {
+                if (($i % 18) == 0) {
+                    $j++;
+                }
+            }
+
+            $dataNew = $data;
+            $dataNew->nilai = (($dataNew->nilai  - $dataBefore[$i]->nilai) * 100) / abs($nilaiKomp9[$j]);
+            $dataOutput[] = $dataNew;
+            $i++;
+        }
+
+        $dataOutput = $this->sortData($dataOutput, 3);
+        $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
+
+
+        return $dataOutput;
+    }
+
+    // 12. Sumber pertumbuhan (Y-ON-Y) 
+    public function ringkasan_tabel12($obj, $kota, $periode)
+    {
+        // sort data by periode ascending
+        $dataCurrent = $this->sortData($obj, 3, true);
+
+        // membuat array untuk periode sebelumnya 
+        $periodeBefore = [];
+        $QBefore = 0;
+        foreach ($periode as $value) {
+            if (strlen($value) == 6) {
+                $Q = substr($value, -1);
+                $tahun =  substr($value, 0, 4);
+                $tahunBefore = $tahun - 1;
+                $QBefore = $tahunBefore . 'Q' . $Q;
+            } else {
+                $QBefore = $value - 1 . "";
+            }
+            array_push($periodeBefore, $QBefore);
+        }
+        // get data by periodeBefore 
+        $dataBefore = $this->getAllData($periodeBefore, '2', $kota);
+        $dataBefore = $this->sortData($dataBefore, 3, true);
+
+        // memisahkan data komponen 9 
+        $dataKomp9Before = $this->filter_id_komponen($dataBefore, '9');
+
+        $nilaiKomp9 = [];
+        foreach ($dataKomp9Before as $data) {
+            $nilaiKomp9[] = $data->nilai;
+        }
+
+        // menghitung sumber pertumbuhan 
+        $dataOutput = [];
+        $i = 0;
+        $j = 0;
+        $dataNew = [];
+        foreach ($dataCurrent as $data) {
+
+            // mengecek apakah sudah 18 iterasi, kalo ya maka $j++, karena $dataKomp9Before harus berganti ke next komponen
+            if ($i != 0) {
+                if (($i % 18) == 0) {
+                    $j++;
+                }
+            }
+
+            $dataNew = $data;
+            $dataNew->nilai = (($dataNew->nilai  - $dataBefore[$i]->nilai)  * 100) / abs($nilaiKomp9[$j]);
+            $dataOutput[] = $dataNew;
+            $i++;
+        }
+
+        $dataOutput = $this->sortData($dataOutput, 3);
+        $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
+
+
+        return $dataOutput;
+    }
+
+
 
     // 1. TABEL DISKREPANSI PDRB AHDB 
     // private function ringkasan_tabel1($periode, $komponen)
@@ -481,8 +790,6 @@ class TabelRingkasanController extends BaseController
     //     return $totalKabKot;
     // }
 
-
-
     public function getData()
     {
         $jenisTabel = $this->request->getPost('jenisTable');
@@ -490,6 +797,15 @@ class TabelRingkasanController extends BaseController
         sort($periode);
         $komponen = $this->komponen->findAll();
         $kota = $this->wilayah->findAll();
+        $wilayah = [];
+        // $kota_tabel14 = $this->wilayah->whereNotIn('id_wilayah', [3100])->findAll();
+
+        if ($jenisTabel == "14") {
+            $wilayah = $this->wilayah->whereNotIn('id_wilayah', [3100])->findAll();
+        } else {
+            $wilayah = $this->wilayah->getAll();
+        }
+
 
         switch ($jenisTabel) {
             case "11":
@@ -498,21 +814,36 @@ class TabelRingkasanController extends BaseController
             case "13":
                 $dataRingkasan = $this->ringkasan_tabel3($this->getAllData($periode, '1', $kota), $komponen, $kota, $periode);
                 break;
+            case "14":
+                $dataRingkasan = $this->ringkasan_tabel4($this->getAllData($periode, '1', $kota), $komponen, $kota, $periode);
+                break;
             case "15":
-                $dataRingkasan = $this->ringkasan_tabel5($this->getAllData($periode, '2', $kota), $komponen, $kota, $periode);
+                $dataRingkasan = $this->ringkasan_tabel5($this->getAllData($periode, '2', $kota), $kota, $periode);
                 break;
             case "16":
-                $dataRingkasan = $this->ringkasan_tabel6($this->getAllData($periode, '2', $kota), $komponen, $kota, $periode);
+                $dataRingkasan = $this->ringkasan_tabel6($this->getAllData($periode, '2', $kota), $kota, $periode);
                 break;
             case "18":
-                $dataRingkasan = $this->ringkasan_tabel8($this->getAllData($periode, '2', $kota), $komponen, $kota, $periode);
+                $dataRingkasan = $this->ringkasan_tabel8($this->getAllData($periode, '1', $kota), $this->getAllData($periode, '2', $kota), $kota, $periode);
+                break;
+            case "19":
+                $dataRingkasan = $this->ringkasan_tabel9($this->getAllData($periode, '1', $kota), $this->getAllData($periode, '2', $kota), $kota, $periode);
+                break;
+            case "20":
+                $dataRingkasan = $this->ringkasan_tabel10($this->getAllData($periode, '1', $kota), $this->getAllData($periode, '2', $kota), $kota, $periode);
+                break;
+            case "21":
+                $dataRingkasan = $this->ringkasan_tabel11($this->getAllData($periode, '2', $kota), $kota, $periode);
+                break;
+            case "22":
+                $dataRingkasan = $this->ringkasan_tabel12($this->getAllData($periode, '2', $kota), $kota, $periode);
                 break;
         };
         $data = [
             'komponen' => $this->komponen->get_data(),
             'dataRingkasan' => $dataRingkasan,
             'selectedPeriode' => $periode,
-            'wilayah' => $this->wilayah->getAll(),
+            'wilayah' => $wilayah,
         ];
 
         echo json_encode($data);

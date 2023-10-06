@@ -121,39 +121,6 @@
                                 <!-- /.card-header -->
 
                                 <div id="ringkasan-container" class="table-responsive text-nowrap diskrepansi" style="overflow-y: scroll; height: 400px; overflow-x:scroll; ">
-                                    <!-- <table id="example1" class="table table-bordered table-hover">
-                                        <thead class="text-center table-primary sticky-top">
-                                            <tr>
-                                                <th colspan="2" rowspan="2" style="vertical-align: middle;">Komponen</th>
-                                                <th colspan="3">2023Q1</th>
-                                                <th colspan="3">2023Q2</th>
-                                                <th colspan="3">2023Q3</th>
-                                                <th colspan="3">2023Q4</th>
-                                                <th colspan="3">2023</th>
-                                            </tr>
-                                            <tr>
-                                                <th>Diskrepansi</th>
-                                                <th>DKI Jakarta</th>
-                                                <th>Total Kab/Kota</th>
-                                                <th>Diskrepansi</th>
-                                                <th>DKI Jakarta</th>
-                                                <th>Total Kab/Kota</th>
-                                                <th>Diskrepansi</th>
-                                                <th>DKI Jakarta</th>
-                                                <th>Total Kab/Kota</th>
-                                                <th>Diskrepansi</th>
-                                                <th>DKI Jakarta</th>
-                                                <th>Total Kab/Kota</th>
-                                                <th>Diskrepansi</th>
-                                                <th>DKI Jakarta</th>
-                                                <th>Total Kab/Kota</th>
-                                            </tr>
-
-                                        </thead>
-                                        <tbody>
-
-                                        </tbody>
-                                    </table> -->
                                 </div>
                                 <!-- tabel adhb end -->
                             </div>
