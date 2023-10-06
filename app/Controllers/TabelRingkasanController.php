@@ -7,8 +7,8 @@ use PDO;
 use App\Models\DiskrepansiModel;
 use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
+use App\Models\RevisiModel;
 use App\Models\WilayahModel;
-
 use function PHPSTORM_META\type;
 
 class TabelRingkasanController extends BaseController
@@ -18,6 +18,7 @@ class TabelRingkasanController extends BaseController
     protected $komponen;
     protected $putaran;
     protected $wilayah;
+    protected $revisiModel;
     protected $tumbal;
     protected $allData;
     protected $allTahunQ;
@@ -32,11 +33,14 @@ class TabelRingkasanController extends BaseController
         $this->komponen = new Komponen7Model();
         $this->putaran = new PutaranModel();
         $this->wilayah = new WilayahModel();
+        $this->revisiModel = new RevisiModel();
         $allData = $this->putaran->findAll();
 
-        // ID_PUTARAN UNIQUE
-        $periodeUnik =  array_unique(array_column($allData, 'periode'));
-        $this->allTahunQ = $periodeUnik;
+        // periode UNIQUE
+        // $periodeUnik =  array_unique(array_column($allData, 'periode'));
+        // $this->allTahunQ = $periodeUnik;
+        $this->allTahunQ = array_unique(array_column($allData, 'periode'));
+
 
         // periode  ONLY TAHUN OR ONLY QUARTAL
         $this->allTahunQ_OnlyTahun = [];
@@ -53,13 +57,16 @@ class TabelRingkasanController extends BaseController
 
         // TAHUN FOR FILTER TAHUNAN
         // $this->allTahunQ_OnlyTahunForFilterTahunan = array_unique(array_column($obj, 'tahun'));
-        $tahunUnik = array_unique(array_column($allData, 'tahun'));
-        $this->allTahunQ_OnlyTahunForFilterTahunan = $tahunUnik;
+        // $tahunUnik = array_unique(array_column($allData, 'tahun'));
+        // $this->allTahunQ_OnlyTahunForFilterTahunan = $tahunUnik;
+        $this->allTahunQ_OnlyTahunForFilterTahunan = array_unique(array_column($allData, 'tahun'));
 
         // ID_KOMPONEN UNIQUE
         // $this->allKomponen = array_unique(array_column($obj, 'id_komponen'));
-        $komponenUnik = array_unique(array_column($allData, 'id_komponen'));
-        $this->allKomponen = $komponenUnik;
+        // $komponenUnik = array_unique(array_column($allData, 'id_komponen'));
+        // $this->allKomponen = $komponenUnik;
+        // sort($this->allKomponen);
+        $this->allKomponen = array_unique(array_column($allData, 'id_komponen'));
         sort($this->allKomponen);
     }
 
@@ -93,20 +100,49 @@ class TabelRingkasanController extends BaseController
         echo view('layouts/footer');
     }
 
-    public function getAllData()
+    // get data from database. JenisPDRB = 1 => ADHB, 2 => ADHK. 
+    public function getAllData($periode, $jenisPDRB, $kota)
     {
-        $data = $this->putaran->findAll();
-        return $data;
+        // get data dari database 
+        $dataPDRB = [];
+        $dataObjKota = [];
+        foreach ($periode as $p) {
+            foreach ($kota as $k) {
+                if ($this->revisiModel->where('periode', $p)->where('id_pdrb', $jenisPDRB)->where('id_wilayah', $k['id_wilayah'])->countAllResults() > 0) {
+                    $dataObj = $this->revisiModel->getDataFinalMod($jenisPDRB, $k['id_wilayah'], $p);
+                } else {
+                    $dataObj = $this->putaran->getDataFinalMod($jenisPDRB, $k['id_wilayah'], $p);
+                }
+                $dataObjKota = array_merge($dataObjKota, $dataObj);
+            }
+        }
+        return $dataObjKota;
     }
 
     // sort data 
-    public function sortData($data, $kode)
+    public function sortData($data, $kode, $desc = false)
     {
+
+        if ($desc) {
+            usort($data, function ($a, $b) use ($kode) {
+                if ($kode == 1) { // 1 IS SORT BY periode
+                    return strcmp($b->periode, $a->periode);
+                } else if ($kode == 2) { // 2 IS SORT BY ID_KOMPONEN
+                    return strcmp($b->id_komponen, $a->id_komponen);
+                } else if ($kode == 3) { // 3 IS SORT BY ID_WILAYAH
+                    return strcmp($b->id_wilayah, $a->id_wilayah);
+                }
+            });
+        }
+
+
         usort($data, function ($a, $b) use ($kode) {
             if ($kode == 1) { // 1 IS SORT BY periode
-                return strcmp($a['periode'], $b['periode']);
+                return strcmp($a->periode, $b->periode);
             } else if ($kode == 2) { // 2 IS SORT BY ID_KOMPONEN
-                return strcmp($a['id_putaran'], $b['id_putaran']);
+                return strcmp($a->id_komponen, $b->id_komponen);
+            } else if ($kode == 3) { // 3 IS SORT BY ID_WILAYAH
+                return strcmp($a->id_wilayah, $b->id_wilayah);
             }
         });
 
@@ -118,45 +154,27 @@ class TabelRingkasanController extends BaseController
     {
         if ($exclude) {
             return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item['periode'] != $id);
+                return ($item->periode != $id);
             });
         }
 
         return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item['periode'] == $id);
+            return ($item->periode == $id);
         });
     }
-    // private function filter_periode($data, $id, $exclude = false)
-    // {
-    //     if (!is_array($id)) {
-    //         $id = [$id];
-    //     }
 
-    //     if ($exclude) {
-    //         return $filteredArray = array_filter($data, function ($item) use ($id) {
-    //             return !in_array($item['periode'], $id);
-    //         });
-    //     }
-
-
-    //     return $filteredArray = array_filter($data, function ($item) use ($id) {
-    //         return in_array($item['periode'], $id);
-    //     });
-
-    //     
-    // }
 
     // FILTER id_kuartal (PERIODE KUARTAL BERAPA) : MISAL 1 , 5(TAHUN KESELURUHAN)
     private function filter_id_kuartal($data, $id, $exclude = false)
     {
         if ($exclude) {
             return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item['id_kuartal'] != $id);
+                return ($item->id_kuartal != $id);
             });
         }
 
         return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item['id_kuartal'] == $id);
+            return ($item->id_kuartal == $id);
         });
     }
 
@@ -165,12 +183,12 @@ class TabelRingkasanController extends BaseController
     {
         if ($exclude) {
             return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item['id_komponen'] != $id);
+                return ($item->id_komponen != $id);
             });
         }
 
         return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item['id_komponen'] == $id);
+            return ($item->id_komponen == $id);
         });
     }
 
@@ -179,13 +197,18 @@ class TabelRingkasanController extends BaseController
     {
         if ($exclude) {
             return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item['id_wilayah'] != $id);
+                return ($item->id_wilayah != $id);
             });
         }
 
-        return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item['id_wilayah'] == $id);
-        });
+        $filteredArray = [];
+        foreach ($data as $item) {
+            if (isset($item->id_wilayah) && $item->id_wilayah == $id) {
+                $filteredArray[] = $item;
+            }
+        }
+
+        return $filteredArray;
     }
 
     // FILTER id_pdrb (ADHB / ADHK) : MISAL 1 (adhb),2 (adhk)
@@ -193,43 +216,24 @@ class TabelRingkasanController extends BaseController
     {
         if ($exclude) {
             return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item['id_pdrb'] != $id);
+                return ($item->id_pdrb != $id);
             });
         }
 
         return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item['id_pdrb'] == $id);
+            return ($item->id_pdrb == $id);
         });
     }
 
-    // FILTER tahun : MISAL 2017
-    // private function filter_tahun($data, $id, $exclude = false)
-    // {
-    //     if (!is_array($id)) {
-    //         $id = [$id]; // Ubah $id menjadi array jika belum berupa array
-    //     }
-
-    //     if ($exclude) {
-    //         return $filteredArray = array_filter($data, function ($item) use ($id) {
-    //             return ($item['tahun !'] = $id);
-    //         });
-    //     }
-
-    //     return $filteredArray = array_filter($data, function ($item) use ($id) {
-    //         return in_array($item['tahun'], $id); // Filter data yang ADA dalam array $id
-    //     });
-    // }
-
     private function filter_tahun($data, $id, $exclude = false)
     {
-        // return $data;
         if ($exclude) {
             return $filteredArray = array_filter($data, function ($item) use ($id) {
                 return ($item->tahun != $id);
             });
         }
 
-        return array_filter($data, function ($item) use ($id) {
+        return $filteredArray = array_filter($data, function ($item) use ($id) {
             return ($item->tahun == $id);
         });
     }
@@ -239,13 +243,22 @@ class TabelRingkasanController extends BaseController
     {
         if ($exclude) {
             return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item['putaran'] != $id);
+                return ($item->putaran != $id);
             });
         }
 
-        return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item['putaran'] == $id);
-        });
+        $filteredArray = [];
+        foreach ($data as $item) {
+            $key = $item->periode . '_' . $item->id_wilayah;
+
+            // Memeriksa apakah nilai putaran sama dengan nilai maksimum yang sesuai
+            if ($item->putaran == $id) {
+                // Jika ya, masukkan data ke dalam array hasil filter
+                $filteredArray[] = $item;
+            }
+        }
+
+        return $filteredArray;
     }
 
     // mencari putaran terakhir di tiap periode 
@@ -267,204 +280,194 @@ class TabelRingkasanController extends BaseController
         return $this->filter_putaran($data, $putaranMax);
     }
 
-    // 1. TABEL DISKREPANSI PDRB AHDB 
-    private function ringkasan_tabel1($periode, $komponen)
+    private function putaranmax($obj)
     {
-        $idWilayah = $this->wilayah->findAll();
-        $selectedKomponen = $this->komponen->getById($komponen);
-        $namaKomponen = [];
-        $komponenArr = [];
-        foreach ($selectedKomponen as $value) {
-            array_push($komponenArr, $value['id_komponen']);
-            array_push($namaKomponen, $value['komponen']);
-        }
-        $data = $this->putaran->getTabel1($periode, $komponenArr);
-
-        // hitung diskrepansi 
-        // 1. sum total kab/kota
-        $totalKabKot = [];
-        $temp = 0;
-        foreach ($selectedKomponen as $value) {
-            $total = 0;
-            for ($j = 0; $j < sizeof($idWilayah) - 1; $j++) {
-                if ($data[$temp]->id_wilayah == "3100") {
-                    $temp++;
-                } else {
-                    $total += $data[$temp]->nilai;
-                    $temp++;
-                }
+        $data = [];
+        $putaranMax = [];
+        foreach ($obj as $item) {
+            $key = $item->periode . '-' . $item->id_wilayah;
+            if (!isset($putaranMax[$key])) {
+                $putaranMax[$key] = $item->putaran;
+            } else {
+                $putaranMax[$key] = max($putaranMax[$key], $item->putaran);
             }
-
-            array_push($totalKabKota, $total);
         }
-
-        return $namaKomponen;
+        $data = $this->filter_putaran($obj, $putaranMax);
     }
 
-    // 5. Pertumbuhan PDRB ADHK (Y-ON-Y) 
-    private function ringkasan_tabel5($obj, $periode)
+    // 3. Distribusi Persentase PDRB ADHB 
+    private function ringkasan_tabel3($obj,  $komponen, $kota, $periode)
     {
-        $data = $this->filter_id_pdrb($obj, "2");
 
-        // Y-Y artinya hanya menghitung periode kuartal dalam tahunan saja, total tahun di exclude (? Need to be clarify)
-        $data = $this->filter_id_kuartal($data, "5", true);
+        $id_wilayah = [];
+        foreach ($kota as $value) {
+            array_push($id_wilayah, $value['id_wilayah']);
+        }
+        sort($id_wilayah);
 
-        // $data = $this->filter_periode($data, $periode);
-
-        // DI FOREACH UNTUK TIAP TAHUNQ_OnlyQ (karena kuartal)
-        // FOR EACH DIMULAI DARI 1 KARENA YA UNTUK MENGHITUNG TAHUNQ (CORRECTED : REVERSE)
-        $dataOutput = [];
-        for ($i = sizeof($this->allTahunQ_OnlyQ) - 1; $i > 3; $i--) {
-
-            $dataTahun = $this->filter_periode($data, $this->allTahunQ_OnlyQ[$i]);
-            // $dataTahun = $this->data_putaran_terakhir($dataTahun);
-
-            $dataTahunBefore = $this->filter_periode($data, $this->allTahunQ_OnlyQ[$i - 4]);
-            // $dataTahunBefore = $this->data_putaran_terakhir($dataTahun);
-            return $dataTahun;
-            // sort data biar mantap
-            // array_multisort($this->allKomponen, SORT_ASC, $dataTahun);
-            // array_multisort($this->allKomponen, SORT_ASC, $dataTahunBefore);
-
-
-            // echo "IN THE DESERT " . $this->allTahunQ_OnlyQ[$i] . "  " . $this->allTahunQ_OnlyQ[$i - 4] . "<br>";
-            // d($dataTahun);
-            // d($dataTahunBefore);
-            $dataTahunUraa = array_map(function ($itemTahun, $itemBefore) {
-                $itemTahun['nilai'] =  (($itemTahun['nilai']  - $itemBefore['nilai']) * 100) / abs($itemBefore['nilai']);
-                return $itemTahun;
-            }, $dataTahun, $dataTahunBefore);
-            $dataOutput = array_merge($dataOutput, $dataTahunUraa);
-            // return $dataOutput;
-            // sort berurutan by periode -> id_komponen -> id_wilayah 
-            usort($dataOutput, function ($a, $b) {
-
-                $byTahun = strcmp($a['tahun'], $b['tahun']);
-                if ($byTahun !== 0) {
-                    return $byTahun;
-                }
-
-                $byQuartal = strcmp($a['id_kuartal'], $b['id_kuartal']);
-                if ($byQuartal !== 0) {
-                    return $byQuartal;
-                }
-
-                // $byPeriode = strcmp($a['periode'], $b['periode']);
-                // if ($byPeriode !== 0) {
-                //     return $byPeriode;
-                // }
-
-                $byIdKomponen = strcmp($a['id_komponen'], $b['id_komponen']);
-                if ($byIdKomponen !== 0) {
-                    return $byIdKomponen;
-                }
-
-                $byIdWilayah = strcmp($a['id_wilayah'], $b['id_wilayah']);
-                if ($byIdWilayah !== 0) {
-                    return $byIdWilayah;
-                }
-            });
-
-            return $dataOutput;
+        $data = [];
+        foreach ($id_wilayah as $value) {
+            $arr = $this->filter_id_wilayah($obj, $value);
+            $data = array_merge($data, $arr);
         }
 
+        $data = $this->filter_id_pdrb($data, "1");
 
+        $dataSelected = [];
+        foreach ($periode as $value) {
+            $arr = $this->filter_periode($data, $value);
+            $dataSelected = array_merge($dataSelected, $arr);
+        }
+
+        $dataSelected = $this->sortData($dataSelected, 3, true);
+        // UNTUK SETIAP PERIODE, AMBIL DATA PUTARAN MAX NYA AJA
+        $dataSelected = $this->putaranmax($dataSelected);
+
+        $pdrb_total = $this->filter_id_komponen($dataSelected, "9");
+        $dataOutput = [];
+        // return $pdrb_total;
+
+        // DI FOREACH UNTUK TIAP TAHUNQ
+        foreach ($this->allTahunQ as $value) {
+            $dataTahun = $this->filter_periode($dataSelected, $value);
+            $dataTahunTotal = $this->filter_periode($pdrb_total, $value); // GUARANTEE 1 KALAU DATABASENYA BENAR
+
+            // HARUSNYA GINI APPROACH YANG BENER, TAPI GATAU KENAPA SALAH
+            // $nilaiTahun = $dataTahunTotal[0]->nilai;
+
+            $nilaiTahun = 1;
+            // foreach dikit ga ngaruh, orang cuma 1 nilai
+            foreach ($dataTahunTotal as $value) {
+                $nilaiTahun = $value->nilai;
+            }
+
+            // for each aja 
+            $dataUra = [];
+
+            $dataUra = array_filter($dataTahun, function ($item) use ($nilaiTahun) {
+                return $item->nilai /= $nilaiTahun;
+            });
+
+            $dataOutput = array_merge($dataOutput, $dataUra);
+        }
+
+        $dataOutput = $this->sortData($dataOutput, 3, true);
+        $dataOutput = $this->sortData($dataOutput, 2);
         $dataOutput = $this->sortData($dataOutput, 1);
+
+
         return $dataOutput;
     }
 
-    private function filter_tahun_new($data, $tahun, $exclude = false)
+    // 5. Pertumbuhan PDRB ADHK (Q-TO-Q)
+    private function ringkasan_tabel5($obj, $komponen, $kota, $periode)
     {
-        $filteredData = [];
+        // sort data by periode ascending
+        $dataCurrent = $this->sortData($obj, 3, true);
 
-        if ($exclude) {
-            foreach ($data as $item) {
-                $item['tahun'] != $tahun ? $filteredData[] = $item : '';
+        // membuat array untuk periode sebelumnya 
+        $periodeBefore = [];
+        $QBefore = 0;
+        foreach ($periode as $value) {
+            if (strlen($value) == 6) {
+                $Q = substr($value, -1);
+                $tahun =  substr($value, 0, 4);
+                if ($Q == 1) {
+                    $tahunBefore = $tahun - 1;
+                    $QBefore = $tahunBefore . 'Q4';
+                } else {
+                    $Qmin1 = $Q - 1;
+                    $QBefore = $tahun . 'Q' . $Qmin1;
+                }
+                array_push($periodeBefore, $QBefore);
             }
         }
 
-        foreach ($data as $item) {
-            $item['tahun'] == $tahun ? $filteredData[] = $item : '';
+        // get data by periodeBefore 
+        $dataBefore = $this->getAllData($periodeBefore, '2', $kota);
+        $dataBefore = $this->sortData($dataBefore, 3, true);
+
+        // MENGHITUNG NILAI PERTUMBUHAN (DATA OUTPUT)
+        $dataOutput = [];
+        $pointer = 0;
+        $dataNew = [];
+        foreach ($dataCurrent as $value) {
+            $dataNew = $value;
+            $dataNew->nilai = (($dataNew->nilai  - $dataBefore[$pointer]->nilai) * 100) / abs($dataBefore[$pointer]->nilai);
+            $dataOutput[] = $dataNew;
+            $pointer++;
         }
 
-        return $filteredData;
+        $dataOutput = $this->sortData($dataOutput, 3);
+        $dataOutput = $this->sortData($dataOutput, 1);
+        $dataOutput = $this->sortData($dataOutput, 2);
+
+        return $dataOutput;
     }
 
-    private function filter_kuartal_new($data, $kuartal, $exclude = false)
-    {
-        $filteredData = [];
+    // 1. TABEL DISKREPANSI PDRB AHDB 
+    // private function ringkasan_tabel1($periode, $komponen)
+    // {
+    //     $idWilayah = $this->wilayah->findAll();
+    //     $selectedKomponen = $this->komponen->getById($komponen);
+    //     $namaKomponen = [];
+    //     $komponenArr = [];
+    //     foreach ($selectedKomponen as $value) {
+    //         array_push($komponenArr, $value['id_komponen']);
+    //         array_push($namaKomponen, $value['komponen']);
+    //     }
+    //     $data = $this->putaran->getTabel1($periode, $komponenArr);
 
-        if ($exclude) {
-            foreach ($data as $item) {
-                $item['id_kuartal'] != $kuartal ? $filteredData[] = $item : '';
-            }
-        }
+    //     // hitung diskrepansi 
+    //     // 1. sum total kab/kota
+    //     $totalKabKot = [];
+    //     $temp = 0;
+    //     foreach ($selectedKomponen as $value) {
+    //         $total = 0;
+    //         for ($j = 0; $j < sizeof($idWilayah) - 1; $j++) {
+    //             if ($data[$temp]->id_wilayah == "3100") {
+    //                 $temp++;
+    //             } else {
+    //                 $total += $data[$temp]->nilai;
+    //                 $temp++;
+    //             }
+    //         }
+    //         array_push($totalKabKota, $total);
+    //     }
 
-        foreach ($data as $item) {
-            $item['id_kuartal'] == $kuartal ? $filteredData[] = $item : '';
-        }
-
-        return $filteredData;
-    }
-
-    private function sortData_new($data, $kode)
-    {
-        usort($data, function ($a, $b) use ($kode) {
-            if ($kode == 1) { // 1 IS SORT BY periode
-                return strcmp($a['periode'], $b['periode']);
-            } else if ($kode == 2) { // 2 IS SORT BY ID_KOMPONEN
-                return strcmp($a['id_komponen'], $b['id_komponen']);
-            }
-        });
-
-        return $data;
-    }
-
-    private function filter_periode_new($data, $periode, $exclude = false)
-    {
-        $filteredData = [];
-
-        if ($exclude) {
-            foreach ($data as $item) {
-                $item['periode'] != $periode ? $filteredData[] = $item : '';
-            }
-        }
-
-        foreach ($data as $item) {
-            $item['periode'] == $periode ? $filteredData[] = $item : '';
-        }
-
-        return $filteredData;
-    }
-
+    //     return $totalKabKot;
+    // }
 
 
 
     public function getData()
     {
-        $jenisTabel = $this->request->getPost('jenisPDRB');
+        $jenisTabel = $this->request->getPost('jenisTable');
         $periode = $this->request->getPost('periode');
-        $komponen = $this->request->getPost('komponen');
+        sort($periode);
+        $komponen = $this->komponen->findAll();
+        $kota = $this->wilayah->findAll();
 
-        $dataRingkasan = [];
         switch ($jenisTabel) {
             case "11":
-                $dataRingkasan = $this->ringkasan_tabel1($periode, $komponen);
+                // $dataRingkasan = $this->ringkasan_tabel1($periode, $komponen);
+                break;
+            case "13":
+                $dataRingkasan = $this->ringkasan_tabel3($this->getAllData($periode, '1', $kota), $komponen, $kota, $periode);
                 break;
             case "15":
-                $dataRingkasan = $this->ringkasan_tabel5($this->getAllData(), $periode);
+                $dataRingkasan = $this->ringkasan_tabel5($this->getAllData($periode, '2', $kota), $komponen, $kota, $periode);
                 break;
                 // case "17":
                 //     $dataRingkasan = $this->ringkasan_tabel7($this->getAllData(), $periode);
         };
-        // $data = [
-        //     'komponen' => $this->komponen->get_data(),
-        //     'dataRingkasan' => $dataRingkasan,
-        //     'selectedPeriode' => $periode,
-        //     'wilayah' => $this->wilayah->findAll(),
-        // ];
+        $data = [
+            'komponen' => $this->komponen->get_data(),
+            'dataRingkasan' => $dataRingkasan,
+            'selectedPeriode' => $periode,
+            'wilayah' => $this->wilayah->getAll(),
+        ];
 
-        // echo json_encode($data);
-        echo json_encode($dataRingkasan);
+        echo json_encode($data);
     }
 }

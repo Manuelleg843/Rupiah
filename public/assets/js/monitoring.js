@@ -1,3 +1,4 @@
+// Menutup putaran
 let menutup = () => {
   var buka = document.getElementById("buttonbuka");
   var tutup = document.getElementById("buttontutup");
@@ -23,20 +24,16 @@ let menutup = () => {
   });
 };
 
+// Membuka putaran
 let membuka = () => {
   var buka = document.getElementById("buttonbuka");
   var tutup = document.getElementById("buttontutup");
   var detailbuka = document.getElementById("detail_buka");
   var detailtutup = document.getElementById("detail_tutup");
-  var putaran = document.getElementById("putaran");
-  // var turn = document.getElementById("putaran").innerHTML;
   buka.setAttribute("hidden", "hidden");
   tutup.removeAttribute("hidden");
   detailbuka.setAttribute("hidden", "hidden");
   detailtutup.removeAttribute("hidden");
-  // putaran.removeAttribute("hidden");
-  // var i = i + 1;
-  // document.getElementById("putaran").innerHTML = "Putaran " + i;
 
   document
     .getElementById("kepala")
@@ -44,26 +41,6 @@ let membuka = () => {
   document
     .getElementById("tabel")
     .setAttribute("class", "table table-bordered table-striped");
-
-  $.ajax({
-    type: "POST",
-    url: "/monitoring/updateStatus",
-    dataType: "json",
-    success: function (data) {
-      putaran.innerHTML =
-        "Tahun " +
-        data["tahun"] +
-        "," +
-        " Kuartal " +
-        data["id_kuartal"] +
-        "," +
-        " Putaran " +
-        data["putaran"];
-    },
-    error: function (error) {
-      console.error("Terjadi kesalahan:", error);
-    },
-  });
 };
 
 $(function () {

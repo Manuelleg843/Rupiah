@@ -77,7 +77,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('/tabelPDRB/tabelRingkasan'); ?>" class="nav-link <?= ($subTajuk == 'Tabel Ringkasan PDRB Kab/Kota') ? 'active'  : ''; ?>">
+                            <a href="<?= base_url('/tabelPDRB/tabelRingkasan'); ?>" class="nav-link <?= ($subTajuk == 'Tabel Ringkasan') ? 'active'  : ''; ?>">
                                 <i class="far fas fa-arrow-right nav-icon"></i>
                                 <p>Tabel Ringkasan</p>
                             </a>

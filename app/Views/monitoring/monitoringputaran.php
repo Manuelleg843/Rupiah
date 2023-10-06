@@ -23,16 +23,18 @@
                     <div class="card">
                         <div class="card-body">
                             <div>
-                                <h4 id='putaran'>Tahun <?= $tahun?>, Kuartal <?= $id_kuartal?>, Putaran <?= $putaran ?></h4>
+                                <h4 id='putaran'>Tahun <?= $tahun ?>, Kuartal <?= $id_kuartal ?>, Putaran <?= $putaran ?></h4>
                             </div>
                             <div class="row mb-3 justify-content-end mr-1">
                                 <ul class="nav nav-pills">
                                     <li class="nav-item ">
                                         <small id="detail_buka" class="mr-2" <?= ($isActive == 1) ? 'hidden' : '' ?>><i>Putaran Belum dibuka</i></small>
                                         <small id="detail_tutup" class="mr-2" <?= ($isActive == 0) ? 'hidden' : '' ?>><i>Sedang Dalam Putaran </i></small>
-                                        <button <?= ($isActive == 1) ? 'hidden' : '' ?> id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
-                                            Buka Putaran
-                                        </button>
+                                        <a href="<?= base_url('/monitoring/updateStatus') ?>">
+                                            <button <?= ($isActive == 1) ? 'hidden' : '' ?> id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
+                                                Buka Putaran
+                                            </button>
+                                        </a>
                                         <button <?= ($isActive == 0) ? 'hidden' : '' ?> id="buttontutup" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tutup">
                                             Tutup Putaran
                                         </button>
@@ -52,76 +54,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td style="font-weight: bold;">PROV DKI Jakarta</td>
-                                            <td>
-                                                <button disabled type="button" class="btn btn-block btn-success">
-                                                    Sudah Upload
-                                                </button>
-                                            </td>
-                                            <td>2023-08-05 12:35:22</td>
-                                            <td>Rayyan 1</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Kabupaten Kepulauan Seribu</td>
-                                            <td>
-                                                <button disabled type="button" class="btn btn-block btn-danger">
-                                                    Belum Upload
-                                                </button>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Kota Jakarta Pusat</td>
-                                            <td>
-                                                <button disabled type="button" class="btn btn-block btn-danger">
-                                                    Belum Upload
-                                                </button>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Kota Jakarta Utara</td>
-                                            <td>
-                                                <button disabled type="button" class="btn btn-block btn-success">
-                                                    Sudah Upload
-                                                </button>
-                                            </td>
-                                            <td>2023-08-05 14:24:08</td>
-                                            <td>Rayyan 2</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Kota Jakarta Barat</td>
-                                            <td>
-                                                <button disabled type="button" class="btn btn-block btn-danger">
-                                                    Belum Upload
-                                                </button>
-                                            </td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Kota Jakarta Selatan</td>
-                                            <td>
-                                                <button disabled type="button" class="btn btn-block btn-success">
-                                                    Sudah Upload
-                                                </button>
-                                            </td>
-                                            <td>2023-08-05 16:55:37</td>
-                                            <td>Rayyan 3</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Kota Jakarta Timur</td>
-                                            <td>
-                                                <button disabled type="button" class="btn btn-block btn-success">
-                                                    Sudah Upload
-                                                </button>
-                                            </td>
-                                            <td>2023-08-05 13:44:58</td>
-                                            <td>Rayyan 4</td>
-                                        </tr>
+                                        <?php
+                                        foreach ($wilayah as $value) {
+                                            echo "<tr>";
+                                            echo "<td style='font-weight: bold;'>" . $value . "</td>";
+                                            echo "<td>";
+                                            if (current($status) == 1) {
+                                                echo "<button disabled type='button' class='btn btn-block btn-success'>";
+                                                echo "Sudah Upload";
+                                                echo "</button>";
+                                            } else {
+                                                echo "<button disabled type='button' class='btn btn-block btn-danger'>";
+                                                echo "Belum Upload";
+                                                echo "</button>";
+                                            }
+                                            echo "</td>";
+                                            echo "<td>" . current($waktu_upload) . "</td>";
+                                            echo "<td>" . current($diupload_oleh) . "</td>";
+                                            echo "</tr>";
+                                            next($status);
+                                            next($waktu_upload);
+                                            next($diupload_oleh);
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
                             </div>
