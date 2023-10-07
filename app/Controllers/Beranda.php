@@ -7,6 +7,7 @@ use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
 use App\Models\DiskrepansiModel;
 use App\Models\StatusModel;
+use CodeIgniter\Commands\Utilities\Publish;
 
 use function App\Helpers\is_logged_in;
 
@@ -31,7 +32,11 @@ class Beranda extends BaseController
         $arrayBarY_ON_Y = array();
         foreach ($kom as $item) {
             $Y_ON_Y = $this->putaran->getDataKomponen(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-            $Y_ON_Y_minus1 = $this->putaran->getDataKomponenMinusYear(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
+            $tahun = $Y_ON_Y[0]->tahun;
+            $kuartal = $Y_ON_Y[0]->id_kuartal;
+            $minusyear = $tahun - 1;
+            $periode = $minusyear . 'Q' . $kuartal;
+            $Y_ON_Y_minus1 = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, $item, $periode); // cara ganti kota otomatis sesuai satker
             // Perhitungan Y ON Y -> (2023 {Q} - 2022 {Q})/MUTLAK(2022 {Q})*100
             $hasil_Y_ON_Y = ($Y_ON_Y[0]->nilai - $Y_ON_Y_minus1[0]->nilai) / abs($Y_ON_Y_minus1[0]->nilai) * 100;
             array_push($arrayBarY_ON_Y, $hasil_Y_ON_Y);
@@ -41,7 +46,11 @@ class Beranda extends BaseController
         $arrayBarQ_TO_Q = array();
         foreach ($kom as $item) {
             $Q_TO_Q = $this->putaran->getDataKomponen(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-            $Q_TO_Q_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
+            $tahun = $Q_TO_Q[0]->tahun;
+            $kuartal = $Q_TO_Q[0]->id_kuartal;
+            $kuartalmin = $kuartal - 1;
+            $periode = $tahun . 'Q' . $kuartalmin;
+            $Q_TO_Q_minus1 = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, $item, $periode); // cara ganti kota otomatis sesuai satker
             // Perhitungan Y ON Y -> (2023 {Q} - 2023 {Q-1})/MUTLAK(2023 {Q-1})*100
             $hasil_Q_TO_Q = ($Q_TO_Q[0]->nilai - $Q_TO_Q_minus1[0]->nilai) / abs($Q_TO_Q_minus1[0]->nilai) * 100;
             array_push($arrayBarQ_TO_Q, $hasil_Q_TO_Q);
@@ -51,39 +60,22 @@ class Beranda extends BaseController
         $arrayBarC_TO_C = array();
         foreach ($kom as $item) {
             $C_TO_C = $this->putaran->getDataKomponen(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-            $C_TO_C_Year = $this->putaran->getDataKomponenMinusYear(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
+            $tahun = $C_TO_C[0]->tahun;
+            $tahunmin = $tahun - 1;
+            $kuartal = $C_TO_C[0]->id_kuartal;
+            $kumulatif = 0;
+            $kumulatifmin = 0;
             // Perhitungan C TO C -> (sum2023 {Q} - sum2022 {Q})/MUTLAK(sum2022 {Q})*100 -> sum = total Q-awal {Q1} hingga Q-akhir {Q}
-            if ($C_TO_C[0]->nilai = 1) {
-                $BarC_TO_C = ($C_TO_C[0]->nilai) - ($C_TO_C_Year[0]->nilai) / abs($C_TO_C_Year[0]->nilai) * 100;
-            } elseif ($C_TO_C[0]->nilai = 2) {
-                // Atas
-                $C_TO_C_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                // Bawah
-                $C_TO_C_Year_minus1 = $this->putaran->getDataKomponenMinusYearKuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                //Perhitungan
-                $BarC_TO_C = ($C_TO_C[0]->nilai + $C_TO_C_minus1[0]->nilai) - ($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai) / abs($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai) * 100;
-            } elseif ($C_TO_C[0]->nilai = 3) {
-                // Atas
-                $C_TO_C_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                $C_TO_C_minus2 = $this->putaran->getDataKomponenMinus2Kuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                // Bawah
-                $C_TO_C_Year_minus1 = $this->putaran->getDataKomponenMinusYearKuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                $C_TO_C_Year_minus2 = $this->putaran->getDataKomponenMinusYear2Kuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                // Perhitungan
-                $BarC_TO_C = ($C_TO_C[0]->nilai + $C_TO_C_minus1[0]->nilai + $C_TO_C_minus2[0]->nilai) - ($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai) / abs($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai) * 100;
-            } elseif ($C_TO_C[0]->nilai = 4) {
-                // Atas
-                $C_TO_C_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                $C_TO_C_minus2 = $this->putaran->getDataKomponenMinus2Kuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                $C_TO_C_minus3 = $this->putaran->getDataKomponenMinus3Kuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                // Bawah
-                $C_TO_C_Year_minus1 = $this->putaran->getDataKomponenMinusYearKuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                $C_TO_C_Year_minus2 = $this->putaran->getDataKomponenMinusYear2Kuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                $C_TO_C_Year_minus3 = $this->putaran->getDataKomponenMinusYear3Kuartal(3100, $JenisPDRB, $item); // cara ganti kota otomatis sesuai satker
-                // Perhitungan
-                $BarC_TO_C = ($C_TO_C[0]->nilai + $C_TO_C_minus1[0]->nilai + $C_TO_C_minus2[0]->nilai + $C_TO_C_minus3[0]->nilai) - ($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai + $C_TO_C_Year_minus3[0]->nilai) / abs($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai + $C_TO_C_Year_minus3[0]->nilai) * 100;
+            for ($i = 1; $i <= $kuartal; $i++) {
+                $periode = $tahun . 'Q' . $i;
+                $C_TO_C_Year = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, $item, $periode); // cara ganti kota otomatis sesuai satker
+                $kumulatif = $kumulatif + $C_TO_C_Year[0]->nilai;
+                $periodemin = $tahunmin . 'Q' . $i;
+                $C_TO_C_Yearmin = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, $item, $periodemin); // cara ganti kota otomatis sesuai satker
+                $kumulatifmin = $kumulatifmin + $C_TO_C_Yearmin[0]->nilai;
             }
-            array_push($arrayBarC_TO_C, $BarC_TO_C);
+            $hasil_C_TO_C = ($kumulatif - $kumulatifmin) / abs($kumulatifmin) * 100;
+            array_push($arrayBarC_TO_C, $hasil_C_TO_C);
         };
 
         // Line
@@ -131,51 +123,43 @@ class Beranda extends BaseController
         // Pertumbuhan Y ON Y
         $JenisPDRB = 2; // Untuk Perhitungan pakai ADHK
         $Y_ON_Y = $this->putaran->getDataKomponen(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-        $Y_ON_Y_minus1 = $this->putaran->getDataKomponenMinusYear(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
+        $tahun = $Y_ON_Y[0]->tahun;
+        $kuartal = $Y_ON_Y[0]->id_kuartal;
+        $minusyear = $tahun - 1;
+        $periode = $minusyear . 'Q' . $kuartal;
+        $Y_ON_Y_minus1 = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, 9, $periode); // cara ganti kota otomatis sesuai satker
         // Perhitungan Y ON Y -> (2023 {Q} - 2022 {Q})/MUTLAK(2022 {Q})*100
         $hasil_Y_ON_Y = ($Y_ON_Y[0]->nilai - $Y_ON_Y_minus1[0]->nilai) / abs($Y_ON_Y_minus1[0]->nilai) * 100;
 
         // Pertumbuhan Q TO Q
         $Q_TO_Q = $this->putaran->getDataKomponen(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-        $Q_TO_Q_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
+        $tahun = $Q_TO_Q[0]->tahun;
+        $kuartal = $Q_TO_Q[0]->id_kuartal;
+        $minuskuartal = $kuartal - 1;
+        $periode = $tahun . 'Q' . $minuskuartal;
+        $Q_TO_Q_minus1 = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, 9, $periode); // cara ganti kota otomatis sesuai satker
         // Perhitungan Y ON Y -> (2023 {Q} - 2023 {Q-1})/MUTLAK(2023 {Q-1})*100
         $hasil_Q_TO_Q = ($Q_TO_Q[0]->nilai - $Q_TO_Q_minus1[0]->nilai) / abs($Q_TO_Q_minus1[0]->nilai) * 100;
 
         // Pertumbuhan C TO C
         $C_TO_C = $this->putaran->getDataKomponen(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-        $C_TO_C_Year = $this->putaran->getDataKomponenMinusYear(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-        // Perhitungan C TO C -> (sum2023 {Q} - sum2022 {Q})/MUTLAK(sum2022 {Q})*100 -> sum = total Q-awal {Q1} hingga Q-akhir {Q}
-        if ($C_TO_C[0]->nilai = 1) {
-            $hasil_C_TO_C = ($C_TO_C[0]->nilai) - ($C_TO_C_Year[0]->nilai) / abs($C_TO_C_Year[0]->nilai) * 100;
-        } elseif ($C_TO_C[0]->nilai = 2) {
-            // Atas
-            $C_TO_C_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            // Bawah
-            $C_TO_C_Year_minus1 = $this->putaran->getDataKomponenMinusYearKuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            //Perhitungan
-            $hasil_C_TO_C = ($C_TO_C[0]->nilai + $C_TO_C_minus1[0]->nilai) - ($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai) / abs($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai) * 100;
-        } elseif ($C_TO_C[0]->nilai = 3) {
-            // Atas
-            $C_TO_C_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            $C_TO_C_minus2 = $this->putaran->getDataKomponenMinus2Kuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            // Bawah
-            $C_TO_C_Year_minus1 = $this->putaran->getDataKomponenMinusYearKuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            $C_TO_C_Year_minus2 = $this->putaran->getDataKomponenMinusYear2Kuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            // Perhitungan
-            $hasil_C_TO_C = ($C_TO_C[0]->nilai + $C_TO_C_minus1[0]->nilai + $C_TO_C_minus2[0]->nilai) - ($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai) / abs($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai) * 100;
-        } elseif ($C_TO_C[0]->nilai = 4) {
-            // Atas
-            $C_TO_C_minus1 = $this->putaran->getDataKomponenMinusKuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            $C_TO_C_minus2 = $this->putaran->getDataKomponenMinus2Kuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            $C_TO_C_minus3 = $this->putaran->getDataKomponenMinus3Kuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            // Bawah
-            $C_TO_C_Year_minus1 = $this->putaran->getDataKomponenMinusYearKuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            $C_TO_C_Year_minus2 = $this->putaran->getDataKomponenMinusYear2Kuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            $C_TO_C_Year_minus3 = $this->putaran->getDataKomponenMinusYear3Kuartal(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
-            // Perhitungan
-            $hasil_C_TO_C = ($C_TO_C[0]->nilai + $C_TO_C_minus1[0]->nilai + $C_TO_C_minus2[0]->nilai + $C_TO_C_minus3[0]->nilai) - ($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai + $C_TO_C_Year_minus3[0]->nilai) / abs($C_TO_C_Year[0]->nilai + $C_TO_C_Year_minus1[0]->nilai + $C_TO_C_Year_minus2[0]->nilai + $C_TO_C_Year_minus3[0]->nilai) * 100;
+        $tahun = $C_TO_C[0]->tahun;
+        $tahunmin = $tahun - 1;
+        $kuartal = $C_TO_C[0]->id_kuartal;
+        $kumulatif = 0;
+        $kumulatifmin = 0;
+        for ($i = 1; $i <= $kuartal; $i++) {
+            $periode = $tahun . 'Q' . $i;
+            $C_TO_C_Year = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, 9, $periode); // cara ganti kota otomatis sesuai satker
+            $kumulatif = $kumulatif + $C_TO_C_Year[0]->nilai;
+            $periodemin = $tahunmin . 'Q' . $i;
+            $C_TO_C_Yearmin = $this->putaran->getDataKomponenMin(3100, $JenisPDRB, 9, $periodemin); // cara ganti kota otomatis sesuai satker
+            $kumulatifmin = $kumulatifmin + $C_TO_C_Yearmin[0]->nilai;
         }
+        // Perhitungan C TO C -> (sum2023 {Q} - sum2022 {Q})/MUTLAK(sum2022 {Q})*100 -> sum = total Q-awal {Q1} hingga Q-akhir {Q}
+        $hasil_C_TO_C = ($kumulatif - $kumulatifmin) / abs($kumulatifmin) * 100;
 
+        // Untuk Status *data sementara
         $statusModel = new StatusModel();
         $data = [
             'title' => 'Beranda',

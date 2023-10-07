@@ -237,7 +237,7 @@ class ArahRevisiController extends BaseController
             $KumulatifRilisMin = 0;
             $KumulatifRevisiMin = 0;
             // Kumulatif
-            for ($i = 1; $i = $kuartalRilis; $i++) {
+            for ($i = 1; $i <= $kuartalRilis; $i++) {
                 // Atas
                 $periodeMin = $tahunRilis . 'Q' . $i;
                 $rilisKum = $this->putaran->get_data_rilis_wilayah_periode($kota, $jenisPDRB, $periodeMin);
