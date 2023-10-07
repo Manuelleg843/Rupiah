@@ -30,9 +30,12 @@ $routes->get('/tabelPDRB/tabelPerKota', 'TabelPDRBController::viewTabelPerKota')
 $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
 $routes->post('/tabelPDRB/tabelHistoryPutaran/getData', 'TabelPDRBController::getData');
 $routes->post('/tabelPDRB/getDataPerKota', 'TabelPDRBController::getDataTabelPerKota');
-$routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->get('/monitoring', 'MonitoringController::index');
 $routes->get('/monitoring/updateStatus', 'MonitoringController::updateStatus');
+
+// halaman tabel arah revisi
+$routes->get('/arahRevisi', 'ArahRevisiController::index');
+$routes->post('/arahRevisi/getData', 'ArahRevisiController::getData');
 
 // halaman tabel ringkasan 
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelRingkasanController::index');

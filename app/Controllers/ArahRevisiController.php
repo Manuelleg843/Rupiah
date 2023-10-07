@@ -6,29 +6,19 @@ use App\Controllers\BaseController;
 use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
 use App\Models\RevisiModel;
-use App\Models\WilayahModel;
 
 class ArahRevisiController extends BaseController
 {
     protected $komponen;
     protected $putaran;
     protected $revisi;
-    protected $wilayah;
-    // protected $allData;
-    // protected $allTahunQ;
     protected $allQ_1Tahun;
-    // protected $allTahunQ_OnlyTahun;
-    // protected $allTahunQ_OnlyTahunForFilterTahunan;
-    // protected $allKomponen;
-
 
     public function __construct()
     {
         $this->komponen = new Komponen7Model();
         $this->putaran = new PutaranModel();
         $this->revisi = new RevisiModel();
-        $this->wilayah = new WilayahModel();
-        // $allData = $this->putaran->findAll();
     }
 
     public function index()
@@ -46,8 +36,48 @@ class ArahRevisiController extends BaseController
         echo view('layouts/footer');
     }
 
+    // Ambil Data dari Json
+    public function getData()
+    {
+        $jenisTable = $this->request->getPost('jenisTable');
+        $kota = $this->request->getPost('kota');
+        $periode = $this->request->getPost('periode');
+
+        switch ($jenisTable) {
+            case '1':
+                $dataarahrevisi = $this->arahrevisi_tabel1($kota, $periode);
+                break;
+                // case '2':
+                //     $dataarahrevisi = $this->arahrevisi_tabel2($kota, $periode);
+                //     break;
+                // case '3':
+                //     $dataarahrevisi = $this->arahrevisi_tabel3($kota, $periode);
+                //     break;
+                // case '4':
+                //     $dataarahrevisi = $this->arahrevisi_tabel4($kota, $periode);
+                //     break;
+                // case '5':
+                //     $dataarahrevisi = $this->arahrevisi_tabel5($kota, $periode);
+                //     break;
+                // case '6':
+                //     $dataarahrevisi = $this->arahrevisi_tabel6($kota, $periode);
+                //     break;
+                // case '7':
+                //     $dataarahrevisi = $this->arahrevisi_tabel7($kota, $periode);
+                //     break;
+        };
+
+        $data = [
+            'jenisTable' => $jenisTable,
+            'periode' => $periode,
+            'dataarahrevisi' => $dataarahrevisi,
+        ];
+
+        echo json_encode($data);
+    }
+
     // PDRB ADHB
-    private function arahresisi_tabel1($kota, $periode)
+    private function arahrevisi_tabel1($kota, $periode)
     {
         // ADHB
         $jenisPDRB = "1";
@@ -58,25 +88,33 @@ class ArahRevisiController extends BaseController
 
         // Perhitungan
         $pointer = 0;
-        $arrayADHB_Rilis = array();
-        $arrayADHB_Revisi = array();
-        $arrayADHB_Arah = array();
+        $array_Rilis = array();
+        $array_Revisi = array();
+        $array_Arah = array();
         foreach ($rilis as $key) {
             //Rilis
             $hasil_ADHB_Rilis = $key->nilai;
-            array_push($arrayADHB_Rilis, $hasil_ADHB_Rilis);
+            array_push($array_Rilis, $hasil_ADHB_Rilis);
             //Revisi
             $hasil_ADHB_Revisi = $revisi[$pointer]->nilai;
-            array_push($arrayADHB_Revisi, $hasil_ADHB_Revisi);
+            array_push($array_Revisi, $hasil_ADHB_Revisi);
             //Perbedaan
             $arah_ADHB = $hasil_ADHB_Revisi - $hasil_ADHB_Rilis;
-            array_push($arrayADHB_Arah, $arah_ADHB);
+            array_push($array_Arah, $arah_ADHB);
             $pointer++;
         }
+
+        $data = [
+            'array_Rilis' => $array_Rilis,
+            'array_Revisi' => $array_Revisi,
+            'array_Arah' => $array_Arah,
+        ];
+
+        return $data;
     }
 
     // PDRB ADHK
-    private function arahresisi_tabel2($kota, $periode)
+    private function arahrevisi_tabel2($kota, $periode)
     {
         // Gunakan ADHB
         $jenisPDRB = "2";
@@ -87,25 +125,25 @@ class ArahRevisiController extends BaseController
 
         // Perhitungan
         $pointer = 0;
-        $arrayADHK_Rilis = array();
-        $arrayADHK_Revisi = array();
-        $arrayADHK_Arah = array();
+        $array_Rilis = array();
+        $array_Revisi = array();
+        $array_Arah = array();
         foreach ($rilis as $key) {
             //Rilis
             $hasil_ADHK_Rilis = $key->nilai;
-            array_push($arrayADHK_Rilis, $hasil_ADHK_Rilis);
+            array_push($array_Rilis, $hasil_ADHK_Rilis);
             //Revisi
             $hasil_ADHK_Revisi = $revisi[$pointer]->nilai;
-            array_push($arrayADHK_Revisi, $hasil_ADHK_Revisi);
+            array_push($array_Revisi, $hasil_ADHK_Revisi);
             //Perbedaan
             $arah_ADHK = $hasil_ADHK_Revisi - $hasil_ADHK_Rilis;
-            array_push($arrayADHK_Arah, $arah_ADHK);
+            array_push($array_Arah, $arah_ADHK);
             $pointer++;
         }
     }
 
     // Pertunbuhan Y ON Y
-    private function arahresisi_tabel3($kota, $periode)
+    private function arahrevisi_tabel3($kota, $periode)
     {
         // Gunakan ADHK
         $jenisPDRB = "2";
@@ -125,25 +163,25 @@ class ArahRevisiController extends BaseController
 
         // Perhitungan
         $pointer = 0;
-        $arrayY_ON_Y_Rilis = array();
-        $arrayY_ON_Y_Revisi = array();
-        $arrayY_ON_Y_Arah = array();
+        $array_Rilis = array();
+        $array_Revisi = array();
+        $array_Arah = array();
         foreach ($rilis as $key) {
             //Rilis
             $hasil_Y_ON_Y_Rilis = ($key->nilai - $rilisMin1[$pointer]->nilai) / $rilisMin1[$pointer]->nilai * 100;
-            array_push($arrayY_ON_Y_Rilis, $hasil_Y_ON_Y_Rilis);
+            array_push($array_Rilis, $hasil_Y_ON_Y_Rilis);
             //Revisi
             $hasil_Y_ON_Y_Revisi = ($revisi[$pointer]->nilai - $revisiMin1[$pointer]->nilai) / $revisiMin1[$pointer]->nilai * 100;
-            array_push($arrayY_ON_Y_Revisi, $hasil_Y_ON_Y_Revisi);
+            array_push($array_Revisi, $hasil_Y_ON_Y_Revisi);
             //Perbedaan
             $arah_Y_ON_Y = $hasil_Y_ON_Y_Revisi - $hasil_Y_ON_Y_Rilis;
-            array_push($arrayY_ON_Y_Arah, $arah_Y_ON_Y);
+            array_push($array_Arah, $arah_Y_ON_Y);
             $pointer++;
         }
     }
 
     // Pertumbuhan Q TO Q
-    private function arahresisi_tabel4($kota, $periode)
+    private function arahrevisi_tabel4($kota, $periode)
     {
         // Gunakan ADHK
         $jenisPDRB = "2";
@@ -163,33 +201,33 @@ class ArahRevisiController extends BaseController
 
         // Perhitungan
         $pointer = 0;
-        $arrayQ_TO_Q_Rilis = array();
-        $arrayQ_TO_Q_Revisi = array();
-        $arrayQ_TO_Q_Arah = array();
+        $array_Rilis = array();
+        $array_Revisi = array();
+        $array_Arah = array();
         foreach ($rilis as $key) {
             //Rilis
             $hasil_Q_TO_Q_Rilis = ($key->nilai - $rilisMin1[$pointer]->nilai) / $rilisMin1[$pointer]->nilai * 100;
-            array_push($arrayQ_TO_Q_Rilis, $hasil_Q_TO_Q_Rilis);
+            array_push($array_Rilis, $hasil_Q_TO_Q_Rilis);
             //Revisi
             $hasil_Q_TO_Q_Revisi = ($revisi[$pointer]->nilai - $revisiMin1[$pointer]->nilai) / $revisiMin1[$pointer]->nilai * 100;
-            array_push($arrayQ_TO_Q_Revisi, $hasil_Q_TO_Q_Revisi);
+            array_push($array_Revisi, $hasil_Q_TO_Q_Revisi);
             //Perbedaan
             $arah_Q_TO_Q = $hasil_Q_TO_Q_Revisi - $hasil_Q_TO_Q_Rilis;
-            array_push($arrayQ_TO_Q_Arah, $arah_Q_TO_Q);
+            array_push($array_Arah, $arah_Q_TO_Q);
             $pointer++;
         }
     }
 
     // Pertumbuhan C TO C
-    private function arahresisi_tabel5($kota, $periode)
+    private function arahrevisi_tabel5($kota, $periode)
     {
         // Gunakan ADHK
         $jenisPDRB = "2";
         // Untuk Rilis
         $rilis = $this->putaran->get_data_rilis_wilayah_periode($kota, $jenisPDRB, $periode);
-        $arrayC_TO_C_Rilis = array();
-        $arrayC_TO_C_Revisi = array();
-        $arrayC_TO_C_Arah = array();
+        $array_Rilis = array();
+        $array_Revisi = array();
+        $array_Arah = array();
         foreach ($rilis as $key) {
             $tahunRilis = $key->tahun; // tahun
             $tahunRilisMin = $tahunRilis - 1; // tahun - 1
@@ -216,18 +254,18 @@ class ArahRevisiController extends BaseController
             // Perhitungan
             // Rilis
             $hasil_C_TO_C_Rilis = ($KumulatifRilis - $KumulatifRilisMin) / $KumulatifRilisMin * 100;
-            array_push($arrayC_TO_C_Rilis, $hasil_C_TO_C_Rilis);
+            array_push($array_Rilis, $hasil_C_TO_C_Rilis);
             // Revisi
             $hasil_C_TO_C_Revisi = ($KumulatifRevisi - $KumulatifRevisiMin) / $KumulatifRevisiMin * 100;
-            array_push($arrayC_TO_C_Revisi, $hasil_C_TO_C_Revisi);
+            array_push($array_Revisi, $hasil_C_TO_C_Revisi);
             // Perbedaan
             $arah_C_TO_C = $hasil_C_TO_C_Revisi - $hasil_C_TO_C_Rilis;
-            array_push($arrayC_TO_C_Arah, $arah_C_TO_C);
+            array_push($array_Arah, $arah_C_TO_C);
         }
     }
 
     // Indeks Implisit
-    private function arahresisi_tabel6($kota, $periode)
+    private function arahrevisi_tabel6($kota, $periode)
     {
         // Gunakan ADHK
         $ADHB = "1";
@@ -241,26 +279,26 @@ class ArahRevisiController extends BaseController
 
         // Perhitungan
         $pointer = 0;
-        $arrayIndeksImplisit_Rilis = array();
-        $arrayIndeksImplisit_Revisi = array();
-        $arrayIndeksImplisit_Arah = array();
+        $array_Rilis = array();
+        $array_Revisi = array();
+        $array_Arah = array();
         foreach ($rilisADHB as $key) {
             //Rilis
             $hasil_IndeksImplisit_Rilis = ($key->nilai / $rilisADHK[$pointer]->nilai);
-            array_push($arrayIndeksImplisit_Rilis, $hasil_IndeksImplisit_Rilis);
+            array_push($array_Rilis, $hasil_IndeksImplisit_Rilis);
             //Revisi
             $hasil_IndeksImplisit_Revisi = ($revisiADHB[$pointer]->nilai / $revisiADHK[$pointer]->nilai);
-            array_push($arrayIndeksImplisit_Revisi, $hasil_IndeksImplisit_Revisi);
+            array_push($array_Revisi, $hasil_IndeksImplisit_Revisi);
             //Perbedaan
             $arah_IndeksImplisit = $hasil_IndeksImplisit_Revisi - $hasil_IndeksImplisit_Rilis;
-            array_push($arrayIndeksImplisit_Arah, $arah_IndeksImplisit);
+            array_push($array_Arah, $arah_IndeksImplisit);
             $pointer++;
         }
     }
 
     // belum selesai
     // Pertumbuhan Indeks Implisit Y ON Y
-    private function arahresisi_tabel7($kota, $periode)
+    private function arahrevisi_tabel7($kota, $periode)
     {
         // Gunakan ADHK
         $ADHB = "1";
