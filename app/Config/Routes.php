@@ -14,8 +14,6 @@ $routes->post('/UserController/login', 'UserController::index');
 $routes->get('/UserController/logout', 'UserController::logout');
 $routes->post('/downloadExcel', 'DownloadExcelController::download');
 $routes->post('/uploadExcel', 'UploadExcelController::upload');
-$routes->get('/beranda', 'Beranda::index');
-$routes->get('/beranda/ShowChart', 'Beranda::Chart');
 $routes->get('/uploadData/angkaPDRB', 'DataUploadController::index');
 $routes->post('/uploadData/angkaPDRB/getData', 'DataUploadController::getData');
 $routes->post('/uploadData/eksporPDF', 'DataUploadController::eksporPDF');
@@ -36,6 +34,11 @@ $routes->get('/monitoring/updateStatus', 'MonitoringController::updateStatus');
 // halaman tabel arah revisi
 $routes->get('/arahRevisi', 'ArahRevisiController::index');
 $routes->post('/arahRevisi/getData', 'ArahRevisiController::getData');
+
+// halaman beranda
+$routes->get('/beranda', 'Beranda::index');
+$routes->get('/beranda/ShowBarChart', 'Beranda::BarChart');
+$routes->get('/beranda/ShowLineChart', 'Beranda::LineChart');
 
 // halaman tabel ringkasan 
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelRingkasanController::index');

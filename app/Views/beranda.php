@@ -200,13 +200,13 @@
                         <div class="card-header">
                             <form action="" class="d-flex align-items-center">
                                 <select name="Grafik" id="Grafik" class="mr-3 py-2">
-                                    <option value="PDRB">Grafik Pertumbuhan PDRB</option>
-                                    <option value="PKRT">Grafik Pertumbuhan PKRT</option>
-                                    <option value="PK-LNPRT">Grafik Pertumbuhan PK-LNPRT</option>
-                                    <option value="PKP">Grafik Pertumbuhan PKP</option>
-                                    <option value="PMTB">Grafik Pertumbuhan PMTB</option>
-                                    <option value="Ekspor">Grafik Pertumbuhan Ekspor</option>
-                                    <option value="Impor">Grafik Pertumbuhan Impor</option>
+                                    <option id="9" value="PDRB">Grafik Pertumbuhan PDRB</option>
+                                    <option id="1" value="PKRT">Grafik Pertumbuhan PKRT</option>
+                                    <option id="2" value="PK-LNPRT">Grafik Pertumbuhan PK-LNPRT</option>
+                                    <option id="3" value="PKP">Grafik Pertumbuhan PKP</option>
+                                    <option id="4" value="PMTB">Grafik Pertumbuhan PMTB</option>
+                                    <option id="6" value="Ekspor">Grafik Pertumbuhan Ekspor</option>
+                                    <option id="7" value="Impor">Grafik Pertumbuhan Impor</option>
                                 </select>
                                 <select name="Jangka" id="Jangka" class="mr-3 py-2">
                                     <option value="Triwulan">Triwulan</option>
@@ -214,11 +214,11 @@
                                 </select>
                                 <select style="width:80px;" name="Jenis" id="Jenis" class="mr-3 py-2">
                                     <!-- Untuk Tahunan -->
-                                    <option value="Tahunan_YONY">Y-ON-Y</option>
+                                    <option id="11" value="Tahunan_YONY">Y-ON-Y</option>
                                     <!-- Untuk Triwulan -->
-                                    <option value="Triwulan_YONY">Y-ON-Y</option>
-                                    <option value="Triwulan_QTOQ">Q-TO-Q</option>
-                                    <option value="Triwulan_CTOC">C-TO-C</option>
+                                    <option id="21" value="Triwulan_YONY">Y-ON-Y</option>
+                                    <option id="22" value="Triwulan_QTOQ">Q-TO-Q</option>
+                                    <option id="23" value="Triwulan_CTOC">C-TO-C</option>
                                 </select>
                                 <!-- Button trigger modal -->
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -281,6 +281,7 @@
 
     <script>
         window.addEventListener('load', function() {
-            TerimaData();
+            TerimaDataBar();
+            TerimaDataLine();
         });
     </script>

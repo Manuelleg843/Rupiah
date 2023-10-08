@@ -182,24 +182,24 @@ class PutaranModel extends Model
     {
         $PutaranModel = new PutaranModel();
         // Untuk Cari Kuartal Sekarang
-        $Query = 'SELECT * FROM putaran WHERE (tahun = (SELECT MAX(tahun) FROM putaran))
+        $Query = 'SELECT tahun, id_kuartal, putaran FROM putaran WHERE (tahun = (SELECT MAX(tahun) FROM putaran))
             AND (id_kuartal = (SELECT MAX(id_kuartal) FROM putaran WHERE tahun = (SELECT MAX(tahun) FROM putaran)))
             AND (putaran = (SELECT MAX(putaran) FROM putaran WHERE id_kuartal = (SELECT MAX(id_kuartal) FROM putaran WHERE tahun = (SELECT MAX(tahun) FROM putaran))))';
         $Subquery = $PutaranModel->db->query($Query)->getResult();
         // Untuk Yang Ada Tahunan
-        $QueryKhususYear = 'SELECT * FROM putaran WHERE (tahun = (SELECT MAX(tahun) FROM putaran WHERE id_kuartal = 4))
+        $QueryKhususYear = 'SELECT tahun, id_kuartal, putaran FROM putaran WHERE (tahun = (SELECT MAX(tahun) FROM putaran WHERE id_kuartal = 4))
             AND id_kuartal = 4
             AND (putaran = (SELECT MAX(putaran) FROM putaran WHERE id_kuartal = (SELECT MAX(id_kuartal) FROM putaran WHERE tahun = (SELECT MAX(tahun) FROM putaran WHERE id_kuartal = 4))))';
         $SubqueryKhususYear = $PutaranModel->db->query($QueryKhususYear)->getResult();
         // Untuk Kuartal
-        $QueryKhususKuartal = 'SELECT * FROM putaran WHERE (tahun = (SELECT MAX(tahun) FROM putaran))
+        $QueryKhususKuartal = 'SELECT tahun, id_kuartal, putaran FROM putaran WHERE (tahun = (SELECT MAX(tahun) FROM putaran))
             AND (id_kuartal = (SELECT MAX(id_kuartal) FROM putaran WHERE tahun = (SELECT MAX(tahun) FROM putaran)))
             AND (putaran = (SELECT MAX(putaran) FROM putaran WHERE id_kuartal = (SELECT MAX(id_kuartal) FROM putaran WHERE tahun = (SELECT MAX(tahun) FROM putaran))))';
         $SubqueryKhususKuartal = $PutaranModel->db->query($QueryKhususKuartal)->getResult();
-        if ($Subquery[0]->id_kuartal >= 5) {
-            $maxSubquery = $SubqueryKhususYear;
-        } else {
+        if ($Subquery[0]->id_kuartal <= 4) {
             $maxSubquery = $SubqueryKhususKuartal;
+        } else {
+            $maxSubquery = $SubqueryKhususYear;
         }
 
         $builder = $this->table('putaran')
@@ -251,7 +251,7 @@ class PutaranModel extends Model
         return $builder->get()->getResult();
     }
 
-    public function getDataKomponenMin($kota, $jenisPDRB, $jeniskomponen, $periode) //cara buat otomatis satker
+    public function getDataKomponenPeriode($kota, $jenisPDRB, $jeniskomponen, $periode) //cara buat otomatis satker
     {
         $putaranMax = $this->getPutaranTerakhirPeriode($periode);
         $builder = $this->table('putaran')
