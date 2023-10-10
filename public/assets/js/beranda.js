@@ -24,8 +24,8 @@ if (
   document.getElementById("checkboxes-container-current-year-min2kuartal") !=
   null
 ) {
-  generateCheckboxesCurrentYearMin2Kuartal();
   generateTahunDropdownCurrentYear();
+  generateCheckboxesCurrentYearMin2Kuartal();
 }
 
 if (document.getElementById("checkboxes-container-3-years") != null) {

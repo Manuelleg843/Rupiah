@@ -76,7 +76,7 @@ function loadData() {
   if (tableArahRevisi) {
     tableSelected =
       tableArahRevisi.options[tableArahRevisi.selectedIndex].textContent;
-    jenisPDRB = tableArahRevisi.value;
+    jenisTable = tableArahRevisi.options[tableArahRevisi.selectedIndex].id;
   }
 
   var selectedKomponen = [];
@@ -144,7 +144,7 @@ function loadData() {
       break;
     case "Rupiah | Arah Revisi":
       judulTable.textContent = tableSelected + " - " + kotaSelected;
-      kirimDataArahRevisi(jenisTable, selectedPeriode);
+      kirimDataArahRevisi(jenisTable, kota, selectedPeriode);
       break;
   }
 }
@@ -189,12 +189,7 @@ function kirmdataPerKota(jenisPDRB, kota, selectedPeriode) {
     dataType: "json",
     success: function (data) {
       console.log(data);
-      renderTablePerKota(
-        data["dataPDRB"],
-        data["selectedPeriode"],
-        data["komponen"]
-      );
-      console.log(data["dataPDRB"]);
+      renderTablePerKota(data);
     },
     error: function (error) {
       // Handle kesalahan jika ada
@@ -336,21 +331,24 @@ function kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode) {
   });
 }
 
-function kirimDataArahRevisi(jenisTable, selectedPeriode) {
+function kirimDataArahRevisi(jenisTable, kota, selectedPeriode) {
   $.ajax({
     type: "POST",
-    url: "/arahrevisi/getData",
+    url: "/arahRevisi/getData",
     data: {
-      jenisTabel: jenisTable,
+      jenisTable: jenisTable,
       kota: kota,
       periode: selectedPeriode,
     },
     dataType: "json",
     success: function (data) {
+      console.log(data);
       renderTableArahRevisi(
-        data["dataarahrevisi"],
-        data["selectedPeriode"],
-        data["jenisTabel"]
+        data["dataarahrevisi"]["array_Rilis"],
+        data["dataarahrevisi"]["array_Revisi"],
+        data["dataarahrevisi"]["array_Arah"],
+        data["komponen"],
+        selectedPeriode
       );
     },
     error: function (error) {
@@ -360,8 +358,15 @@ function kirimDataArahRevisi(jenisTable, selectedPeriode) {
   });
 }
 
-function renderTableArahRevisi(data, selectedPeriode, jenisTabel) {
+function renderTableArahRevisi(
+  data_Rilis,
+  data_Revisi,
+  data_Arah,
+  komponen,
+  selectedPeriode
+) {
   // container table
+  console.log("ini jalan");
   var container = document.getElementById("arah-revisi-container");
 
   // delete table if there is content inside it
@@ -440,6 +445,9 @@ function renderTableArahRevisi(data, selectedPeriode, jenisTabel) {
 
     for (var col = 0; col < totalColumn; col++) {
       var cell = document.createElement("td");
+      var cell_rilis = document.createElement("td");
+      var cell_revisi = document.createElement("td");
+      var cell_arah = document.createElement("td");
 
       if (col == 0) {
         cell.colSpan = "2";
@@ -462,11 +470,41 @@ function renderTableArahRevisi(data, selectedPeriode, jenisTabel) {
           cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
         }
       } else {
-        temp++;
-        cell.style = "text-align: right;";
-        cell.classList.add("col-6");
+        cell_rilis.style = "text-align: right;";
+        cell_rilis.classList.add("col-6");
+        cell_rilis.innerHTML = data_Rilis[temp].nilai
+          ? numberFormat(data_Rilis[temp].nilai)
+          : "";
+        cell_revisi.style = "text-align: right;";
+        cell_revisi.classList.add("col-6");
+        cell_revisi.innerHTML = data_Revisi[temp].nilai
+          ? numberFormat(data_Revisi[temp].nilai)
+          : "";
+        cell_arah.style = "text-align: center;";
+        cell_arah.classList.add("col-3");
+        if (data_Arah[temp].nilai > 0) {
+          cell_arah.classList.add("text-success");
+          cell_arah.innerHTML =
+            "+" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        } else if (data_Arah[temp].nilai < 0) {
+          cell_arah.classList.add("text-danger");
+          cell_arah.innerHTML =
+            "-" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        } else {
+          cell_arah.innerHTML =
+            "=" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        }
       }
       row.appendChild(cell);
+      row.appendChild(cell_rilis);
+      row.appendChild(cell_revisi);
+      row.appendChild(cell_arah);
     }
     tbody.appendChild(row);
   }
@@ -1157,7 +1195,7 @@ function generateDropdownTabelArahRevisi() {
   select.id = "selectTable";
 
   var options = [
-    { value: "Pilih Jenis Tabel", text: "Pilih Jenis Tabel", hidden: true },
+    { value: "Pilih Jenis Tabel", text: "Pilih Jenis Tabel" },
     {
       // id 1
       value: "PDRB-ADHB",

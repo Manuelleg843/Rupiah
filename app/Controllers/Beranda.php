@@ -89,34 +89,34 @@ class Beranda extends BaseController
 
     public function getData()
     {
-        $kota = $this->request->getPost('kota');
-        $jenisTable = $this->request->getPost('jenisTable');
-        $komponen = $this->request->getPost('komponen');
+        $kota = $this->request->getPost('kota'); // cara sesuai satker
+        $jenisTable = $this->request->getPost('jenisTable'); // Triwulan (Y ON Y, Q TO Q, C TO C) atau Tahunan (Y ON Y)
         $periode = $this->request->getPost('periode');
+        $jenisKomponen = $this->request->getPost('jenisKomponen');
 
         switch ($jenisTable) {
-            case "11":
-            case "21":
-            case "22":
-            case "23":
+            case "11": // Tahunan (Y ON Y)
+                $data = $this->LineChartTahunan($kota, $jenisKomponen, $periode);
+                break;
+                // case "21":
+                // case "22":
+                // case "23":
         }
         $data = [];
         echo json_encode($data);
     }
 
     // Line Chart Tahunan
-    public function LineChartTahunan()
+    public function LineChartTahunan($kota, $jenisKomponen, $periode)
     {
         $JenisPDRB = 2; // Untuk Perhitungan pakai ADHK
 
         // Tahunan (Y ON Y)
-        $kota = 3100; // Untuk Perhitungan pakai DKI
-        $tahunLineY_ON_Y = array(2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022);
         $arrayLineTahunanY_ON_Y = array();
-        foreach ($tahunLineY_ON_Y as $periode) {
-            $Y_ON_Y = $this->putaran->getDataKomponenPeriode($kota, $JenisPDRB, 9, $periode); // cara ganti kota otomatis sesuai satker
+        foreach ($periode as $periode) {
+            $Y_ON_Y = $this->putaran->getDataKomponenPeriode($kota, $JenisPDRB, $jenisKomponen, $periode); // cara ganti kota otomatis sesuai satker
             $tahunmin = ($Y_ON_Y[0]->tahun) - 1;
-            $Y_ON_Y_minus1 = $this->putaran->getDataKomponenPeriode($kota, $JenisPDRB, 9, $tahunmin); // cara ganti kota otomatis sesuai satker
+            $Y_ON_Y_minus1 = $this->putaran->getDataKomponenPeriode($kota, $JenisPDRB, $jenisKomponen, $tahunmin); // cara ganti kota otomatis sesuai satker
             // Perhitungan Y ON Y -> (2023 - 2022)/MUTLAK(2022)*100
             $hasil_Line_Y_ON_Y = ($Y_ON_Y[0]->nilai - $Y_ON_Y_minus1[0]->nilai) / abs($Y_ON_Y_minus1[0]->nilai) * 100;
             array_push($arrayLineTahunanY_ON_Y, $hasil_Line_Y_ON_Y);
@@ -124,7 +124,7 @@ class Beranda extends BaseController
 
         // Data untuk JS
         $dataBuatJs = [
-            'periode' => $tahunLineY_ON_Y,
+            'periode' => $periode,
             'arrayLine' => $arrayLineTahunanY_ON_Y,
         ];
         return $dataBuatJs;
@@ -252,8 +252,8 @@ class Beranda extends BaseController
         $Y_ON_Y = $this->putaran->getDataKomponen(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
         $tahunmin = ($Y_ON_Y[0]->tahun) - 1;
         $kuartal = $Y_ON_Y[0]->id_kuartal;
-        $periode = $tahunmin . 'Q' . $kuartal;
-        $Y_ON_Y_minus1 = $this->putaran->getDataKomponenPeriode(3100, $JenisPDRB, 9, $periode); // cara ganti kota otomatis sesuai satker
+        $periodemin = $tahunmin . 'Q' . $kuartal;
+        $Y_ON_Y_minus1 = $this->putaran->getDataKomponenPeriode(3100, $JenisPDRB, 9, $periodemin); // cara ganti kota otomatis sesuai satker
         // Perhitungan Y ON Y -> (2023 {Q} - 2022 {Q})/MUTLAK(2022 {Q})*100
         $hasil_Y_ON_Y = ($Y_ON_Y[0]->nilai - $Y_ON_Y_minus1[0]->nilai) / abs($Y_ON_Y_minus1[0]->nilai) * 100;
 
@@ -261,9 +261,9 @@ class Beranda extends BaseController
         $Q_TO_Q = $this->putaran->getDataKomponen(3100, $JenisPDRB, 9); // cara ganti kota otomatis sesuai satker
         $tahun = $Q_TO_Q[0]->tahun;
         $kuartalmin = ($Q_TO_Q[0]->id_kuartal) - 1;
-        $periode = $tahun . 'Q' . $kuartalmin;
-        $Q_TO_Q_minus1 = $this->putaran->getDataKomponenPeriode(3100, $JenisPDRB, 9, $periode); // cara ganti kota otomatis sesuai satker
-        // Perhitungan Y ON Y -> (2023 {Q} - 2023 {Q-1})/MUTLAK(2023 {Q-1})*100
+        $periodemin = $tahun . 'Q' . $kuartalmin;
+        $Q_TO_Q_minus1 = $this->putaran->getDataKomponenPeriode(3100, $JenisPDRB, 9, $periodemin); // cara ganti kota otomatis sesuai satker
+        // Perhitungan Q To Q -> (2023 {Q} - 2023 {Q-1})/MUTLAK(2023 {Q-1})*100
         $hasil_Q_TO_Q = ($Q_TO_Q[0]->nilai - $Q_TO_Q_minus1[0]->nilai) / abs($Q_TO_Q_minus1[0]->nilai) * 100;
 
         // Pertumbuhan C TO C

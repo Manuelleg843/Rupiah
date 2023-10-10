@@ -26,8 +26,8 @@
                                 <!-- Jenis Tabel -->
                                 <div class="col-auto form-group" id="dropdownTableArahRevisi">
                                     <select class="form-control" style="width: 100%;" id="selectTableArahRevisi">
-                                        <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                        <option id="1" value="PDRB-ADHB">Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                        <!-- <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option> -->
+                                        <option id="1" value="PDRB-ADHB" selected>Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option id="2" value="PDRB-ADHK">Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option id="3" value="Pertumbuhan-Y-ON-Y">Tabel 303. Pertumbuhan PDRB (Y-ON-Y)</option>
                                         <option id="4" value="Pertumbuhan-Q-TO-Q">Tabel 304. Pertumbuhan PDRB (Q-TO-Q)</option>

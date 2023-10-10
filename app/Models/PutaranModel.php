@@ -274,7 +274,7 @@ class PutaranModel extends Model
             ->where('id_pdrb', $jenisPDRB)
             ->where('periode', $periode)
             ->where('putaran', $putaranMax)
-            ->orderBy('id_komponen');
+            ->orderBy('putaran.id_komponen');
         return $builder->get()->getResult();
     }
 
