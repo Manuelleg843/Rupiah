@@ -267,7 +267,7 @@
                             </form>
                         </div>
                         <!-- Grafik -->
-                        <div class="card-body">
+                        <div class="card-body" id="graph-container">
                             <canvas id="lineChart" style="height: 281px; width: 649px;"></canvas>
                         </div>
                         <!-- /.card-body-->
