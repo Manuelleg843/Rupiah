@@ -23,6 +23,7 @@ function loadData() {
   var tableJenisPDRB = document.getElementById("selectTableHistory");
   var tableRingkasan = document.getElementById("selectTableRingkasan");
   var tableUpload = document.getElementById("selectTableUpload");
+  var tableArahRevisi = document.getElementById("selectTableArahRevisi");
   let tablePerkota = document.getElementById("selectTablePerkota");
 
   if (tableJenisPDRB) {
@@ -71,6 +72,11 @@ function loadData() {
     tableSelected =
       tablePerkota.options[tablePerkota.selectedIndex].textContent;
     jenisPDRB = tablePerkota.value;
+  }
+  if (tableArahRevisi) {
+    tableSelected =
+      tableArahRevisi.options[tableArahRevisi.selectedIndex].textContent;
+    jenisTable = tableArahRevisi.options[tableArahRevisi.selectedIndex].id;
   }
 
   var selectedKomponen = [];
@@ -136,6 +142,10 @@ function loadData() {
       judulTable.textContent = tableSelected + " - " + kotaSelected;
       kirmdataPerKota(jenisPDRB, kota, selectedPeriode);
       break;
+    case "Rupiah | Arah Revisi":
+      judulTable.textContent = tableSelected + " - " + kotaSelected;
+      kirimDataArahRevisi(jenisTable, kota, selectedPeriode);
+      break;
   }
 }
 
@@ -179,12 +189,7 @@ function kirmdataPerKota(jenisPDRB, kota, selectedPeriode) {
     dataType: "json",
     success: function (data) {
       console.log(data);
-      renderTablePerKota(
-        data["dataPDRB"],
-        data["selectedPeriode"],
-        data["komponen"]
-      );
-      console.log(data["dataPDRB"]);
+      renderTablePerKota(data);
     },
     error: function (error) {
       // Handle kesalahan jika ada
@@ -324,6 +329,188 @@ function kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode) {
       console.error("Terjadi kesalahan:", error);
     },
   });
+}
+
+function kirimDataArahRevisi(jenisTable, kota, selectedPeriode) {
+  $.ajax({
+    type: "POST",
+    url: "/arahRevisi/getData",
+    data: {
+      jenisTable: jenisTable,
+      kota: kota,
+      periode: selectedPeriode,
+    },
+    dataType: "json",
+    success: function (data) {
+      console.log(data);
+      renderTableArahRevisi(
+        data["dataarahrevisi"]["array_Rilis"],
+        data["dataarahrevisi"]["array_Revisi"],
+        data["dataarahrevisi"]["array_Arah"],
+        data["komponen"],
+        selectedPeriode
+      );
+    },
+    error: function (error) {
+      // Handle kesalahan jika ada
+      console.error("Terjadi kesalahan:", error);
+    },
+  });
+}
+
+function renderTableArahRevisi(
+  data_Rilis,
+  data_Revisi,
+  data_Arah,
+  komponen,
+  selectedPeriode
+) {
+  // container table
+  console.log("ini jalan");
+  var container = document.getElementById("arah-revisi-container");
+
+  // delete table if there is content inside it
+  container.innerHTML = "";
+
+  // create elemen tabel
+  var table = document.createElement("table");
+  table.id = "tableArahRevisi";
+  table.classList.add("table", "table-bordered", "table-hover");
+
+  // create table header
+  var thead = document.createElement("thead");
+  thead.classList.add("text-center", "table-primary", "sticky-top");
+  var headerRow = document.createElement("tr");
+  var headerRow2 = document.createElement("tr");
+
+  // var headerRow = table.insertRow();
+  var headerKomponen = document.createElement("th");
+  headerKomponen.colSpan = "2";
+  headerKomponen.rowSpan = "2";
+  headerKomponen.innerHTML = "Komponen";
+  headerRow.appendChild(headerKomponen);
+
+  for (var i = 0; i < selectedPeriode.length; i++) {
+    var columnName = selectedPeriode[i];
+    var headerCell = document.createElement("th");
+    headerCell.colSpan = "3";
+    headerCell.innerHTML = columnName;
+
+    var headerCell2 = document.createElement("th");
+    headerCell2.classList.add("w-50");
+    headerCell2.innerHTML = "Rilis";
+    headerRow2.appendChild(headerCell2);
+
+    var headerCell3 = document.createElement("th");
+    headerCell3.classList.add("w-50");
+    headerCell3.innerHTML = "Revisi";
+    headerRow2.appendChild(headerCell3);
+
+    var headerCell4 = document.createElement("th");
+    headerCell4.classList.add("w-50");
+    headerCell4.innerHTML = "Arah Revisi";
+    headerRow2.appendChild(headerCell4);
+
+    headerRow.appendChild(headerCell);
+  }
+
+  thead.appendChild(headerRow);
+  thead.appendChild(headerRow2);
+  table.appendChild(thead);
+
+  // create table body
+  var tbody = document.createElement("tbody");
+  var temp = -1;
+  var totalColumn = headerRow2.childElementCount + 1;
+
+  // loop through json to create tbody
+  for (var i = 0; i < komponen.length; i++) {
+    var id_komponen = komponen[i].id_komponen;
+
+    // insert row
+    var row = document.createElement("tr");
+    if (
+      id_komponen == 1 ||
+      id_komponen == 2 ||
+      id_komponen == 3 ||
+      id_komponen == 4 ||
+      id_komponen == 5 ||
+      id_komponen == 6 ||
+      id_komponen == 7 ||
+      id_komponen == 8 ||
+      id_komponen == 9
+    ) {
+      row.style = "font-weight: bold;";
+    }
+
+    for (var col = 0; col < totalColumn; col++) {
+      var cell = document.createElement("td");
+      var cell_rilis = document.createElement("td");
+      var cell_revisi = document.createElement("td");
+      var cell_arah = document.createElement("td");
+
+      if (col == 0) {
+        cell.colSpan = "2";
+        if (
+          id_komponen != 1 &&
+          id_komponen != 2 &&
+          id_komponen != 3 &&
+          id_komponen != 4 &&
+          id_komponen != 5 &&
+          id_komponen != 6 &&
+          id_komponen != 7 &&
+          id_komponen != 8 &&
+          id_komponen != 9
+        ) {
+          cell.classList = "pl-5";
+        }
+        if (id_komponen == 9) {
+          cell.innerHTML = komponen[i].komponen;
+        } else {
+          cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
+        }
+      } else {
+        cell_rilis.style = "text-align: right;";
+        cell_rilis.classList.add("col-6");
+        cell_rilis.innerHTML = data_Rilis[temp].nilai
+          ? numberFormat(data_Rilis[temp].nilai)
+          : "";
+        cell_revisi.style = "text-align: right;";
+        cell_revisi.classList.add("col-6");
+        cell_revisi.innerHTML = data_Revisi[temp].nilai
+          ? numberFormat(data_Revisi[temp].nilai)
+          : "";
+        cell_arah.style = "text-align: center;";
+        cell_arah.classList.add("col-3");
+        if (data_Arah[temp].nilai > 0) {
+          cell_arah.classList.add("text-success");
+          cell_arah.innerHTML =
+            "+" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        } else if (data_Arah[temp].nilai < 0) {
+          cell_arah.classList.add("text-danger");
+          cell_arah.innerHTML =
+            "-" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        } else {
+          cell_arah.innerHTML =
+            "=" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        }
+      }
+      row.appendChild(cell);
+      row.appendChild(cell_rilis);
+      row.appendChild(cell_revisi);
+      row.appendChild(cell_arah);
+    }
+    tbody.appendChild(row);
+  }
+  table.appendChild(tbody);
+  // memasukkan tabel ke view
+  container.appendChild(table);
 }
 
 function renderTablePerKota(data, selectedPeriode, komponen) {
@@ -998,6 +1185,100 @@ function generateDropdownTabelRingkasan() {
   dropdownContainer.appendChild(select);
 }
 
+function generateDropdownTabelArahRevisi() {
+  const dropdownContainer = document.getElementById("dropdownTableArahRevisi");
+
+  // generate dropdown
+  const select = document.createElement("select");
+  select.classList.add("form-control");
+  select.style = "width: 100%; max-width: 600px";
+  select.id = "selectTable";
+
+  var options = [
+    { value: "Pilih Jenis Tabel", text: "Pilih Jenis Tabel" },
+    {
+      // id 1
+      value: "PDRB-ADHB",
+      text: "Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)",
+    },
+    {
+      // id 2
+      value: "PDRB-ADHK",
+      text: "Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)",
+    },
+    {
+      // id 3
+      value: "Pertumbuhan-Y-ON-Y",
+      text: "Tabel 303. Pertumbuhan PDRB (Y-ON-Y)",
+    },
+    {
+      // id 4
+      value: "Pertumbuhan-Q-TO-Q",
+      text: "Tabel 304. Pertumbuhan PDRB (Q-TO-Q)",
+    },
+    {
+      // id 5
+      value: "Pertumbuhan-C-TO-C",
+      text: "Tabel 305. Pertumbuhan PDRB (C-TO-C)",
+    },
+    {
+      // id 6
+      value: "indeks-implisit",
+      text: "Tabel 306. Indeks Implisit",
+    },
+    {
+      // id 7
+      value: "pertumbuhan-indeks-implisit-Y-ON-Y",
+      text: "Tabel 307. Pertumbuhan Indeks Implisit (Y-ON-Y)",
+    },
+    {
+      // id 8
+      value: "pertumbuhan-indeks-implisit-Q-TO-Q",
+      text: "Tabel 308. Pertumbuhan Indeks Implisit (Q-TO-Q)",
+    },
+    {
+      // id 9
+      value: "sumber-pertumbuhan-Y-ON-Y",
+      text: "Tabel 309. Sumber Pertumbuhan (Y-ON-Y)",
+    },
+    {
+      // id 10
+      value: "sumber-pertumbuhan-Q-TO-Q",
+      text: "Tabel 310. Sumber Pertumbuhan (Q-TO-Q)",
+    },
+    {
+      // id 11
+      value: "sumber-pertumbuhan-C-TO-C",
+      text: "Tabel 311. Sumber Pertumbuhan (C-TO-C)",
+    },
+  ];
+
+  // Loop untuk membuat elemen-elemen option
+  var option;
+  for (var i = 0; i < options.length; i++) {
+    option = document.createElement("option");
+    option.value = options[i].value;
+    option.innerHTML = options[i].text;
+    if (i == 0) {
+      option.hidden = true;
+    }
+    if (i == 1) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  }
+
+  dropdownContainer.appendChild(select);
+}
+
+if (document.getElementById("selectTableArahRevisi") != null) {
+  document
+    .getElementById("selectTableArahRevisi")
+    .addEventListener("change", function () {
+      loadData();
+    });
+}
+
 if (document.getElementById("selectTableRingkasan") != null) {
   document
     .getElementById("selectTableRingkasan")
@@ -1027,6 +1308,12 @@ if (document.title == "Rupiah | Tabel Per Kota") {
 }
 
 if (document.title == "Rupiah | Tabel Ringkasan") {
+  window.addEventListener("load", function () {
+    loadData();
+  });
+}
+
+if (document.title == "Rupiah | Arah Revisi") {
   window.addEventListener("load", function () {
     loadData();
   });

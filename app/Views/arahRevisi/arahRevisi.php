@@ -24,10 +24,10 @@
                             <!-- filter-->
                             <div class="row">
                                 <!-- Jenis Tabel -->
-                                <div class="col-auto form-group">
+                                <div class="col-auto form-group" id="dropdownTableArahRevisi">
                                     <select class="form-control" style="width: 100%;" id="selectTableArahRevisi">
-                                        <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option>
-                                        <option id="1" value="PDRB-ADHB">Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
+                                        <!-- <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option> -->
+                                        <option id="1" value="PDRB-ADHB" selected>Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option id="2" value="PDRB-ADHK">Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option id="3" value="Pertumbuhan-Y-ON-Y">Tabel 303. Pertumbuhan PDRB (Y-ON-Y)</option>
                                         <option id="4" value="Pertumbuhan-Q-TO-Q">Tabel 304. Pertumbuhan PDRB (Q-TO-Q)</option>
@@ -41,16 +41,21 @@
                                     </select>
                                 </div>
                                 <!-- Jenis Prov/Kab/Kot -->
-                                <div class="col-auto form-group" onchange="loadData()">
+                                <div class="col-auto form-group">
                                     <select class="form-control" style="width: 100%;" id="selectKota">
-                                        <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                        <option value="3100">Provinsi DKI Jakarta</option>
-                                        <option value="3101">Kepulauan Seribu</option>
-                                        <option value="3173">Jakarta Pusat</option>
-                                        <option value="3175">Jakarta Utara</option>
-                                        <option value="3174">Jakarta Barat</option>
-                                        <option value="3171">Jakarta Selatan</option>
-                                        <option value="3172">Jakarta Timur</option>
+                                        <option value="<?= session()->get('id_satker'); ?>" hidden><?= session()->get('satker'); ?></option>
+                                        <?php if (session()->get('id_satker') == 3100) { ?>
+                                            <option value="3100">Provinsi DKI Jakarta</option>
+                                            <option value="3101">Kepulauan Seribu</option>
+                                            <option value="3173">Jakarta Pusat</option>
+                                            <option value="3175">Jakarta Utara</option>
+                                            <option value="3174">Jakarta Barat</option>
+                                            <option value="3171">Jakarta Selatan</option>
+                                            <option value="3172">Jakarta Timur</option>
+                                        <?php } else { ?>
+                                            <option value="3100">Provinsi DKI Jakarta</option>
+                                            <option value="<?= session()->get('id_satker'); ?>"><?= session()->get('satker'); ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <!-- Pilih Periode -->
@@ -75,8 +80,8 @@
                                         </div>
                                         <!-- Checkbox -->
                                         <div class="modal-body">
-                                            <form action="" class="p-2" id="periode-checkboxes-container" onload="loadData()">
-                                                <div id="checkboxes-container-current-year-min2kuartal">
+                                            <form action="" class="p-2" id="periode-checkboxes-container">
+                                                <div id="checkboxes-container-current-year-min2kuartal" class="checkboxes-periode">
                                                 </div>
                                             </form>
                                         </div>
@@ -94,7 +99,7 @@
                                             <!-- Batal/Simpan -->
                                             <div>
                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                <button type="button" class="btn btn-success" data-dismiss="modal" id="save-periode" onclick="loadData()">Simpan</button>
+                                                <button type="button" class="btn btn-success" data-dismiss="modal" id="simpan-periode" onclick="loadData()">Simpan</button>
                                             </div>
                                         </div>
                                     </div>
@@ -121,7 +126,9 @@
                                 </row>
                                 <!-- Judul Tabel -->
                                 <div class="card-header">
-                                    <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
+                                    <div class="row" id="judulTable-container">
+                                        <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
+                                    </div>
                                 </div>
                             </div>
 

@@ -52,14 +52,24 @@ class RevisiModel extends Model
     // get data by periode and wilayah
     public function get_data_revisi_wilayah_periode($kota, $jenisPDRB, $periode) //cara buat otomatis satker
     {
-        $putaranMax = $this->getPutaranTerakhirPeriode($periode);
         $builder = $this->db->table('revisi')
             ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
             ->select()
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $jenisPDRB)
             ->where('periode', $periode)
-            ->orderBy('id_komponen');
+            ->orderBy('revisi.id_komponen');
+        return $builder->get()->getResult();
+    }
+
+    public function getDataKomponenPeriode($kota, $jenisPDRB, $jeniskomponen, $periode) //cara buat otomatis satker
+    {
+        $builder = $this->table('revisi')
+            ->select()
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $jenisPDRB)
+            ->where('id_komponen', $jeniskomponen)
+            ->where('periode', $periode);
         return $builder->get()->getResult();
     }
 
