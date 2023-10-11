@@ -6,23 +6,30 @@ const judulTableADHB = document.getElementById("judulTableADHB");
 const judulTableADHK = document.getElementById("judulTableADHK");
 const submitPeriode = document.getElementById("simpan-periode");
 const submitKomponen = document.getElementById("simpan-komponen");
-const subJudul = document.createElement("p");
+const subJudulContainer = document.createElement("row");
 const judulModal = document.getElementById("judulModal");
 const kotaJudulModal = document.getElementById("kotaJudulModal");
-const eksporButton = document.getElementById("export-button");
+const eksporButtonPDF = document.getElementById("export-button-pdf");
+const eksporButtonExcel = document.getElementById("export-button-excel");
+const eksporButtonExcelAll = document.getElementById("export-button-excelAll");
 const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
+const tableJenisPDRB = document.getElementById("selectTableHistory");
+const tableRingkasan = document.getElementById("selectTableRingkasan");
+const selectPeriodeHistory = document.getElementById("selectPeriodeHistory");
+const selectPutaranHistory = document.getElementById("selectPutaranHistory");
+var selectedKomponen = [];
+var selectedPeriode = [];
+var selectedPutaran = [];
 var tableSelected;
 var kotaSelected;
 var putaran;
 var jenisPDRB;
 var kota;
-var exportExcel = document.getElementById("exportExcel");
 
 // munculin data on load
 function loadData() {
-  var tableJenisPDRB = document.getElementById("selectTableHistory");
-  var tableRingkasan = document.getElementById("selectTableRingkasan");
   var tableUpload = document.getElementById("selectTableUpload");
+  var tableArahRevisi = document.getElementById("selectTableArahRevisi");
   let tablePerkota = document.getElementById("selectTablePerkota");
 
   if (tableJenisPDRB) {
@@ -35,7 +42,7 @@ function loadData() {
       tableRingkasan.options[tableRingkasan.selectedIndex].textContent;
     jenisTable = tableRingkasan.options[tableRingkasan.selectedIndex].id;
     let checkboxContainer;
-    if (["15", "17", "19", "20", "21", "22", "23"].includes(jenisTable)) {
+    if (["15", "17", "19", "21", "23"].includes(jenisTable)) {
       if (document.getElementById("checkboxes-container-year")) {
         checkboxContainer = document.getElementById(
           "checkboxes-container-year"
@@ -72,14 +79,30 @@ function loadData() {
       tablePerkota.options[tablePerkota.selectedIndex].textContent;
     jenisPDRB = tablePerkota.value;
   }
-
-  var selectedKomponen = [];
-  var selectedPeriode = [];
+  if (tableArahRevisi) {
+    tableSelected =
+      tableArahRevisi.options[tableArahRevisi.selectedIndex].textContent;
+    jenisTable = tableArahRevisi.options[tableArahRevisi.selectedIndex].id;
+  }
 
   if (submitPeriode) {
+    selectedPeriode.length = 0;
     $('.checkboxes-periode input[type="checkbox"]:checked').each(function () {
       selectedPeriode.push($(this).attr("name"));
     });
+  }
+
+  if (selectPeriodeHistory) {
+    selectedPeriode = selectPeriodeHistory.value;
+  }
+
+  if (selectPutaranHistory) {
+    selectedPutaran.length = 0;
+    $('#periode-checkboxes-container input[type="checkbox"]:checked').each(
+      function () {
+        selectedPutaran.push($(this).attr("name"));
+      }
+    );
   }
 
   // menampilkan periode default untuk tabel di halaman upload
@@ -107,24 +130,37 @@ function loadData() {
     }
   }
 
-  // mengganti judul tabel
+  // mengganti judul tabel dan kirim data buat generate tabel
   switch (document.title) {
     case "Rupiah | Tabel History Putaran":
       judulTable.textContent =
-        tableSelected + " - " + kotaSelected + " - Putaran " + putaran;
-      kirimData(jenisPDRB, kota, putaran, selectedPeriode, selectedKomponen);
+        tableSelected + " - " + kotaSelected + selectedPeriode;
+      kirimData(jenisPDRB, kota, selectedPutaran, selectedPeriode);
       break;
     case "Rupiah | Tabel Ringkasan":
       judulTable.textContent = tableSelected;
-      // create element subJudul untuk tabel 1.15, 1.16, 1.17
-      if (subJudul) {
+      // create element subJudul untuk tabel 1.15, 1.16, 1.17, 1.19, 1.20, 1.21, 1.22, 1.23
+      if (subJudulContainer) {
+        subJudulContainer.id = "subJudul-container";
+        subJudul = document.createElement("p");
         subJudul.textContent = "";
+        subJudulContainer.textContent = "";
       }
-      if (jenisTable == "15" || jenisTable == "16" || jenisTable == "17") {
-        // const subJudul = document.createElement("p");
-        subJudul.textContent = "Keterangan warna merah = pertumbuhan > 5";
-        const containerJudul = document.getElementById("judulTable-container");
-        containerJudul.appendChild(subJudul);
+      if (
+        jenisTable == "15" ||
+        jenisTable == "16" ||
+        jenisTable == "17" ||
+        jenisTable == "19" ||
+        jenisTable == "20" ||
+        jenisTable == "21" ||
+        jenisTable == "22" ||
+        jenisTable == "23"
+      ) {
+        subJudul.textContent = "Ket: *) pertumbuhan negatif";
+        // const containerJudul = document.getElementById("judulTable-container");
+        subJudulContainer.appendChild(subJudul);
+        const containerTabel = document.getElementById("card-table");
+        containerTabel.appendChild(subJudulContainer);
       }
       kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen);
       break;
@@ -136,33 +172,43 @@ function loadData() {
       judulTable.textContent = tableSelected + " - " + kotaSelected;
       kirmdataPerKota(jenisPDRB, kota, selectedPeriode);
       break;
+    case "Rupiah | Arah Revisi":
+      judulTable.textContent = tableSelected + " - " + kotaSelected;
+      kirimDataArahRevisi(jenisTable, kota, selectedPeriode);
+      break;
   }
 }
 
-function kirimData(
-  jenisPDRB,
-  kota,
-  putaran,
-  selectedPeriode,
-  selectedKomponen
-) {
+function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
   $.ajax({
     type: "POST",
-    url: "/tabelPDRB/tabelHistoryPutaran/getData",
+    url: "/tabelPDRB/tabelHistoryPutaran/getDataHistory",
     data: {
       jenisPDRB: jenisPDRB,
       kota: kota,
       putaran: putaran,
       periode: selectedPeriode,
-      komponen: selectedKomponen,
     },
     dataType: "json",
     success: function (data) {
-      renderTable(data["dataPDRB"], data["selectedPeriode"], data["komponen"]);
+      // console.log(data);
+      renderTable(
+        data["dataHistory"],
+        selectedPeriode,
+        data["komponen"],
+        putaran
+      );
+      // yang bener rendertable nya kaya yang di atas, tapi sementara ini pake yang di bawah dulu
+      // renderTable(
+      //   data["dataHistory"],
+      //   selectedPeriode,
+      //   data["komponen"],
+      //   data["putaran"]
+      // );
     },
     error: function (error) {
       // Handle kesalahan jika ada
-      console.error("Terjadi kesalahan:", error.message);
+      console.error("Terjadi kesalahan:", error);
     },
   });
 }
@@ -231,10 +277,27 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
     success: function (data) {
       switch (jenisTable) {
         case "11":
-          // console.log(data);
+          // console.log(data["dataRingkasan"]);
+          renderTable_diskrepansi(
+            data["dataRingkasan"],
+            data["komponen"],
+            data["selectedPeriode"],
+            data["wilayah"],
+            data["jenisTabel"]
+          );
+          break;
+        case "12":
+          // console.log(data["dataRingkasan"]);
+          renderTable_diskrepansi(
+            data["dataRingkasan"],
+            data["komponen"],
+            data["selectedPeriode"],
+            data["wilayah"],
+            data["jenisTabel"]
+          );
           break;
         case "13":
-          console.log(data);
+          // console.log(data);
           renderTable_ringkasan(
             data["dataRingkasan"],
             data["komponen"],
@@ -244,7 +307,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
           );
           break;
         case "14":
-          // console.log(data);
+          // console.log(data["dataRingkasan"]);
           renderTable_ringkasan14(
             data["dataRingkasan"],
             data["komponen"],
@@ -263,7 +326,17 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
           );
           break;
         case "16":
-          // console.log(data['dataRingkasan']);
+          // console.log(data["dataRingkasan"]);
+          renderTable_ringkasan(
+            data["dataRingkasan"],
+            data["komponen"],
+            data["selectedPeriode"],
+            data["wilayah"],
+            data["jenisTabel"]
+          );
+          break;
+        case "17":
+          console.log(data);
           renderTable_ringkasan(
             data["dataRingkasan"],
             data["komponen"],
@@ -322,6 +395,14 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
             data["jenisTabel"]
           );
           break;
+        case "23":
+          renderTable_ringkasan(
+            data["dataRingkasan"],
+            data["komponen"],
+            data["selectedPeriode"],
+            data["wilayah"],
+            data["jenisTabel"]
+          );
       }
     },
     error: function (error) {
@@ -349,6 +430,188 @@ function kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode) {
       console.error("Terjadi kesalahan:", error);
     },
   });
+}
+
+function kirimDataArahRevisi(jenisTable, kota, selectedPeriode) {
+  $.ajax({
+    type: "POST",
+    url: "/arahRevisi/getData",
+    data: {
+      jenisTable: jenisTable,
+      kota: kota,
+      periode: selectedPeriode,
+    },
+    dataType: "json",
+    success: function (data) {
+      console.log(data);
+      renderTableArahRevisi(
+        data["dataarahrevisi"]["array_Rilis"],
+        data["dataarahrevisi"]["array_Revisi"],
+        data["dataarahrevisi"]["array_Arah"],
+        data["komponen"],
+        selectedPeriode
+      );
+    },
+    error: function (error) {
+      // Handle kesalahan jika ada
+      console.error("Terjadi kesalahan:", error);
+    },
+  });
+}
+
+function renderTableArahRevisi(
+  data_Rilis,
+  data_Revisi,
+  data_Arah,
+  komponen,
+  selectedPeriode
+) {
+  // container table
+  console.log("ini jalan");
+  var container = document.getElementById("arah-revisi-container");
+
+  // delete table if there is content inside it
+  container.innerHTML = "";
+
+  // create elemen tabel
+  var table = document.createElement("table");
+  table.id = "tableArahRevisi";
+  table.classList.add("table", "table-bordered", "table-hover");
+
+  // create table header
+  var thead = document.createElement("thead");
+  thead.classList.add("text-center", "table-primary", "sticky-top");
+  var headerRow = document.createElement("tr");
+  var headerRow2 = document.createElement("tr");
+
+  // var headerRow = table.insertRow();
+  var headerKomponen = document.createElement("th");
+  headerKomponen.colSpan = "2";
+  headerKomponen.rowSpan = "2";
+  headerKomponen.innerHTML = "Komponen";
+  headerRow.appendChild(headerKomponen);
+
+  for (var i = 0; i < selectedPeriode.length; i++) {
+    var columnName = selectedPeriode[i];
+    var headerCell = document.createElement("th");
+    headerCell.colSpan = "3";
+    headerCell.innerHTML = columnName;
+
+    var headerCell2 = document.createElement("th");
+    headerCell2.classList.add("w-50");
+    headerCell2.innerHTML = "Rilis";
+    headerRow2.appendChild(headerCell2);
+
+    var headerCell3 = document.createElement("th");
+    headerCell3.classList.add("w-50");
+    headerCell3.innerHTML = "Revisi";
+    headerRow2.appendChild(headerCell3);
+
+    var headerCell4 = document.createElement("th");
+    headerCell4.classList.add("w-50");
+    headerCell4.innerHTML = "Arah Revisi";
+    headerRow2.appendChild(headerCell4);
+
+    headerRow.appendChild(headerCell);
+  }
+
+  thead.appendChild(headerRow);
+  thead.appendChild(headerRow2);
+  table.appendChild(thead);
+
+  // create table body
+  var tbody = document.createElement("tbody");
+  var temp = -1;
+  var totalColumn = headerRow2.childElementCount + 1;
+
+  // loop through json to create tbody
+  for (var i = 0; i < komponen.length; i++) {
+    var id_komponen = komponen[i].id_komponen;
+
+    // insert row
+    var row = document.createElement("tr");
+    if (
+      id_komponen == 1 ||
+      id_komponen == 2 ||
+      id_komponen == 3 ||
+      id_komponen == 4 ||
+      id_komponen == 5 ||
+      id_komponen == 6 ||
+      id_komponen == 7 ||
+      id_komponen == 8 ||
+      id_komponen == 9
+    ) {
+      row.style = "font-weight: bold;";
+    }
+
+    for (var col = 0; col < totalColumn; col++) {
+      var cell = document.createElement("td");
+      var cell_rilis = document.createElement("td");
+      var cell_revisi = document.createElement("td");
+      var cell_arah = document.createElement("td");
+
+      if (col == 0) {
+        cell.colSpan = "2";
+        if (
+          id_komponen != 1 &&
+          id_komponen != 2 &&
+          id_komponen != 3 &&
+          id_komponen != 4 &&
+          id_komponen != 5 &&
+          id_komponen != 6 &&
+          id_komponen != 7 &&
+          id_komponen != 8 &&
+          id_komponen != 9
+        ) {
+          cell.classList = "pl-5";
+        }
+        if (id_komponen == 9) {
+          cell.innerHTML = komponen[i].komponen;
+        } else {
+          cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
+        }
+      } else {
+        cell_rilis.style = "text-align: right;";
+        cell_rilis.classList.add("col-6");
+        cell_rilis.innerHTML = data_Rilis[temp].nilai
+          ? numberFormat(data_Rilis[temp].nilai)
+          : "";
+        cell_revisi.style = "text-align: right;";
+        cell_revisi.classList.add("col-6");
+        cell_revisi.innerHTML = data_Revisi[temp].nilai
+          ? numberFormat(data_Revisi[temp].nilai)
+          : "";
+        cell_arah.style = "text-align: center;";
+        cell_arah.classList.add("col-3");
+        if (data_Arah[temp].nilai > 0) {
+          cell_arah.classList.add("text-success");
+          cell_arah.innerHTML =
+            "+" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        } else if (data_Arah[temp].nilai < 0) {
+          cell_arah.classList.add("text-danger");
+          cell_arah.innerHTML =
+            "-" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        } else {
+          cell_arah.innerHTML =
+            "=" + data_Arah[temp].nilai
+              ? numberFormat(data_Arah[temp].nilai)
+              : "";
+        }
+      }
+      row.appendChild(cell);
+      row.appendChild(cell_rilis);
+      row.appendChild(cell_revisi);
+      row.appendChild(cell_arah);
+    }
+    tbody.appendChild(row);
+  }
+  table.appendChild(tbody);
+  // memasukkan tabel ke view
+  container.appendChild(table);
 }
 
 function renderTablePerKota(data, selectedPeriode, komponen) {
@@ -589,7 +852,7 @@ function renderTablePerkotaEkstrem(data, komponen, selectedPeriode, wilayah) {
 }
 
 // render table
-function renderTable(data, selectedPeriode, komponen) {
+function renderTable(data, selectedPeriode, komponen, putaran) {
   // container table
   var container = document.getElementById("PDRBTableContainer");
 
@@ -605,30 +868,42 @@ function renderTable(data, selectedPeriode, komponen) {
   var thead = document.createElement("thead");
   thead.classList.add("text-center", "table-primary", "sticky-top");
   var headerRow = document.createElement("tr");
+  var headerRow2 = document.createElement("tr");
 
-  // var headerRow = table.insertRow();
+  // header kolom pertama
   var headerKomponen = document.createElement("th");
   headerKomponen.colSpan = "2";
+  headerKomponen.rowSpan = "2";
+  headerKomponen.style =
+    "vertical-align: middle;  position: sticky; left: 0; z-index: 1; background-color: #B8DAFF";
   headerKomponen.innerHTML = "Komponen";
   headerRow.appendChild(headerKomponen);
 
-  for (var i = 0; i < selectedPeriode.length; i++) {
-    var columnName = selectedPeriode[i];
-    var headerCell = document.createElement("th");
-    headerCell.innerHTML = columnName;
-    headerRow.appendChild(headerCell);
+  // header di atas header kolom putaran
+  var headerPeriode = document.createElement("th");
+  headerPeriode.colSpan = putaran.length;
+  headerPeriode.innerHTML = selectedPeriode;
+  headerRow.appendChild(headerPeriode);
+
+  for (var i = 0; i < putaran.length; i++) {
+    var columnName = `putaran ${putaran[i]}`;
+    var headerCell2 = document.createElement("th");
+    headerCell2.style =
+      "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+    headerCell2.innerHTML = columnName;
+    headerRow2.appendChild(headerCell2);
   }
 
   thead.appendChild(headerRow);
+  thead.appendChild(headerRow2);
   table.appendChild(thead);
 
   var temp = -1;
   var tbody = document.createElement("tbody");
+  var totalColumn = headerRow2.childElementCount + 1;
+
   // loop through json to create tbody
   for (var i = 0; i < komponen.length; i++) {
-    // menghitung banyak kolom pada tabel
-    var totalColumn = headerRow.childElementCount;
-
     var id_komponen = komponen[i].id_komponen;
 
     // insert row
@@ -652,6 +927,8 @@ function renderTable(data, selectedPeriode, komponen) {
 
       if (col == 0) {
         cell.colSpan = "2";
+        cell.style =
+          "position: sticky; left: 0; z-index: 1; background-color: #fff;";
         if (
           id_komponen != 1 &&
           id_komponen != 2 &&
@@ -679,10 +956,9 @@ function renderTable(data, selectedPeriode, komponen) {
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          cell.innerHTML = numberFormat(data[temp].nilai);
+          cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
         }
       }
-
       row.appendChild(cell);
     }
     tbody.appendChild(row);
@@ -721,6 +997,8 @@ function renderTable_ringkasan(
   var headerKomponen = document.createElement("th");
   headerKomponen.colSpan = "2";
   headerKomponen.rowSpan = "2";
+  headerKomponen.style =
+    "vertical-align: middle;  position: sticky; left: 0; z-index: 1; background-color: #B8DAFF";
   headerKomponen.innerHTML = "Komponen";
   headerRow.appendChild(headerKomponen);
 
@@ -732,7 +1010,8 @@ function renderTable_ringkasan(
 
     wilayah.forEach((columns) => {
       var headerCell2 = document.createElement("th");
-      headerCell2.classList.add("w-50");
+      headerCell2.style =
+        "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
       headerCell2.innerHTML = columns.wilayah;
       headerRow2.appendChild(headerCell2);
     });
@@ -773,6 +1052,8 @@ function renderTable_ringkasan(
 
       if (col == 0) {
         cell.colSpan = "2";
+        cell.style =
+          "position: sticky; left: 0; z-index: 1; background-color: #fff;";
         if (
           id_komponen != 1 &&
           id_komponen != 2 &&
@@ -794,27 +1075,34 @@ function renderTable_ringkasan(
       } else {
         temp++;
         cell.style = "text-align: right;";
-        cell.classList.add("col-6");
         if (document.title == "Rupiah | Upload Data") {
           cell.innerHTML = data[col - 1][i]
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          if (jenisTabel == "15" || jenisTabel == "16" || jenisTabel == "17") {
-            if (data[temp].nilai > 5 || data[temp].nilai < -5) {
-              cell.classList.add("text-danger");
-              cell.innerHTML = data[temp].nilai
-                ? `*${numberFormat(data[temp].nilai)}`
-                : "";
+          if (
+            jenisTabel == "15" ||
+            jenisTabel == "16" ||
+            jenisTabel == "17" ||
+            jenisTabel == "19" ||
+            jenisTabel == "20" ||
+            jenisTabel == "21" ||
+            jenisTabel == "22" ||
+            jenisTabel == "23"
+          ) {
+            // ini kasih if data kosong
+            if (data[temp]) {
+              if (data[temp].nilai < 0) {
+                cell.classList.add("text-danger");
+                cell.innerHTML = `*${numberFormat(data[temp].nilai)}`;
+              } else {
+                cell.innerHTML = numberFormat(data[temp].nilai);
+              }
             } else {
-              cell.innerHTML = data[temp].nilai
-                ? numberFormat(data[temp].nilai)
-                : "";
+              cell.innerHTML = "";
             }
           } else {
-            cell.innerHTML = data[temp].nilai
-              ? numberFormat(data[temp].nilai)
-              : "";
+            cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
           }
         }
       }
@@ -850,6 +1138,8 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   var headerKomponen = document.createElement("th");
   headerKomponen.colSpan = "2";
   headerKomponen.rowSpan = "2";
+  headerKomponen.style =
+    "vertical-align: middle;  position: sticky; left: 0; z-index: 1; background-color: #B8DAFF";
   headerKomponen.innerHTML = "Komponen";
   headerRow.appendChild(headerKomponen);
 
@@ -861,7 +1151,8 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
 
     wilayah.forEach((columns) => {
       var headerCell2 = document.createElement("th");
-      headerCell2.classList.add("w-50");
+      headerCell2.style =
+        "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
       headerCell2.innerHTML = columns.wilayah;
       headerRow2.appendChild(headerCell2);
     });
@@ -876,6 +1167,7 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   var tbody = document.createElement("tbody");
   var temp = -1;
   var totalColumn = headerRow2.childElementCount + 1;
+
   // loop through json to create tbody
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
@@ -901,6 +1193,8 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
 
       if (col == 0) {
         cell.colSpan = "2";
+        cell.style =
+          "position: sticky; left: 0; z-index: 1; background-color: #fff;";
         if (
           id_komponen != 1 &&
           id_komponen != 2 &&
@@ -928,21 +1222,8 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          if (jenisTabel == "15" || jenisTabel == "16" || jenisTabel == "17") {
-            if (data[temp].nilai > 5 || data[temp].nilai < -5) {
-              cell.classList.add("text-danger");
-              cell.innerHTML = data[temp].nilai
-                ? `*${numberFormat(data[temp].nilai)}`
-                : "";
-            } else {
-              cell.innerHTML = data[temp].nilai
-                ? numberFormat(data[temp].nilai)
-                : "";
-            }
-          }
+          cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
         }
-
-        console.log(typeof data[temp].nilai);
       }
       row.appendChild(cell);
     }
@@ -950,6 +1231,139 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   }
 
   table.appendChild(tbody);
+  // memasukkan tabel ke view
+  container.appendChild(table);
+}
+
+function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
+  // container table
+  var container = document.getElementById("ringkasan-container");
+
+  // delete table if there is content inside it
+  container.innerHTML = "";
+
+  // create elemen tabel
+  var table = document.createElement("table");
+  table.id = "tabelRingkasan";
+  table.classList.add("table", "table-bordered", "table-hover");
+
+  // create table header
+  var thead = document.createElement("thead");
+  thead.classList.add("text-center", "table-primary", "sticky-top");
+  var headerRow = document.createElement("tr");
+  var headerRow2 = document.createElement("tr");
+
+  // var headerRow = table.insertRow();
+  var headerKomponen = document.createElement("th");
+  headerKomponen.colSpan = "2";
+  headerKomponen.rowSpan = "2";
+  headerKomponen.style =
+    "vertical-align: middle;  position: sticky; left: 0; z-index: 1; background-color: #B8DAFF";
+  headerKomponen.innerHTML = "Komponen";
+  headerRow.appendChild(headerKomponen);
+
+  for (var i = 0; i < selectedPeriode.length; i++) {
+    var columnName = selectedPeriode[i];
+    var headerCell = document.createElement("th");
+    headerCell.colSpan = "9";
+    headerCell.innerHTML = columnName;
+
+    var headerCell2 = document.createElement("th");
+    headerCell2.style =
+      "max-width: 110px; overflow: auto; white-space: normal;vertical-align: middle;";
+    headerCell2.innerHTML = "Diskrepansi";
+    var headerCell3 = document.createElement("th");
+    headerCell3.style =
+      "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+    headerCell3.innerHTML = "Total Kab/Kota";
+
+    headerRow2.appendChild(headerCell2);
+    headerRow2.appendChild(headerCell3);
+
+    wilayah.forEach((columns) => {
+      var headerCell4 = document.createElement("th");
+      headerCell4.style =
+        "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+      headerCell4.innerHTML = columns.wilayah;
+      headerRow2.appendChild(headerCell4);
+    });
+    headerRow.appendChild(headerCell);
+  }
+
+  thead.appendChild(headerRow);
+  thead.appendChild(headerRow2);
+  table.appendChild(thead);
+
+  // create table body
+  var tbody = document.createElement("tbody");
+  var temp = -1;
+  var totalColumn = headerRow2.childElementCount + 1;
+
+  // loop through json to create tbody
+  for (var i = 0; i < komponen.length; i++) {
+    var id_komponen = komponen[i].id_komponen;
+
+    // insert row
+    var row = document.createElement("tr");
+    if (
+      id_komponen == 1 ||
+      id_komponen == 2 ||
+      id_komponen == 3 ||
+      id_komponen == 4 ||
+      id_komponen == 5 ||
+      id_komponen == 6 ||
+      id_komponen == 7 ||
+      id_komponen == 8 ||
+      id_komponen == 9
+    ) {
+      row.style = "font-weight: bold;";
+    }
+
+    for (var col = 0; col < totalColumn; col++) {
+      var cell = document.createElement("td");
+
+      if (col == 0) {
+        cell.colSpan = "2";
+        cell.style =
+          "position: sticky; left: 0; z-index: 1; background-color: #fff;";
+        if (
+          id_komponen != 1 &&
+          id_komponen != 2 &&
+          id_komponen != 3 &&
+          id_komponen != 4 &&
+          id_komponen != 5 &&
+          id_komponen != 6 &&
+          id_komponen != 7 &&
+          id_komponen != 8 &&
+          id_komponen != 9
+        ) {
+          cell.classList = "pl-5";
+        }
+        if (id_komponen == 9) {
+          cell.innerHTML = komponen[i].komponen;
+        } else {
+          cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
+        }
+      } else {
+        temp++;
+        cell.style = "text-align: right;";
+        cell.classList.add("col-6");
+        if (document.title == "Rupiah | Upload Data") {
+          cell.innerHTML = data[col - 1][i]
+            ? numberFormat(data[col - 1][i].nilai)
+            : "";
+        } else {
+          // cell.innerHTML = numberFormat(data[temp].nilai);
+          cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
+        }
+      }
+      row.appendChild(cell);
+    }
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(tbody);
+
   // memasukkan tabel ke view
   container.appendChild(table);
 }
@@ -987,64 +1401,56 @@ function numberFormat(
 }
 
 // ekspor excel
-function exportData(fileType) {
-  tableSelected = selectTable.options[selectTable.selectedIndex].textContent;
-  putaran = selectPutaran.value;
-  jenisPDRB = selectTable.value;
-  kota = selectKota.value;
-  var selectedPeriode = [];
-
-  $('input[type="checkbox"]:checked').each(function () {
-    selectedPeriode.push($(this).attr("name"));
+if (eksporButtonExcel != null) {
+  eksporButtonExcel.addEventListener("click", function () {
+    if (document.title == "Rupiah | Tabel Ringkasan") {
+      window.location =
+        "/tabelPDRB/tabelRingkasan/exportExcel/" +
+        jenisTable +
+        "/" +
+        selectedPeriode +
+        "/" +
+        tableSelected;
+    } else if (document.title == "Rupiah | Tabel History Putaran") {
+      window.location =
+        "/tabelPDRB/tabelHistoryPutaran/exportExcel/" +
+        jenisPDRB +
+        "/" +
+        kota +
+        "/" +
+        selectedPutaran +
+        "/" +
+        selectedPeriode +
+        "/" +
+        tableSelected;
+    }
   });
+}
 
-  switch (fileType) {
-    case "excel":
-      var url =
-        "/tabelPDRB/exportExcel/" +
-        tableSelected +
-        "/" +
+// ekspor excel all putaran di tabel history
+if (eksporButtonExcelAll != null) {
+  eksporButtonExcelAll.addEventListener("click", function () {
+    if (document.title == "Rupiah | Tabel History Putaran") {
+      window.location =
+        "/tabelPDRB/tabelHistoryPutaran/exportExcel/" +
         jenisPDRB +
         "/" +
         kota +
         "/" +
-        putaran +
+        selectedPutaran +
         "/" +
-        selectedPeriode;
-      break;
-    case "pdf":
-      var url =
-        "/tabelPDRB/exportPDF/" +
+        selectedPeriode +
+        "/" +
         tableSelected +
         "/" +
-        jenisPDRB +
-        "/" +
-        kota +
-        "/" +
-        putaran +
-        "/" +
-        selectedPeriode;
-      break;
-    case "excelAllPutaran":
-      var url =
-        "/tabelPDRB/excelAllPutaran/" +
-        tableSelected +
-        "/" +
-        jenisPDRB +
-        "/" +
-        kota +
-        "/null" +
-        "/" +
-        selectedPeriode;
-      break;
-  }
-
-  window.location.href = url;
+        true;
+    }
+  });
 }
 
 // ekspor pdf
-if (eksporButton != null) {
-  eksporButton.addEventListener("click", function () {
+if (eksporButtonPDF != null) {
+  eksporButtonPDF.addEventListener("click", function () {
     let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17];
 
     let doc = new jspdf.jsPDF();
@@ -1158,6 +1564,100 @@ function generateDropdownTabelRingkasan() {
   dropdownContainer.appendChild(select);
 }
 
+function generateDropdownTabelArahRevisi() {
+  const dropdownContainer = document.getElementById("dropdownTableArahRevisi");
+
+  // generate dropdown
+  const select = document.createElement("select");
+  select.classList.add("form-control");
+  select.style = "width: 100%; max-width: 600px";
+  select.id = "selectTable";
+
+  var options = [
+    { value: "Pilih Jenis Tabel", text: "Pilih Jenis Tabel" },
+    {
+      // id 1
+      value: "PDRB-ADHB",
+      text: "Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)",
+    },
+    {
+      // id 2
+      value: "PDRB-ADHK",
+      text: "Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)",
+    },
+    {
+      // id 3
+      value: "Pertumbuhan-Y-ON-Y",
+      text: "Tabel 303. Pertumbuhan PDRB (Y-ON-Y)",
+    },
+    {
+      // id 4
+      value: "Pertumbuhan-Q-TO-Q",
+      text: "Tabel 304. Pertumbuhan PDRB (Q-TO-Q)",
+    },
+    {
+      // id 5
+      value: "Pertumbuhan-C-TO-C",
+      text: "Tabel 305. Pertumbuhan PDRB (C-TO-C)",
+    },
+    {
+      // id 6
+      value: "indeks-implisit",
+      text: "Tabel 306. Indeks Implisit",
+    },
+    {
+      // id 7
+      value: "pertumbuhan-indeks-implisit-Y-ON-Y",
+      text: "Tabel 307. Pertumbuhan Indeks Implisit (Y-ON-Y)",
+    },
+    {
+      // id 8
+      value: "pertumbuhan-indeks-implisit-Q-TO-Q",
+      text: "Tabel 308. Pertumbuhan Indeks Implisit (Q-TO-Q)",
+    },
+    {
+      // id 9
+      value: "sumber-pertumbuhan-Y-ON-Y",
+      text: "Tabel 309. Sumber Pertumbuhan (Y-ON-Y)",
+    },
+    {
+      // id 10
+      value: "sumber-pertumbuhan-Q-TO-Q",
+      text: "Tabel 310. Sumber Pertumbuhan (Q-TO-Q)",
+    },
+    {
+      // id 11
+      value: "sumber-pertumbuhan-C-TO-C",
+      text: "Tabel 311. Sumber Pertumbuhan (C-TO-C)",
+    },
+  ];
+
+  // Loop untuk membuat elemen-elemen option
+  var option;
+  for (var i = 0; i < options.length; i++) {
+    option = document.createElement("option");
+    option.value = options[i].value;
+    option.innerHTML = options[i].text;
+    if (i == 0) {
+      option.hidden = true;
+    }
+    if (i == 1) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  }
+
+  dropdownContainer.appendChild(select);
+}
+
+if (document.getElementById("selectTableArahRevisi") != null) {
+  document
+    .getElementById("selectTableArahRevisi")
+    .addEventListener("change", function () {
+      loadData();
+    });
+}
+
 if (document.getElementById("selectTableRingkasan") != null) {
   document
     .getElementById("selectTableRingkasan")
@@ -1192,6 +1692,12 @@ if (document.title == "Rupiah | Tabel Ringkasan") {
   });
 }
 
+if (document.title == "Rupiah | Arah Revisi") {
+  window.addEventListener("load", function () {
+    loadData();
+  });
+}
+
 // dropdown kota
 if (selectKota != null) {
   // Menampilkan judul modal sesuai wilayah yang terpilih
@@ -1205,4 +1711,21 @@ if (selectKota != null) {
   selectKota.addEventListener("change", function () {
     loadData();
   });
+}
+
+// get current date time
+function getCurrentDateTime() {
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0"); // Tambah 1 karena bulan dimulai dari 0
+  const day = String(now.getDate()).padStart(2, "0");
+
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  const formattedDateTime = `${year}-${month}-${day} ${hours}_${minutes}_${seconds}`;
+
+  return formattedDateTime;
 }

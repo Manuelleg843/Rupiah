@@ -98,6 +98,9 @@
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.html5.min.js'); ?>"></script>
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.print.min.js'); ?>"></script>
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
+<!-- sheet js -->
+<!-- use version 0.20.0 -->
+<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 <!-- Tombol Buka Tutup Putaran Monitoring -->
 <script src="<?= base_url('/assets/js/monitoring.js'); ?>"></script>
 <!-- SweetAlert2 -->
