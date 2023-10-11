@@ -77,14 +77,13 @@ class PutaranModel extends Model
 
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
-            ->select(['putaran.id_komponen', 'komponen_7.komponen', 'nilai', 'periode'])
+            ->select(['putaran.id_komponen', 'komponen_7.komponen', 'nilai', 'periode', 'putaran'])
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $idPDRB)
-            ->whereIn('periode', $periode)
+            ->where('periode', $periode)
+            ->where('putaran', $putaran)
             ->orderBy('id_komponen')
             ->orderBy('periode');
-
-        $putaran == 'null' ? '' : $builder->where('putaran', $putaran);
 
         return $builder->get()->getResult();
     }
@@ -286,5 +285,11 @@ class PutaranModel extends Model
         $row = $builder->getRow();
         $maxPutaran = $row->max_putaran;
         return $maxPutaran;
+    }
+
+    public function getAllPutaranByPeriode($periode)
+    {
+        $builder = $this->db->query("SELECT DISTINCT putaran FROM putaran WHERE periode = '$periode'");
+        return $builder->getResultArray();
     }
 }

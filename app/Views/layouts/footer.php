@@ -26,6 +26,20 @@
 <script>
     $.widget.bridge("uibutton", $.ui.button);
 </script>
+<script>
+    document.getElementById('exportExcel').addEventListener('click', function() {
+        // Ambil referensi tabel
+        let tablePerkota = document.getElementById('tabelPerkota');
+
+        // Buat objek untuk data Excel
+        let wb = XLSX.utils.table_to_book(tablePerkota, {
+            raw: true,
+        });
+
+        // Export data ke file Excel
+        XLSX.writeFile(wb, 'data_perkota.xlsx');
+    });
+</script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url('/assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
 <!-- ChartJS -->
@@ -84,6 +98,9 @@
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.html5.min.js'); ?>"></script>
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.print.min.js'); ?>"></script>
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
+<!-- sheet js -->
+<!-- use version 0.20.0 -->
+<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 <!-- Tombol Buka Tutup Putaran Monitoring -->
 <script src="<?= base_url('/assets/js/monitoring.js'); ?>"></script>
 <!-- SweetAlert2 -->
