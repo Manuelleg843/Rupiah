@@ -1,3 +1,21 @@
+// Filter Line Chart
+const BerandaPeriode = document.getElementById("periode-beranda");
+const jenisperhitungan = document.getElementById("Jenis");
+const Komponen = document.getElementById("Grafik");
+
+function loadDataLine() {
+  rumus = jenisperhitungan.options[jenisperhitungan.selectedIndex].id;
+  jenisKomponen = Komponen.options[Komponen.selectedIndex].id;
+
+  var selectedPeriode = [];
+  if (BerandaPeriode) {
+    $('.checkboxes-periode input[type="checkbox"]:checked').each(function () {
+      selectedPeriode.push($(this).attr("name"));
+    });
+  }
+  KirimDataLine(rumus, selectedPeriode, jenisKomponen);
+}
+
 // MODAL PILIH PERIODE (BERANDA, UPLOAD ANGKA PDRB, DAN TABEL-TABEL)
 let quarters = ["Q1", "Q2", "Q3", "Q4"];
 const today = new Date();
@@ -81,6 +99,11 @@ function generateCheckboxes() {
             if (i == currentQuarter - 1) {
               checkbox.checked = true;
             }
+          }
+        }
+        if (document.title == "Beranda") {
+          if (year > currentYear - 3) {
+            checkbox.checked = true;
           }
         }
       } else {
@@ -309,6 +332,7 @@ function generateCheckboxesYearOnly() {
   const row = document.createElement("div");
   row.classList.add("row");
   for (let year = currentYear; year >= 2010; year--) {
+    var i = 1;
     const col = document.createElement("div");
     col.classList.add("col");
     col.classList.add("form-check", "form-check-inline");
@@ -326,6 +350,12 @@ function generateCheckboxesYearOnly() {
     checkbox.name = `${year}`;
     checkbox.id = `checkbox${year}`;
     checkbox.value = `option${year}`;
+
+    if (document.title == "Beranda") {
+      if (year > currentYear - 5) {
+        checkbox.checked = true;
+      }
+    }
 
     col.appendChild(checkbox);
     col.appendChild(checkboxLabel);
@@ -608,19 +638,19 @@ function renderBarChart(dataY, dataQ, dataC) {
   });
 }
 
-function TerimaDataLine() {
+function KirimDataLine(rumus, selectedPeriode, jenisKomponen) {
   $.ajax({
-    type: "GET",
+    type: "POST",
     url: "/beranda/ShowLineChart",
+    data: {
+      jenisTable: rumus,
+      periode: selectedPeriode,
+      jenisKomponen: jenisKomponen,
+    },
     dataType: "json",
     success: function (data) {
-      let dataFloat = [];
       dataArray = Object.values(data);
-      for (const element of dataArray) {
-        dataFloat.push(element.map((str) => parseFloat(str).toFixed(2)));
-      }
-      console.log(dataFloat);
-      renderLineChart(dataFloat[0], dataFloat[1]);
+      renderLineChart(dataArray[0], dataArray[1]);
     },
     error: function (error) {
       // Handle kesalahan jika ada
@@ -630,10 +660,6 @@ function TerimaDataLine() {
 }
 
 function renderLineChart(datalabels, dataLine) {
-  console.log("yoooo");
-  console.log(datalabels);
-  console.log(dataLine);
-
   // Line Chart
   var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
   var ChartData = {
@@ -656,11 +682,10 @@ function renderLineChart(datalabels, dataLine) {
     plugins: {
       datalabels: {
         anchor: "end",
-        align: "bottom",
-        // formatter: Math.round.toFixed(2),
+        align: "top",
         font: {
           weight: "bold",
-          size: 10,
+          size: 13,
         },
       },
     },
@@ -671,7 +696,13 @@ function renderLineChart(datalabels, dataLine) {
       usePointStyle: true,
     },
   };
-  var lineChart = new Chart(lineChartCanvas, {
+  // function maxTickValue(data) {
+  //   return Math.round(Math.round(Math.max(...data)) / 5) * 5 + 10;
+  // }
+  // ChartOptions.scales.yAxes[0].ticks.max = maxTickValue(
+  //   ChartData.datasets[0].data
+  // );
+  new Chart(lineChartCanvas, {
     type: "line",
     data: ChartData,
     options: ChartOptions,
@@ -685,37 +716,59 @@ $(document).ready(function () {
     .map(function () {
       return {
         value: this.value,
-        option: "<option value='" + this.value + "'>" + this.text + "</option>",
+        option:
+          "<option id='" +
+          this.id +
+          "' value='" +
+          this.value +
+          "'>" +
+          this.text +
+          "</option>",
       };
     });
-  $("#Jangka").change(function () {
-    $("#Jenis").children("option").remove();
-    var addoptarr = [];
-    for (i = 0; i < optarray.length; i++) {
-      if (optarray[i].value.indexOf($(this).val()) > -1) {
-        addoptarr.push(optarray[i].option);
+  $("#Jangka")
+    .change(function () {
+      $("#Jenis").children("option").remove();
+      var addoptarr = [];
+      for (i = 0; i < optarray.length; i++) {
+        if (optarray[i].value.indexOf($(this).val()) > -1) {
+          addoptarr.push(optarray[i].option);
+        }
       }
-    }
-    $("#Jenis").html(addoptarr.join(""));
+      $("#Jenis").html(addoptarr.join(""));
 
-    let checkboxContainer;
-    if (document.getElementById("checkboxes-container")) {
-      checkboxContainer = document.getElementById("checkboxes-container");
-      checkboxContainer.innerHTML = "";
-      checkboxContainer.id = "checkboxes-container-year-only";
-      generateCheckboxesYearOnly();
-      generateTahunDropdown();
-    } else if (document.getElementById("checkboxes-container-year-only")) {
-      checkboxContainer = document.getElementById(
-        "checkboxes-container-year-only"
-      );
-      checkboxContainer.innerHTML = "";
-      checkboxContainer.id = "checkboxes-container";
-      generateCheckboxes();
-      generateTahunDropdown();
-    }
-  });
+      let checkboxContainer;
+      if (document.getElementById("checkboxes-container")) {
+        checkboxContainer = document.getElementById("checkboxes-container");
+        checkboxContainer.innerHTML = "";
+        checkboxContainer.id = "checkboxes-container-year-only";
+        generateCheckboxesYearOnly();
+        generateTahunDropdown();
+      } else if (document.getElementById("checkboxes-container-year-only")) {
+        checkboxContainer = document.getElementById(
+          "checkboxes-container-year-only"
+        );
+        checkboxContainer.innerHTML = "";
+        checkboxContainer.id = "checkboxes-container";
+        generateCheckboxes();
+        generateTahunDropdown();
+      }
+      loadDataLine();
+    })
+    .change();
 });
+
+// Berubah Tiap Perubahan Pilihan (BERANDA)
+if (document.getElementById("Grafik") != null) {
+  document.getElementById("Grafik").addEventListener("change", function () {
+    loadDataLine();
+  });
+}
+if (document.getElementById("Jenis") != null) {
+  document.getElementById("Jenis").addEventListener("change", function () {
+    loadDataLine();
+  });
+}
 
 // MENAMPILKAN NAMA FILE YANG SUDAH TERPILIH (UPLOAD ANGKA PDRB)
 $("#inputFile").change(function () {

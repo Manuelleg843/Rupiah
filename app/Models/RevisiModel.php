@@ -62,6 +62,17 @@ class RevisiModel extends Model
         return $builder->get()->getResult();
     }
 
+    public function getDataKomponenPeriode($kota, $jenisPDRB, $jeniskomponen, $periode) //cara buat otomatis satker
+    {
+        $builder = $this->table('revisi')
+            ->select()
+            ->where('id_wilayah', $kota)
+            ->where('id_pdrb', $jenisPDRB)
+            ->where('id_komponen', $jeniskomponen)
+            ->where('periode', $periode);
+        return $builder->get()->getResult();
+    }
+
     // get periode 
     public function getPeriode()
     {

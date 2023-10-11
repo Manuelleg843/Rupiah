@@ -38,7 +38,7 @@ $routes->post('/arahRevisi/getData', 'ArahRevisiController::getData');
 // halaman beranda
 $routes->get('/beranda', 'Beranda::index');
 $routes->get('/beranda/ShowBarChart', 'Beranda::BarChart');
-$routes->get('/beranda/ShowLineChart', 'Beranda::LineChart');
+$routes->post('/beranda/ShowLineChart', 'Beranda::getData');
 
 // halaman tabel ringkasan 
 $routes->get('/tabelPDRB/tabelRingkasan', 'TabelRingkasanController::index');
