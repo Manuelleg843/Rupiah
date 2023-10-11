@@ -343,4 +343,10 @@ class PutaranModel extends Model
         $maxPutaran = $row->max_putaran;
         return $maxPutaran;
     }
+
+    public function getAllPutaranByPeriode($periode)
+    {
+        $builder = $this->db->query("SELECT DISTINCT putaran FROM putaran WHERE periode = '$periode'");
+        return $builder->getResultArray();
+    }
 }

@@ -237,13 +237,38 @@ class TabelPDRBController extends BaseController
 
     public function viewTabelHistoryPutaran()
     {
+        $currentYear = date('Y');
+        $currentMonth = date('n');
+        $currentQuarter = ceil($currentMonth / 3);
+        switch ($currentQuarter) {
+            case 1:
+                $currentYear = $currentYear - 1;
+                $periode = [$currentYear . 'Q1', $currentYear . 'Q2', $currentYear . 'Q3', $currentYear . 'Q4'];
+                break;
+            case 2:
+                $periode = [$currentYear . 'Q1'];
+                break;
+            case 3:
+                $periode = [$currentYear . 'Q1', $currentYear . 'Q2'];
+                break;
+            case 4:
+                $periode = [$currentYear . 'Q1', $currentYear . 'Q2', $currentYear . 'Q3'];
+                break;
+        }
+        $putaran = array_map('current', $this->putaran->getAllPutaranByPeriode(end($periode)));
 
         $data = [
             'title' => 'Rupiah | Tabel History Putaran',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel History Putaran',
-            'putaran' => $this->putaran->getPutaranTerakhir(),
+            'putaran' => $putaran,
+            'periode' => $periode,
         ];
+
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // exit();
 
         echo view('layouts/header', $data);
         echo view('layouts/navbar');

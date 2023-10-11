@@ -36,7 +36,7 @@ function loadData() {
       tableRingkasan.options[tableRingkasan.selectedIndex].textContent;
     jenisTable = tableRingkasan.options[tableRingkasan.selectedIndex].id;
     let checkboxContainer;
-    if (["15", "17", "19", "20", "21", "22", "23"].includes(jenisTable)) {
+    if (["15", "17", "19", "21", "23"].includes(jenisTable)) {
       if (document.getElementById("checkboxes-container-year")) {
         checkboxContainer = document.getElementById(
           "checkboxes-container-year"
@@ -252,6 +252,16 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
             data["jenisTabel"]
           );
           break;
+        case "17":
+          console.log(data);
+          renderTable_ringkasan(
+            data["dataRingkasan"],
+            data["komponen"],
+            data["selectedPeriode"],
+            data["wilayah"],
+            data["jenisTabel"]
+          );
+          break;
         case "18":
           // console.log(data);
           renderTable_ringkasan(
@@ -302,6 +312,14 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
             data["jenisTabel"]
           );
           break;
+        case "23":
+          renderTable_ringkasan(
+            data["dataRingkasan"],
+            data["komponen"],
+            data["selectedPeriode"],
+            data["wilayah"],
+            data["jenisTabel"]
+          );
       }
     },
     error: function (error) {

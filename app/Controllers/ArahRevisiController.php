@@ -37,43 +37,6 @@ class ArahRevisiController extends BaseController
     }
 
     // Ambil Data dari Json
-    public function getData()
-    {
-        $jenisTable = $this->request->getPost('jenisTable');
-        $kota = $this->request->getPost('kota');
-        $periode = $this->request->getPost('periode');
-
-        switch ($jenisTable) {
-            case '1':
-                $dataarahrevisi = $this->arahrevisi_tabel1($kota, $periode);
-                break;
-                // case '2':
-                //     $dataarahrevisi = $this->arahrevisi_tabel2($kota, $periode);
-                //     break;
-                // case '3':
-                //     $dataarahrevisi = $this->arahrevisi_tabel3($kota, $periode);
-                //     break;
-                // case '4':
-                //     $dataarahrevisi = $this->arahrevisi_tabel4($kota, $periode);
-                //     break;
-                // case '5':
-                //     $dataarahrevisi = $this->arahrevisi_tabel5($kota, $periode);
-                //     break;
-                // case '6':
-                //     $dataarahrevisi = $this->arahrevisi_tabel6($kota, $periode);
-                //     break;
-                // case '7':
-                //     $dataarahrevisi = $this->arahrevisi_tabel7($kota, $periode);
-                //     break;
-        };
-
-        $data = [
-            'dataarahrevisi' => $dataarahrevisi,
-            'komponen' => $this->komponen->get_data(),
-        ];
-
-        echo json_encode($data);
-    }
 
     // PDRB ADHB
     private function arahrevisi_tabel1($kota, $periode)
@@ -338,5 +301,31 @@ class ArahRevisiController extends BaseController
         // Gunakan ADHK
         $ADHB = "1";
         $ADHK = "2";
+    }
+
+    public function getData()
+    {
+        $jenisTable = $this->request->getPost('jenisTable');
+        $kota = $this->request->getPost('kota');
+        $periode = $this->request->getPost('periode');
+
+        switch ($jenisTable) {
+            case '1':
+                $dataarahrevisi = $this->arahrevisi_tabel1($kota, $periode);
+                break;
+            case '2':
+                $dataarahrevisi = $this->arahrevisi_tabel2($kota, $periode);
+                break;
+        };
+
+        $data = [
+            'dataarahrevisi' => $dataarahrevisi,
+            'komponen' => $this->komponen->get_data(),
+            'selectedPeriode' => $periode,
+            // 'wilayah' => $wilayah,
+            // 'jenisTabel' => $jenisTabel,
+        ];
+
+        echo json_encode($data);
     }
 }
