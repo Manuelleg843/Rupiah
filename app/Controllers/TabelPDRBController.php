@@ -323,6 +323,11 @@ class TabelPDRBController extends BaseController
             'periode' => $periode,
         ];
 
+        // echo "<pre>";
+        // print_r($data);
+        // echo "</pre>";
+        // exit();
+
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);

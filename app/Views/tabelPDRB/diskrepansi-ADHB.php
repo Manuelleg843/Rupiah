@@ -25,7 +25,7 @@
                                     <div class="col-auto form-group" id="dropdownTabelRingkasan">
                                         <select class="form-control" style="width: 100%; max-width: 600px" id="selectTableRingkasan">
                                             <!-- <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option> -->
-                                            <option value="diskrepansi-ADHB" id="11" selected>Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
+                                            <option value="diskrepansi-ADHB" id="11">Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
                                             <option value="diskrepansi-ADHK" id="12">Tabel 1.12. Diskrepansi PDRB ADHK Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
                                             <option value="distribusi-persentase-PDRB-ADHB" id="13">Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota</option>
                                             <option value="distribusi-persentase-PDRB-Total" id="14">Tabel 1.14. Distribusi Persentase PDRB Kabupaten Kota Terhadap Total Provinsi</option>
