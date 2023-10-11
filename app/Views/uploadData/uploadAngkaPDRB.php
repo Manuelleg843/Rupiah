@@ -114,12 +114,12 @@
                                 <div class="col-auto">
                                     <div class="btn-group">
                                         <!-- <a href="/uploadData/eksporPDF"> -->
-                                        <button id="export-button" class="btn btn-outline-danger">
+                                        <button id="export-button-pdf" class="btn btn-outline-danger pdf">
                                             <i class="fa fa-file-pdf"></i>
                                             <span>Ekspor PDF</span>
                                         </button>
                                         <!-- </a> -->
-                                        <button class="btn btn-outline-success">
+                                        <button id="export-button-excel" class="btn btn-outline-success excel">
                                             <i class="fa fa-file-excel"></i>
                                             <span>Ekspor Excel</span>
                                         </button>

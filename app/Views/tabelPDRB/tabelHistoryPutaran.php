@@ -42,7 +42,7 @@
                                             </select>
                                         </div>
                                         <div class="col-auto form-group">
-                                            <select class="form-control" style="width: 100%;" id="selectPutaran" onchange="loadData()">
+                                            <select class="form-control" style="width: 100%;" id="selectPeriodeHistory" onchange="loadData()">
                                                 <option value="Pilih Putaran" hidden>Pilih Periode</option>
                                                 <?php foreach ($periode as $opsi) : ?>
                                                     <option value="<?= $opsi ?>" <?php if ($opsi == end($periode)) echo 'selected'; ?>>
@@ -61,7 +61,7 @@
 
                                     <!-- filter end -->
 
-                                    <!-- modal periode -->
+                                    <!-- modal putaran -->
                                     <div class="modal fade" id="putaranModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
@@ -71,7 +71,7 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form class="p-2" id="selectPeriode" onload="loadData()">
+                                                <form class="p-2" id="selectPutaranHistory" onload="loadData()">
                                                     <div class="modal-body" id="periode-checkboxes-container">
                                                         <div class="row">
                                                             <?php foreach ($putaran as $opsi) : ?>
@@ -107,15 +107,15 @@
                                         <div class="row justify-content-end mt-3">
                                             <div class="col-auto">
                                                 <div class="btn-group">
-                                                    <a href="javascript:exportData('pdf')" target="_self" class="btn btn-outline-danger">
+                                                    <button id="export-button-pdf" class="btn btn-outline-danger">
                                                         <i class="fa fa-file-pdf"></i>
                                                         <span>Ekspor PDF</span>
-                                                    </a>
-                                                    <a href="javascript:exportData('excel')" target="_self" class="btn btn-outline-success">
+                                                    </button>
+                                                    <button id="export-button-excel" class="btn btn-outline-success">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Excel</span>
-                                                    </a>
-                                                    <a href="javascript:exportData('excelAllPutaran')" target="_self" class="btn btn-outline-secondary">
+                                                    </button>
+                                                    <a id="export-button-excelAll" class="btn btn-outline-secondary">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Semua Putaran</span>
                                                     </a>
