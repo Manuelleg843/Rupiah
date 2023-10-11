@@ -38,7 +38,6 @@
                                             <option value="sumber-pertumbuhan-Q-TO-Q" id="21">Tabel 1.21. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Q-TO-Q)</option>
                                             <option value="sumber-pertumbuhan-Y-ON-Y" id="22">Tabel 1.22. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Y-ON-Y)</option>
                                             <option value="sumber-pertumbuhan-C-TO-C" id="23">Tabel 1.23. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (C-TO-C)</option>
-                                            <option value="ringkasan-pertumbuhan-ekstrem" id="24">Tabel 1.24. Ringkasan Pertumbuhan Ekstrim Provinsi dan 6 Kabupaten Kota</option>
                                         </select>
                                     </div>
                                     <div class="col-auto align-items-center">
@@ -99,20 +98,20 @@
                                     <div class="row justify-content-end mt-3">
                                         <div class="col-auto">
                                             <div class="btn-group">
-                                                <a href="#" target="_blank" class="btn btn-outline-danger">
+                                                <button id="export-button-pdf" class="btn btn-outline-danger">
                                                     <i class="fa fa-file-pdf"></i>
                                                     <span>Ekspor PDF</span>
-                                                </a>
-                                                <a href="#" target="_blank" class="btn btn-outline-success">
+                                                </button>
+                                                <button id="export-button-excel" class="btn btn-outline-success">
                                                     <i class="fa fa-file-excel"></i>
                                                     <span>Ekspor Excel</span>
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
 
                                     <!-- judul tabel -->
-                                    <div class="card-header">
+                                    <div class="card-header" id="card-table">
                                         <div class="row" id="judulTable-container">
                                             <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                                         </div>
