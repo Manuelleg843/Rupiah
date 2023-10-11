@@ -25,7 +25,7 @@
                                     <div class="col-auto form-group" id="dropdownTabelRingkasan">
                                         <select class="form-control" style="width: 100%; max-width: 600px" id="selectTableRingkasan">
                                             <!-- <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option> -->
-                                            <option value="diskrepansi-ADHB" id="11" selected>Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
+                                            <option value="diskrepansi-ADHB" id="11">Tabel 1.11. Diskrepansi PDRB ADHB Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
                                             <option value="diskrepansi-ADHK" id="12">Tabel 1.12. Diskrepansi PDRB ADHK Menurut Pengeluaran Provinsi dan 6 Kabupaten/Kota (Juta Rupiah)</option>
                                             <option value="distribusi-persentase-PDRB-ADHB" id="13">Tabel 1.13. Distribusi Persentase PDRB ADHB Provinsi dan 6 Kabupaten/Kota</option>
                                             <option value="distribusi-persentase-PDRB-Total" id="14">Tabel 1.14. Distribusi Persentase PDRB Kabupaten Kota Terhadap Total Provinsi</option>
@@ -37,7 +37,7 @@
                                             <option value="pertumbuhan-indeks-implisit-Y-ON-Y" id="20">Tabel 1.20. Pertumbuhan Indeks Implisit Provinsi dan Kabupaten/Kota (Y-ON-Y)</option>
                                             <option value="sumber-pertumbuhan-Q-TO-Q" id="21">Tabel 1.21. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Q-TO-Q)</option>
                                             <option value="sumber-pertumbuhan-Y-ON-Y" id="22">Tabel 1.22. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (Y-ON-Y)</option>
-                                            <option value="sumber-pertumbuhan-C-TO-C" id="23">Tabel 1.23. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (C-TO-C)</option>
+                                            <option value="sumber-pertumbuhan-C-TO-C" id="23" selected>Tabel 1.23. Sumber Pertumbuhan Ekonomi Provinsi dan 6 Kabupaten/Kota (C-TO-C)</option>
                                             <option value="ringkasan-pertumbuhan-ekstrem" id="24">Tabel 1.24. Ringkasan Pertumbuhan Ekstrim Provinsi dan 6 Kabupaten Kota</option>
                                         </select>
                                     </div>
