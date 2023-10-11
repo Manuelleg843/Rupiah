@@ -35,6 +35,7 @@
                                         <option value="10">Tabel 3.10. Sumber Pertumbuhan Ekonomi (Q-TO-Q)</option>
                                         <option value="11">Tabel 3.11. Sumber Pertumbuhan Ekonomi (Y-ON-Y)</option>
                                         <option value="12">Tabel 3.12. Sumber Pertumbuhan Ekonomi (C-TO-C)</option>
+                                        <option value="13">Tabel 3.13. Ringkasan Pertumbuhan Ekstrem Provinsi</option>
                                     </select>
                                 </div>
                                 <div class="col-auto form-group" onchange="loadData()">
@@ -112,14 +113,14 @@
                                 <div class="row justify-content-end mt-3">
                                     <div class="col-auto">
                                         <div class="btn-group">
-                                            <a href="#" target="_blank" class="btn btn-outline-danger">
+                                            <button class="btn btn-outline-danger" id="export-button">
                                                 <i class="fa fa-file-pdf"></i>
                                                 <span>Ekspor PDF</span>
-                                            </a>
-                                            <a href="#" target="_blank" class="btn btn-outline-success">
+                                            </button>
+                                            <button id="exportExcel" class="btn btn-outline-success">
                                                 <i class="fa fa-file-excel"></i>
                                                 <span>Ekspor Excel</span>
-                                            </a>
+                                            </button>
                                             <a href="#" target="_blank" class="btn btn-outline-secondary">
                                                 <i class="fa fa-file-excel"></i>
                                                 <span>Ekspor Satu Kota</span>

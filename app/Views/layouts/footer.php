@@ -26,6 +26,20 @@
 <script>
     $.widget.bridge("uibutton", $.ui.button);
 </script>
+<script>
+    document.getElementById('exportExcel').addEventListener('click', function() {
+        // Ambil referensi tabel
+        let tablePerkota = document.getElementById('tabelPerkota');
+
+        // Buat objek untuk data Excel
+        let wb = XLSX.utils.table_to_book(tablePerkota, {
+            raw: true,
+        });
+
+        // Export data ke file Excel
+        XLSX.writeFile(wb, 'data_perkota.xlsx');
+    });
+</script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url('/assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
 <!-- ChartJS -->
