@@ -26,7 +26,7 @@
                         </li>
                     </ul>
                 </li>
-                <?php if (in_array('5', session()->get('permission'))) { ?>
+                <?php if (in_array('3', session()->get('permission'))) { ?>
                     <li class="nav-item menu-open">
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
