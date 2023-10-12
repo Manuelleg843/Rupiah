@@ -30,11 +30,9 @@
                                     <li class="nav-item ">
                                         <small id="detail_buka" class="mr-2" <?= ($isActive == 1) ? 'hidden' : '' ?>><i>Putaran Belum dibuka</i></small>
                                         <small id="detail_tutup" class="mr-2" <?= ($isActive == 0) ? 'hidden' : '' ?>><i>Sedang Dalam Putaran </i></small>
-                                        <a href="<?= base_url('/monitoring/updateStatus') ?>">
-                                            <button <?= ($isActive == 1) ? 'hidden' : '' ?> id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
-                                                Buka Putaran
-                                            </button>
-                                        </a>
+                                        <button <?= ($isActive == 1) ? 'hidden' : '' ?> id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
+                                            Buka Putaran
+                                        </button>
                                         <button <?= ($isActive == 0) ? 'hidden' : '' ?> id="buttontutup" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tutup">
                                             Tutup Putaran
                                         </button>
@@ -100,15 +98,15 @@
 
                     </div> -->
                     <div class="modal-body mt-2">
-                        <p>Apakah anda yakin untuk memulai putaran&hellip;</p>
+                        <p>Apakah anda yakin untuk membuka putaran?</p>
                     </div>
                     <div class="modal-footer justify-content-end">
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             Tidak
                         </button>
-                        <button onclick="membuka();" type="button" class="btn btn-success swalDefaultBuka" data-dismiss="modal">
+                        <a href="<?= base_url('/monitoring/updateStatus') ?>" onclick="membuka(event);" type="button" class="btn btn-success swalDefaultBuka" data-dismiss="modal" href>
                             Yakin
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- /.modal-content -->
@@ -122,7 +120,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body mt-2">
-                        <p>Apakah anda yakin untuk menghentikan putaran&hellip;</p>
+                        <p>Apakah anda yakin untuk menutup putaran?</p>
                     </div>
                     <div class="modal-footer justify-content-end">
                         <button type="button" class="btn btn-default" data-dismiss="modal">

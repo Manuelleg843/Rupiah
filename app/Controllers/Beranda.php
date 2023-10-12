@@ -6,7 +6,6 @@ use App\Controllers\BaseController;
 use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
 use App\Models\RevisiModel;
-use App\Models\DiskrepansiModel;
 use App\Models\StatusModel;
 use CodeIgniter\Commands\Utilities\Publish;
 use PhpParser\Node\Stmt\Return_;

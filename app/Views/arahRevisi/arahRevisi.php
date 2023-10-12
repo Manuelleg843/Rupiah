@@ -29,15 +29,6 @@
                                         <!-- <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option> -->
                                         <option id="1" value="PDRB-ADHB" selected>Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option id="2" value="PDRB-ADHK">Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
-                                        <option id="3" value="Pertumbuhan-Y-ON-Y">Tabel 303. Pertumbuhan PDRB (Y-ON-Y)</option>
-                                        <option id="4" value="Pertumbuhan-Q-TO-Q">Tabel 304. Pertumbuhan PDRB (Q-TO-Q)</option>
-                                        <option id="5" value="Pertumbuhan-C-TO-C">Tabel 305. Pertumbuhan PDRB (C-TO-C)</option>
-                                        <option id="6" value="indeks-implisit">Tabel 306. Indeks Implisit</option>
-                                        <option id="7" value="pertumbuhan-indeks-implisit-Y-ON-Y">Tabel 307. Pertumbuhan Indeks Implisit (Y-ON-Y)</option>
-                                        <option id="8" value="pertumbuhan-indeks-implisit-Q-TO-Q">Tabel 308. Pertumbuhan Indeks Implisit (Q-TO-Q)</option>
-                                        <option id="9" value="sumber-pertumbuhan-Y-ON-Y">Tabel 309. Sumber Pertumbuhan (Y-ON-Y)</option>
-                                        <option id="10" value="sumber-pertumbuhan-Q-TO-Q">Tabel 310. Sumber Pertumbuhan (Q-TO-Q)</option>
-                                        <option id="11" value="sumber-pertumbuhan-C-TO-C">Tabel 311. Sumber Pertumbuhan (C-TO-C)</option>
                                     </select>
                                 </div>
                                 <!-- Jenis Prov/Kab/Kot -->
@@ -45,7 +36,7 @@
                                     <select class="form-control" style="width: 100%;" id="selectKota">
                                         <option value="<?= session()->get('id_satker'); ?>" hidden><?= session()->get('satker'); ?></option>
                                         <?php if (session()->get('id_satker') == 3100) { ?>
-                                            <option value="3100">Provinsi DKI Jakarta</option>
+                                            <option value="3100" selected>Provinsi DKI Jakarta</option>
                                             <option value="3101">Kepulauan Seribu</option>
                                             <option value="3173">Jakarta Pusat</option>
                                             <option value="3175">Jakarta Utara</option>
@@ -54,7 +45,7 @@
                                             <option value="3172">Jakarta Timur</option>
                                         <?php } else { ?>
                                             <option value="3100">Provinsi DKI Jakarta</option>
-                                            <option value="<?= session()->get('id_satker'); ?>"><?= session()->get('satker'); ?></option>
+                                            <option value="<?= session()->get('id_satker'); ?>" selected><?= session()->get('satker'); ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -113,10 +104,10 @@
                                 <row class="row justify-content-end mt-3">
                                     <div class="col-auto">
                                         <div class="btn-group">
-                                            <a href="#" target="_blank" class="btn btn-outline-danger">
+                                            <button id="export-button-pdf" class="btn btn-outline-danger">
                                                 <i class="fa fa-file-pdf"></i>
                                                 <span>Ekspor PDF</span>
-                                            </a>
+                                            </button>
                                             <a href="#" target="_blank" class="btn btn-outline-success">
                                                 <i class="fa fa-file-excel"></i>
                                                 <span>Ekspor Excel</span>

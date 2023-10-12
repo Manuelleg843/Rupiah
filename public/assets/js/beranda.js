@@ -241,7 +241,6 @@ function generateCheckboxesCurrentYearMin2Kuartal() {
 
       checkbox.name = `${year}${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
-      checkbox.className = "checkbox-periode";
       checkbox.value = `option${year}${quarter}`;
       if (document.title == "Rupiah | Tabel Ringkasan") {
         if (year == currentYear) {
@@ -661,6 +660,10 @@ function KirimDataLine(rumus, selectedPeriode, jenisKomponen) {
 
 function renderLineChart(datalabels, dataLine) {
   // Line Chart
+  $("#lineChart").remove(); // this is my <canvas> element
+  $("#graph-container").append(
+    '<canvas id="lineChart" style="height: 281px; width: 649px;"><canvas>'
+  );
   var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
   var ChartData = {
     labels: datalabels,
@@ -679,6 +682,19 @@ function renderLineChart(datalabels, dataLine) {
   var ChartOptions = {
     maintainAspectRatio: false,
     responsive: true,
+    scales: {
+      yAxes: [
+        {
+          gridLines: {
+            display: true,
+          },
+          ticks: {
+            display: true,
+            padding: 20,
+          },
+        },
+      ],
+    },
     plugins: {
       datalabels: {
         anchor: "end",
@@ -696,12 +712,12 @@ function renderLineChart(datalabels, dataLine) {
       usePointStyle: true,
     },
   };
-  // function maxTickValue(data) {
-  //   return Math.round(Math.round(Math.max(...data)) / 5) * 5 + 10;
-  // }
-  // ChartOptions.scales.yAxes[0].ticks.max = maxTickValue(
-  //   ChartData.datasets[0].data
-  // );
+  function maxTickValue(data) {
+    return Math.round(Math.round(Math.max(...data)) / 5) * 5 + 10;
+  }
+  ChartOptions.scales.yAxes[0].ticks.max = maxTickValue(
+    ChartData.datasets[0].data
+  );
   new Chart(lineChartCanvas, {
     type: "line",
     data: ChartData,
