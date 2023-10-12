@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\DiskrepansiModel;
 use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
 use App\Models\RevisiModel;
@@ -32,7 +31,6 @@ class TabelPDRBController extends BaseController
 
     public function __construct()
     {
-        $this->nilaiDiskrepansi = new DiskrepansiModel();
         $this->komponen = new Komponen7Model();
         $this->putaran = new PutaranModel();
         $this->revisi = new RevisiModel();

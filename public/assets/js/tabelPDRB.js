@@ -424,7 +424,11 @@ function kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode) {
     },
     dataType: "json",
     success: function (data) {
-      renderTable(data["dataPDRB"], data["selectedPeriode"], data["komponen"]);
+      renderTableUpload(
+        data["dataPDRB"],
+        data["selectedPeriode"],
+        data["komponen"]
+      );
     },
     error: function (error) {
       // Handle kesalahan jika ada
@@ -444,13 +448,10 @@ function kirimDataArahRevisi(jenisTable, kota, selectedPeriode) {
     },
     dataType: "json",
     success: function (data) {
-      console.log(data);
       renderTableArahRevisi(
-        data["dataarahrevisi"]["array_Rilis"],
-        data["dataarahrevisi"]["array_Revisi"],
-        data["dataarahrevisi"]["array_Arah"],
-        data["komponen"],
-        selectedPeriode
+        data["dataArahRevisi"],
+        data["selectedPeriode"],
+        data["komponen"]
       );
     },
     error: function (error) {
@@ -460,15 +461,8 @@ function kirimDataArahRevisi(jenisTable, kota, selectedPeriode) {
   });
 }
 
-function renderTableArahRevisi(
-  data_Rilis,
-  data_Revisi,
-  data_Arah,
-  komponen,
-  selectedPeriode
-) {
+function renderTableArahRevisi(data, selectedPeriode, komponen) {
   // container table
-  console.log("ini jalan");
   var container = document.getElementById("arah-revisi-container");
 
   // delete table if there is content inside it
@@ -476,8 +470,8 @@ function renderTableArahRevisi(
 
   // create elemen tabel
   var table = document.createElement("table");
-  table.id = "tableArahRevisi";
-  table.classList.add("table", "table-bordered", "table-hover");
+  table.id = "PDRBTable";
+  table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
 
   // create table header
   var thead = document.createElement("thead");
@@ -485,7 +479,6 @@ function renderTableArahRevisi(
   var headerRow = document.createElement("tr");
   var headerRow2 = document.createElement("tr");
 
-  // var headerRow = table.insertRow();
   var headerKomponen = document.createElement("th");
   headerKomponen.colSpan = "2";
   headerKomponen.rowSpan = "2";
@@ -515,15 +508,14 @@ function renderTableArahRevisi(
 
     headerRow.appendChild(headerCell);
   }
-
+  
   thead.appendChild(headerRow);
   thead.appendChild(headerRow2);
   table.appendChild(thead);
 
   // create table body
   var tbody = document.createElement("tbody");
-  var temp = -1;
-  var totalColumn = headerRow2.childElementCount + 1;
+  var totalColumn = headerRow.childElementCount;
 
   // loop through json to create tbody
   for (var i = 0; i < komponen.length; i++) {
@@ -544,7 +536,7 @@ function renderTableArahRevisi(
     ) {
       row.style = "font-weight: bold;";
     }
-
+    subCol = 1;
     for (var col = 0; col < totalColumn; col++) {
       var cell = document.createElement("td");
       var cell_rilis = document.createElement("td");
@@ -571,42 +563,35 @@ function renderTableArahRevisi(
         } else {
           cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
         }
+        row.appendChild(cell);
       } else {
         cell_rilis.style = "text-align: right;";
-        cell_rilis.classList.add("col-6");
-        cell_rilis.innerHTML = data_Rilis[temp].nilai
-          ? numberFormat(data_Rilis[temp].nilai)
+        cell_rilis.innerHTML = data[subCol - 1][i]
+          ? numberFormat(data[subCol - 1][i].nilai)
           : "";
         cell_revisi.style = "text-align: right;";
-        cell_revisi.classList.add("col-6");
-        cell_revisi.innerHTML = data_Revisi[temp].nilai
-          ? numberFormat(data_Revisi[temp].nilai)
+        cell_revisi.innerHTML = data[subCol][i]
+          ? numberFormat(data[subCol][i].nilai)
           : "";
         cell_arah.style = "text-align: center;";
-        cell_arah.classList.add("col-3");
-        if (data_Arah[temp].nilai > 0) {
+        let selisih =
+          Math.round(data[subCol][i].nilai, 2) -
+          Math.round(data[subCol - 1][i].nilai, 2);
+        if (selisih > 0) {
           cell_arah.classList.add("text-success");
-          cell_arah.innerHTML =
-            "+" + data_Arah[temp].nilai
-              ? numberFormat(data_Arah[temp].nilai)
-              : "";
-        } else if (data_Arah[temp].nilai < 0) {
+          cell_arah.innerHTML = "+";
+        } else if (selisih < 0) {
           cell_arah.classList.add("text-danger");
-          cell_arah.innerHTML =
-            "-" + data_Arah[temp].nilai
-              ? numberFormat(data_Arah[temp].nilai)
-              : "";
+          cell_arah.innerHTML = "-";
         } else {
-          cell_arah.innerHTML =
-            "=" + data_Arah[temp].nilai
-              ? numberFormat(data_Arah[temp].nilai)
-              : "";
+          cell_arah.classList.add("text-warning");
+          cell_arah.innerHTML = "=";
         }
+        row.appendChild(cell_rilis);
+        row.appendChild(cell_revisi);
+        row.appendChild(cell_arah);
+        subCol = subCol + 2;
       }
-      row.appendChild(cell);
-      row.appendChild(cell_rilis);
-      row.appendChild(cell_revisi);
-      row.appendChild(cell_arah);
     }
     tbody.appendChild(row);
   }
@@ -971,6 +956,110 @@ function renderTable(data, selectedPeriode, komponen, putaran) {
   container.appendChild(table);
 }
 
+function renderTableUpload(data, selectedPeriode, komponen) {
+  // container table
+  var container = document.getElementById("PDRBTableContainer");
+
+  // delete table if there is content inside it
+  container.innerHTML = "";
+
+  // create elemen tabel
+  var table = document.createElement("table");
+  table.id = "PDRBTable";
+  table.classList.add("table", "table-bordered", "table-hover");
+
+  // create table header
+  var thead = document.createElement("thead");
+  thead.classList.add("text-center", "table-primary", "sticky-top");
+  var headerRow = document.createElement("tr");
+
+  // var headerRow = table.insertRow();
+  var headerKomponen = document.createElement("th");
+  headerKomponen.colSpan = "2";
+  headerKomponen.innerHTML = "Komponen";
+  headerRow.appendChild(headerKomponen);
+
+  for (var i = 0; i < selectedPeriode.length; i++) {
+    var columnName = selectedPeriode[i];
+    var headerCell = document.createElement("th");
+    headerCell.innerHTML = columnName;
+    headerRow.appendChild(headerCell);
+  }
+
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  var temp = -1;
+  var tbody = document.createElement("tbody");
+  // loop through json to create tbody
+  for (var i = 0; i < komponen.length; i++) {
+    // menghitung banyak kolom pada tabel
+    var totalColumn = headerRow.childElementCount;
+
+    var id_komponen = komponen[i].id_komponen;
+
+    // insert row
+    var row = document.createElement("tr");
+    if (
+      id_komponen == 1 ||
+      id_komponen == 2 ||
+      id_komponen == 3 ||
+      id_komponen == 4 ||
+      id_komponen == 5 ||
+      id_komponen == 6 ||
+      id_komponen == 7 ||
+      id_komponen == 8 ||
+      id_komponen == 9
+    ) {
+      row.style = "font-weight: bold;";
+    }
+
+    for (var col = 0; col < totalColumn; col++) {
+      var cell = document.createElement("td");
+
+      if (col == 0) {
+        cell.colSpan = "2";
+        if (
+          id_komponen != 1 &&
+          id_komponen != 2 &&
+          id_komponen != 3 &&
+          id_komponen != 4 &&
+          id_komponen != 5 &&
+          id_komponen != 6 &&
+          id_komponen != 7 &&
+          id_komponen != 8 &&
+          id_komponen != 9
+        ) {
+          cell.classList = "pl-5";
+        }
+
+        if (id_komponen == 9) {
+          cell.innerHTML = komponen[i].komponen;
+        } else {
+          cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
+        }
+      } else {
+        temp++;
+        cell.style = "text-align: right;";
+        if (document.title == "Rupiah | Upload Data") {
+          cell.innerHTML = data[col - 1][i]
+            ? numberFormat(data[col - 1][i].nilai)
+            : "";
+        } else {
+          cell.innerHTML = numberFormat(data[temp].nilai);
+        }
+      }
+
+      row.appendChild(cell);
+    }
+    tbody.appendChild(row);
+  }
+
+  table.appendChild(tbody);
+  // memasukkan tabel ke view
+  container.appendChild(table);
+}
+
 function renderTable_ringkasan(
   data,
   komponen,
@@ -987,7 +1076,7 @@ function renderTable_ringkasan(
   // create elemen tabel
   var table = document.createElement("table");
   table.id = "tabelRingkasan";
-  table.classList.add("table", "table-bordered", "table-hover");
+  table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
 
   // create table header
   var thead = document.createElement("thead");
@@ -1128,7 +1217,7 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   // create elemen tabel
   var table = document.createElement("table");
   table.id = "tabelRingkasan";
-  table.classList.add("table", "table-bordered", "table-hover");
+  table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
 
   // create table header
   var thead = document.createElement("thead");
@@ -1247,7 +1336,7 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
   // create elemen tabel
   var table = document.createElement("table");
   table.id = "tabelRingkasan";
-  table.classList.add("table", "table-bordered", "table-hover");
+  table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
 
   // create table header
   var thead = document.createElement("thead");
@@ -1540,13 +1629,17 @@ if (eksporButtonExcelAll != null) {
 if (eksporButtonPDF != null) {
   eksporButtonPDF.addEventListener("click", function () {
     let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17];
+    const htmlElement = document.querySelector(".PDRBTable"); // Replace with your CSS selector
+    console.log(htmlElement.innerHTML);
 
     let doc = new jspdf.jsPDF();
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
-    doc.text(judulTable.textContent, 14, 10);
+    docTitle = doc.splitTextToSize(judulTable.textContent, 180);
+    doc.text(docTitle, 14, 10);
     doc.autoTable({
-      html: ".PDRBTable",
+      startY: 20, 
+      html: htmlElement,
       columnStyles: {
         0: { cellWidth: 100 },
       },

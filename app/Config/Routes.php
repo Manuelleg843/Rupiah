@@ -30,6 +30,7 @@ $routes->post('/tabelPDRB/tabelHistoryPutaran/getDataHistory', 'TabelPDRBControl
 $routes->post('/tabelPDRB/getDataPerKota', 'TabelPDRBController::getDataTabelPerKota');
 $routes->get('/monitoring', 'MonitoringController::index');
 $routes->get('/monitoring/updateStatus', 'MonitoringController::updateStatus');
+$routes->post('/monitoring/updateStatus', 'MonitoringController::updateStatus');
 
 // halaman tabel arah revisi
 $routes->get('/arahRevisi', 'ArahRevisiController::index');

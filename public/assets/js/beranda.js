@@ -241,7 +241,6 @@ function generateCheckboxesCurrentYearMin2Kuartal() {
 
       checkbox.name = `${year}${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
-      checkbox.className = "checkbox-periode";
       checkbox.value = `option${year}${quarter}`;
       if (document.title == "Rupiah | Tabel Ringkasan") {
         if (year == currentYear) {

@@ -23,7 +23,6 @@ class PutaranModel extends Model
         'putaran',
         'nilai',
         'uploaded_by',
-
     ];
 
     // Dates
@@ -102,7 +101,7 @@ class PutaranModel extends Model
         $tahun = substr($periode, 0, 4);
         $kuartal = substr($periode, 5, 1);
         if ($kuartal == '') $kuartal = 5;
-        $putaran = $this->getFinalPutaran($tahun, $kuartal);
+        $putaran = $this->getFinalPutaran($tahun, $kuartal, $kota);
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
             ->select(['putaran.id_komponen', 'komponen_7.komponen', 'nilai', 'periode', 'id_wilayah', 'id_pdrb'])
@@ -116,17 +115,19 @@ class PutaranModel extends Model
         return $builder->get()->getResult();
     }
 
-    public function getFinalPutaran($tahun, $id_kuartal)
+    // Fungsi mendapatkan putaran terakhir
+    public function getFinalPutaran($tahun, $id_kuartal, $id_wilayah)
     {
         $query = $this->db->table('putaran')
             ->where('tahun', $tahun)
             ->where('id_kuartal', $id_kuartal)
+            ->where('id_wilayah', $id_wilayah)
             ->selectMax('putaran')
             ->get();
 
         if ($query->getResult()) {
             $result = $query->getRow();
-            $putaran = $result->putaran; // Ambil putaran maksimal
+            $putaran = $result->putaran;
             return $putaran;
         }
     }
