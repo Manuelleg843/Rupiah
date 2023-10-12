@@ -113,11 +113,11 @@
                                 <div class="row justify-content-end mt-3">
                                     <div class="col-auto">
                                         <div class="btn-group">
-                                            <button class="btn btn-outline-danger" id="export-button">
+                                            <button class="btn btn-outline-danger" id="export-button-pdf">
                                                 <i class="fa fa-file-pdf"></i>
                                                 <span>Ekspor PDF</span>
                                             </button>
-                                            <button id="exportExcel" class="btn btn-outline-success">
+                                            <button id="exportExcelPerKota" class="btn btn-outline-success">
                                                 <i class="fa fa-file-excel"></i>
                                                 <span>Ekspor Excel</span>
                                             </button>

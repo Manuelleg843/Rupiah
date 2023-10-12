@@ -11,6 +11,7 @@ const judulModal = document.getElementById("judulModal");
 const kotaJudulModal = document.getElementById("kotaJudulModal");
 const eksporButtonPDF = document.getElementById("export-button-pdf");
 const eksporButtonExcel = document.getElementById("export-button-excel");
+const eksporButtonExcelPerkota = document.getElementById("exportExcelPerKota");
 const eksporButtonExcelAll = document.getElementById("export-button-excelAll");
 const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
 const tableJenisPDRB = document.getElementById("selectTableHistory");
@@ -623,7 +624,7 @@ function renderTablePerKota(data, selectedPeriode, komponen) {
 
   // create elemen tabel
   const table = document.createElement("table");
-  table.id = "tabelPerkota";
+  table.id = "tablePerkota";
   table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
 
   // create table header
@@ -700,8 +701,9 @@ function renderTablePerKota(data, selectedPeriode, komponen) {
       } else {
         temp++;
         cell.style = "text-align: right;";
-        cell.classList.add("w-50");
-        // cell.innerHTML = numberFormat(data[col - 1][i].nilai);
+        if (totalColumn < 3) {
+          cell.classList.add("w-50");
+        }
         cell.innerHTML = data[col - 1][i]
           ? numberFormat(data[col - 1][i].nilai)
           : "";
@@ -733,7 +735,7 @@ function renderTablePerkotaEkstrem(data, komponen, selectedPeriode, wilayah) {
 
   // create elemen tabel
   let table = document.createElement("table");
-  table.id = "tabelPerkota";
+  table.id = "tablePerkota";
   table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
 
   // create table header
@@ -1426,6 +1428,92 @@ if (eksporButtonExcel != null) {
     }
   });
 }
+
+// ekspor excel tabel perkota
+if (eksporButtonExcelPerkota) {
+  document
+    .getElementById("exportExcelPerKota")
+    .addEventListener("click", function () {
+      // Ambil referensi tabel
+      let tablePerkota = document.getElementById("tablePerkota");
+
+      let workbook = new ExcelJS.Workbook();
+      let worksheet = workbook.addWorksheet("Sheet1");
+
+      let rows = tablePerkota.getElementsByTagName("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+        let row = worksheet.addRow([]);
+
+        let cells = rows[i].getElementsByTagName("td");
+        for (var j = 0; j < cells.length; j++) {
+          row.getCell(j + 1).value = cells[j].innerText;
+
+          // Mengatur border untuk sel
+          row.getCell(j + 1).border = {
+            top: { style: "thin" },
+            left: { style: "thin" },
+            bottom: { style: "thin" },
+            right: { style: "thin" },
+          };
+        }
+      }
+
+      // Mengatur lebar kolom secara otomatis
+      worksheet.columns.forEach((column) => {
+        let maxCellLength = 0;
+        column.eachCell({ includeEmpty: true }, (cell) => {
+          maxCellLength = Math.max(
+            maxCellLength,
+            cell.value ? cell.value.toString().length : 0
+          );
+        });
+        column.width = maxCellLength + 2;
+      });
+
+      // Membuat tautan unduhan
+      workbook.xlsx.writeBuffer().then(function (data) {
+        let blob = new Blob([data], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        });
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement("a");
+        a.href = url;
+        a.download = judulTable.textContent + ".xlsx";
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+    });
+}
+// if (eksporButtonExcelPerkota) {
+//   document
+//     .getElementById("exportExcelPerKota")
+//     .addEventListener("click", function () {
+//       // Ambil referensi tabel
+//       let tablePerkota = document.getElementById("tablePerkota");
+
+//       // Buat objek untuk data Excel
+//       let wb = XLSX.utils.book_new();
+
+//       let ws = XLSX.utils.table_to_sheet(tablePerkota, {
+//         raw: true,
+//         origin: "A3",
+//       });
+
+//       XLSX.utils.sheet_add_aoa(ws, [[`${judulTable.textContent}`]], {
+//         origin: "A1",
+//       });
+
+//       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+//       let today = new Date();
+//       let fileName =
+//         judulTable.textContent + "_" + today.toISOString() + ".xlsx";
+
+//       // Export data ke file Excel
+//       XLSX.writeFile(wb, fileName);
+//     });
+// }
 
 // ekspor excel all putaran di tabel history
 if (eksporButtonExcelAll != null) {

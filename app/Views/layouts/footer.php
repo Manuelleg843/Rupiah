@@ -2,8 +2,8 @@
 <!-- /.content-wrapper -->
 <!-- Footer -->
 <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2021
-        <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+    <strong>Made with <i class="fa fa-heart ml-1"></i> &copy;
+        <a href="https://api.duniagames.co.id/api/content/upload/file/6975025431687514976.jpg">Magang DIV KS 2023</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> 3.2.0
@@ -25,20 +25,6 @@
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
     $.widget.bridge("uibutton", $.ui.button);
-</script>
-<script>
-    document.getElementById('exportExcel').addEventListener('click', function() {
-        // Ambil referensi tabel
-        let tablePerkota = document.getElementById('tabelPerkota');
-
-        // Buat objek untuk data Excel
-        let wb = XLSX.utils.table_to_book(tablePerkota, {
-            raw: true,
-        });
-
-        // Export data ke file Excel
-        XLSX.writeFile(wb, 'data_perkota.xlsx');
-    });
 </script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url('/assets/plugins/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
@@ -77,8 +63,8 @@
 <script src="<?= base_url('/assets/js/beranda.js'); ?>"></script>
 <!-- tabelPDRB -->
 <script src="<?= base_url('/assets/js/tabelPDRB.js'); ?>"></script>
+<!-- Administrator -->
 <script src="<?= base_url('/assets/js/userMonitoring.js'); ?>"></script>
-<script src="<?= base_url('/assets/js/roleAndPermission.js'); ?>"></script>
 <!-- FLOT CHARTS -->
 <script src="<?= base_url('/assets/plugins/flot/jquery.flot.js'); ?>"></script>
 <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
@@ -100,6 +86,7 @@
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
 <!-- sheet js -->
 <!-- use version 0.20.0 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
 <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 <!-- Tombol Buka Tutup Putaran Monitoring -->
 <script src="<?= base_url('/assets/js/monitoring.js'); ?>"></script>
