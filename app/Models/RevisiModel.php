@@ -50,7 +50,7 @@ class RevisiModel extends Model
     protected $afterDelete    = [];
 
     // get data by periode and wilayah
-    public function get_data_revisi_wilayah_periode($kota, $jenisPDRB, $periode) //cara buat otomatis satker
+    public function get_data_revisi_wilayah_periode($kota, $jenisPDRB, $periode)
     {
         $builder = $this->db->table('revisi')
             ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
@@ -62,7 +62,7 @@ class RevisiModel extends Model
         return $builder->get()->getResult();
     }
 
-    public function getDataKomponenPeriode($kota, $jenisPDRB, $jeniskomponen, $periode) //cara buat otomatis satker
+    public function getDataKomponenPeriode($kota, $jenisPDRB, $jeniskomponen, $periode)
     {
         $builder = $this->table('revisi')
             ->select()
@@ -139,7 +139,6 @@ class RevisiModel extends Model
     {
         $request = service('request');
         $postData = $request->getPost();
-        // dd($postData);
         $dtpostData = $postData['data'];
 
         $response = array();
@@ -164,18 +163,14 @@ class RevisiModel extends Model
         if ($searchJenisPDRB != '') {
             $searchQuery->where('id_pdrb', $searchJenisPDRB);
         }
-        // $records = $searchQuery->findAll($start);
         $records = $searchQuery->get();
 
-        // dd($records);
         $data = array();
-        // return $builder->get()->getResult();
     }
 
     // get data by jenis_pdrb 
     public function getData_by_jenisPdrb($id_pdrb)
     {
-        // $query = $this->db->table('putaran')->where('id_pdrb', $id_pdrb)->get();
         $builder = $this->db->query('SELECT nilai FROM revisi WHERE id_pdrb = ' . $id_pdrb);
         return $builder->getResult();
     }
