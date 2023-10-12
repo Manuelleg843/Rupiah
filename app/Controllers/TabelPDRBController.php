@@ -37,22 +37,6 @@ class TabelPDRBController extends BaseController
         $this->wilayah = new WilayahModel();
     }
 
-    public function index()
-    {
-        // //
-        // $data = [
-        //     'title' => 'Rupiah | Tabel Ringkasan',
-        //     'tajuk' => 'tabelPDRB',
-        //     'subTajuk' => 'tabelRingkasan'
-        // ];
-
-        // echo view('layouts/header', $data);
-        // echo view('layouts/navbar');
-        // echo view('layouts/sidebar', $data);
-        // echo view('tabelPDRB/diskrepansi-ADHB');
-        // echo view('layouts/footer');
-    }
-
     public function viewTabelRingkasan()
     {
         if (!session()->get('isLoggedIn')) {

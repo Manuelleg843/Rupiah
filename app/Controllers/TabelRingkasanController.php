@@ -75,7 +75,7 @@ class TabelRingkasanController extends BaseController
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
-        echo view('tabelPDRB/diskrepansi-ADHB');
+        echo view('tabelPDRB/tabelRingkasan');
         echo view('layouts/footer');
     }
 
