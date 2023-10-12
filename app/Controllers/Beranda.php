@@ -299,7 +299,6 @@ class Beranda extends BaseController
 
     public function index()
     {
-
         if (!session()->get('email')) {
             return redirect()->to('/login');
         }
@@ -325,8 +324,8 @@ class Beranda extends BaseController
         $kabkot_adhb = $KS_adhb[0]->nilai + $JS_adhb[0]->nilai + $JT_adhb[0]->nilai + $JP_adhb[0]->nilai + $JB_adhb[0]->nilai + $JU_adhb[0]->nilai;
         $kabkot_adhk = $KS_adhk[0]->nilai + $JS_adhk[0]->nilai + $JT_adhk[0]->nilai + $JP_adhk[0]->nilai + $JB_adhk[0]->nilai + $JU_adhk[0]->nilai;
         // Perhitungan Diskrepansi -> DKI/KABKOT * 100
-        $Diskrepansi_adhb = $adhb[0]->nilai / $kabkot_adhb * 100;
-        $Diskrepansi_adhk = $adhk[0]->nilai / $kabkot_adhk * 100;
+        $Diskrepansi_adhb = (($kabkot_adhb - ($adhb[0]->nilai)) / $adhb[0]->nilai) * 100;
+        $Diskrepansi_adhk = (($kabkot_adhk - ($adhk[0]->nilai)) / $adhk[0]->nilai) * 100;
 
         // Pertumbuhan Y ON Y
         $JenisPDRB = 2; // Untuk Perhitungan pakai ADHK
