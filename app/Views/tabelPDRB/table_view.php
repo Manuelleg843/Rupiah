@@ -10,7 +10,7 @@
         </div><!-- /.container-fluid -->
     </section>
     <section class="content">
-        <div id="PDRBTableContainer" class="table-responsive d-flex text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
+        <div id="PDRBTableContainer" class="table-responsive d-flex text-nowrap PDRBTable" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
 
         </div>
     </section>
