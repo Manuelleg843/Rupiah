@@ -25,22 +25,9 @@ let menutup = () => {
 };
 
 // Membuka putaran
-let membuka = () => {
-  var buka = document.getElementById("buttonbuka");
-  var tutup = document.getElementById("buttontutup");
-  var detailbuka = document.getElementById("detail_buka");
-  var detailtutup = document.getElementById("detail_tutup");
-  buka.setAttribute("hidden", "hidden");
-  tutup.removeAttribute("hidden");
-  detailbuka.setAttribute("hidden", "hidden");
-  detailtutup.removeAttribute("hidden");
-
-  document
-    .getElementById("kepala")
-    .setAttribute("class", "text-center table-primary");
-  document
-    .getElementById("tabel")
-    .setAttribute("class", "table table-bordered table-striped");
+let membuka = (event) => {
+  event.preventDefault();
+  window.open(event.target.href, "_self");
 };
 
 $(function () {
@@ -48,18 +35,21 @@ $(function () {
     toast: true,
     position: "top-end",
     showConfirmButton: false,
-    timer: 3000,
   });
   $(".swalDefaultBuka").click(function () {
     Toast.fire({
       icon: "success",
-      title: "Putaran telah berhasil dibuka",
+      title: "Putaran telah berhasil dibuka, mengarahkan kembali...",
     });
+    clearTimeout(toastTimeout);
   });
   $(".swalDefaultTutup").click(function () {
     Toast.fire({
       icon: "success",
       title: "Putaran telah berhasil ditutup",
     });
+    toastTimeout = setTimeout(function () {
+      Toast.close();
+    }, 3000);
   });
 });

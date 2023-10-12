@@ -3,14 +3,10 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use PDO;
-use App\Models\DiskrepansiModel;
 use App\Models\Komponen7Model;
 use App\Models\PutaranModel;
 use App\Models\RevisiModel;
 use App\Models\WilayahModel;
-use function PHPSTORM_META\type;
-use function PHPUnit\Framework\countOf;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -33,7 +29,6 @@ class TabelRingkasanController extends BaseController
 
     public function __construct()
     {
-        $this->nilaiDiskrepansi = new DiskrepansiModel();
         $this->komponen = new Komponen7Model();
         $this->putaran = new PutaranModel();
         $this->wilayah = new WilayahModel();
@@ -158,35 +153,6 @@ class TabelRingkasanController extends BaseController
         return $data;
     }
 
-    // FILTER periode : MISAL 2017, 2018Q3
-    private function filter_periode($data, $id, $exclude = false)
-    {
-        if ($exclude) {
-            return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item->periode != $id);
-            });
-        }
-
-        return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item->periode == $id);
-        });
-    }
-
-
-    // FILTER id_kuartal (PERIODE KUARTAL BERAPA) : MISAL 1 , 5(TAHUN KESELURUHAN)
-    private function filter_id_kuartal($data, $id, $exclude = false)
-    {
-        if ($exclude) {
-            return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item->id_kuartal != $id);
-            });
-        }
-
-        return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item->id_kuartal == $id);
-        });
-    }
-
     // FILTER id_komponen : MISAL 1a
     private function filter_id_komponen($data, $id, $exclude = false)
     {
@@ -218,33 +184,6 @@ class TabelRingkasanController extends BaseController
         }
 
         return $filteredArray;
-    }
-
-    // FILTER id_pdrb (ADHB / ADHK) : MISAL 1 (adhb),2 (adhk)
-    private function filter_id_pdrb($data, $id, $exclude = false)
-    {
-        if ($exclude) {
-            return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item->id_pdrb != $id);
-            });
-        }
-
-        return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item->id_pdrb == $id);
-        });
-    }
-
-    private function filter_tahun($data, $id, $exclude = false)
-    {
-        if ($exclude) {
-            return $filteredArray = array_filter($data, function ($item) use ($id) {
-                return ($item->tahun != $id);
-            });
-        }
-
-        return $filteredArray = array_filter($data, function ($item) use ($id) {
-            return ($item->tahun == $id);
-        });
     }
 
     // FILTER putaran 
@@ -289,26 +228,10 @@ class TabelRingkasanController extends BaseController
         return $this->filter_putaran($data, $putaranMax);
     }
 
-    private function putaranmax($obj)
-    {
-        $data = [];
-        $putaranMax = [];
-        foreach ($obj as $item) {
-            $key = $item->periode . '-' . $item->id_wilayah;
-            if (!isset($putaranMax[$key])) {
-                $putaranMax[$key] = $item->putaran;
-            } else {
-                $putaranMax[$key] = max($putaranMax[$key], $item->putaran);
-            }
-        }
-        $data = $this->filter_putaran($obj, $putaranMax);
-    }
-
     // 1. diskrepansi PDRB ADHB
     private function ringkasan_diskrepansi($obj, $kota, $periode)
     {
         // sort data by periode ascending
-        // $dataCurrent = $this->sortData($obj, 3, true);
         $dataCurrent = $this->sortData($obj, 3);
         $dataCurrent = $this->sortData($dataCurrent, 1);
         $dataCurrent = $this->sortData($dataCurrent, 2);
@@ -322,9 +245,7 @@ class TabelRingkasanController extends BaseController
         $i = 0;
         $j = sizeof($dataKota);
         $kumulatif = [];
-        // return $dataKota;
         foreach ($dataKota as $data) {
-            // $i++;
             $j--;
 
             if ($i == 0) {
@@ -358,7 +279,6 @@ class TabelRingkasanController extends BaseController
 
             $dataNew = clone $data;
             $dataNew->nilai = ($dataKumulatif[$i]->nilai - $data->nilai) / $data->nilai * 100;
-            // $dataNew->nilai = ($dataNew->nilai / $dataKumulatif[$i]->nilai * 100) - 100;
             array_push($dataOutput, $dataNew); // push data diskrepansi ke array dataOutput
             array_push($dataOutput, $dataKumulatif[$i]); // push data total ke array dataOutput
 
@@ -369,14 +289,12 @@ class TabelRingkasanController extends BaseController
             array_push($dataOutput, $data);
         }
 
-        // return $dataCurrent;
-
-        // $dataOutput = $this->sortData($dataOutput, 3); // sort by wilayah
         $dataOutput = $this->sortData($dataOutput, 1); // sort by periode
         $dataOutput = $this->sortData($dataOutput, 2); // sort by komponen
 
         return $dataOutput;
     }
+
     // mencari index objek dalam array berdasarkan nilali tertentu
     private function getIndexByProperty($arrayOfObjects, $property1Name, $targetValue1, $property2Name, $targetValue2, $property3Name, $targetValue3)
     {
@@ -395,7 +313,6 @@ class TabelRingkasanController extends BaseController
     // 3. Distribusi Persentase PDRB ADHB 
     private function ringkasan_tabel3($obj, $kota, $periode)
     {
-
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3, true);
 
@@ -434,7 +351,6 @@ class TabelRingkasanController extends BaseController
         return $dataOutput;
     }
 
-    // ini masih belum bener 
     // 4. Distribusi PDRB kota terhadap provinsi 
     private function ringkasan_tabel4($obj, $kota, $periode)
     {
@@ -483,7 +399,7 @@ class TabelRingkasanController extends BaseController
         $QBefore = 0;
         foreach ($periode as $value) {
             if (strlen($value) == 6) {
-                $Q = substr($value, -1); //ngambil Q berapa (huruf terakhir di periode)
+                $Q = substr($value, -1); // ngambil Q berapa (huruf terakhir di periode)
                 $tahun =  substr($value, 0, 4); // ngambil tahun berapa (4 huruf pertama di periode)
                 if ($Q == 1) {
                     $tahunBefore = $tahun - 1;
@@ -863,7 +779,6 @@ class TabelRingkasanController extends BaseController
             $nilaiKomp9[] = $data->nilai;
         }
 
-        // return $dataCurrent;
         // menghitung sumber pertumbuhan 
         $dataOutput = [];
         $i = 0;
@@ -887,7 +802,6 @@ class TabelRingkasanController extends BaseController
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
-
 
         return $dataOutput;
     }
@@ -947,7 +861,6 @@ class TabelRingkasanController extends BaseController
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
-
 
         return $dataOutput;
     }
@@ -1268,7 +1181,7 @@ class TabelRingkasanController extends BaseController
             $sheet->getStyle($row2)->getAlignment()->setHorizontal('center');
         }
 
-        // table border`
+        // table border
         $styleArray = [
             'borders' => [
                 'allBorders' => [
@@ -1307,6 +1220,5 @@ class TabelRingkasanController extends BaseController
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
         exit();
-        // return $response;
     }
 }
