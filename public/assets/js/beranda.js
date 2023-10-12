@@ -660,7 +660,7 @@ function KirimDataLine(rumus, selectedPeriode, jenisKomponen) {
 
 function renderLineChart(datalabels, dataLine) {
   // Line Chart
-  $("#lineChart").remove(); // this is my <canvas> element
+  $("#lineChart").remove();
   $("#graph-container").append(
     '<canvas id="lineChart" style="height: 281px; width: 649px;"><canvas>'
   );
