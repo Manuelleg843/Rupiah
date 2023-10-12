@@ -245,6 +245,7 @@ class RevisiModel extends Model
             ->orderBy('periode')
             ->orderBy('id_komponen');
 
+
         return $builder->get()->getResultObject();
     }
 }

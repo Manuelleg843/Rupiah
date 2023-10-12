@@ -57,6 +57,9 @@ class TabelPDRBController extends BaseController
 
     public function viewTabelRingkasan()
     {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
         //
         $data = [
             'title' => 'Rupiah | Tabel Ringkasan',
@@ -67,6 +70,7 @@ class TabelPDRBController extends BaseController
             // 'adhb'  => $this->putaran->get_data(),
             // 'adhk'  => $this->putaran->get_data(),
         ];
+
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
@@ -843,7 +847,15 @@ class TabelPDRBController extends BaseController
         // get data dari database 
         $dataPDRB = [];
         foreach ($putaran as $p) {
-            $dataObj = $this->putaran->getDataHistory($jenisPDRB, $kota, $p, $periode);
+            $dataObj = [];
+            if ($this->putaran->getDataHistory($jenisPDRB, $kota, $p, $periode)) {
+                $dataObj = $this->putaran->getDataHistory($jenisPDRB, $kota, $p, $periode);
+            } else {
+                foreach ($this->putaran->getDataHistory($jenisPDRB, $kota, $p - 1, $periode) as $komponeni) {
+                    $komponeni->nilai = null;
+                    array_push($dataObj, $komponeni);
+                }
+            }
             $dataPDRB = array_merge($dataPDRB, $dataObj);
         }
 
@@ -889,6 +901,10 @@ class TabelPDRBController extends BaseController
 
     public function viewTabelHistoryPutaran()
     {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
         $currentYear = date('Y');
         $currentMonth = date('n');
         $currentQuarter = ceil($currentMonth / 3);
@@ -936,123 +952,21 @@ class TabelPDRBController extends BaseController
         return $allPeriode;
     }
 
-    // public function exportExcel($tableSelected, $jenisPDRB, $kota, $putaran, $periode)
-    // {
-
-    //     $periodeArr = explode(",", $periode);
-
-    //     $komponen = $this->komponen->get_data();
-
-    //     // get filter 
-    //     $dataPDRB = $this->putaran->getData($jenisPDRB, $kota, $putaran, $periodeArr);
-
-
-    //     $spreadsheet = new Spreadsheet();
-    //     $sheet = $spreadsheet->getActiveSheet();
-
-    //     $putaran == 'null' ?  $title = $tableSelected . " - " . $kota . " - Semua Putaran" :   $title = $tableSelected . " - " . $kota . " - Putaran " . $putaran;
-
-    //     // header table 
-    //     $sheetData = [];
-    //     $columnHeader = ['Komponen'];
-    //     foreach ($periodeArr as $col) {
-    //         array_push($columnHeader, $col);
-    //     }
-    //     array_push($sheetData, $columnHeader);
-
-    //     // isi tabel 
-    //     $komponenData = [];
-    //     $nilaiPDRB = [];
-    //     $temp = -1;
-
-    //     // mengubah tipe data jadi array
-    //     // $dataPDRBarray = array_push($dataPDRBarray, $dataPDRB);
-    //     foreach ($komponen as $rows) {
-    //         for ($col = 0; $col < sizeof($columnHeader); $col++) {
-    //             if ($col == 0) {
-    //                 if ($rows->id_komponen == 1 || $rows->id_komponen == 2 || $rows->id_komponen == 3 || $rows->id_komponen == 4 || $rows->id_komponen == 5 || $rows->id_komponen == 6 || $rows->id_komponen == 7 || $rows->id_komponen == 8) {
-    //                     $komponen = $rows->id_komponen . ". " . $rows->komponen;
-    //                 } elseif ($rows->id_komponen == 9) {
-    //                     $komponen = $rows->komponen;
-    //                 } else {
-    //                     $komponen = "     " . $rows->id_komponen . ". " . $rows->komponen;
-    //                 };
-    //                 array_push($nilaiPDRB, $komponen);
-    //             } else {
-    //                 $temp++;
-    //                 array_push($nilaiPDRB, $dataPDRB[$temp]->nilai);
-    //             }
-    //         }
-    //         array_push($komponenData, $nilaiPDRB);
-    //         $nilaiPDRB = [];
-    //     }
-    //     array_push($sheetData, $komponenData);
-
-    //     $sheet->fromArray([$title]);
-    //     $sheet->fromArray($sheetData[0], null, 'A3');
-    //     $sheet->fromArray($sheetData[1], null, 'A4');
-
-
-    //     // mergeCell dan bold judul tabel
-    //     $sheet->mergeCells('A1:C1');
-    //     $sheet->getStyle('A1')->getFont()->setBold(true);
-
-
-    //     // bold dan center table header 
-    //     foreach ($sheet->getColumnIterator() as $column) {
-    //         $row = $column->getColumnIndex() . '3';
-    //         $sheet->getStyle($row)->getFont()->setBold(true);
-    //         $sheet->getStyle($row)->getAlignment()->setHorizontal('center');
-    //     }
-
-    //     // table border`
-    //     $styleArray = [
-    //         'borders' => [
-    //             'allBorders' => [
-    //                 'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-    //                 'color' => ['argb' => 'FF000000'],
-    //             ]
-    //         ]
-    //     ];
-
-    //     // setting column width, border, number format 
-    //     foreach ($sheet->getColumnIterator() as $column) {
-    //         foreach ($sheet->getRowIterator() as $row) {
-    //             foreach ($row->getCellIterator() as $cell) {
-    //                 $cell->getStyle()->applyFromArray($styleArray);
-    //             }
-    //             // $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
-    //         }
-    //         $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
-    //         $column->getColumnIndex() == 'A' ? " " : $sheet->getStyle($column->getColumnIndex())->getNumberFormat()->setFormatCode('#,##0.00');
-    //     }
-    //     // Simpan sebagai file Excel
-    //     $filename = $title . '.xlsx';
-    //     $writer = new Xlsx($spreadsheet);
-    //     header('Content-type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    //     header('Content-Disposition: attachment;filename="' . $filename . '"');
-
-    //     $writer->save('php://output');
-    //     exit();
-    // }
-
-    // public function generateTabelExcel($jenisPDRB, $kota, $putaran, $periode, $nama, $all = false)
-    // {
-    //     $dataSheet = [];
-
-    //     // header tabel 
-    //     $columnHeader = ['Komponen'];
-    //     $columnHeader2 = [];
-    //     foreach($periode )
-    // }
-
     public function exportExcelHistory($jenisPDRB, $kota, $putaran, $periode, $nama, $all = false)
     {
+        // kalo $all = true (export semua putaran), selected periode adalah semua periode 
 
-        // ubah putaran dari string jadi array 
-        $putaranArr = explode(",", $putaran);
-        // $putaranArr = ['1', '2'];
-        sort($putaranArr);
+        if ($all) {
+            $putaran = $this->putaran->getAllPutaran($kota, $periode);
+            $putaranArr = [];
+            foreach ($putaran as $val) {
+                array_push($putaranArr, $val->putaran);
+            }
+        } else {
+            // ubah putaran dari string jadi array 
+            $putaranArr = explode(",", $putaran);
+            sort($putaranArr);
+        }
 
         // get komponen
         $komponen = $this->komponen->findAll();
@@ -1092,7 +1006,7 @@ class TabelPDRBController extends BaseController
         $dataTemp = [];
         $temp = -1;
         foreach ($komponen as $rows) {
-            for ($col = 0; $col < sizeof($columnHeader) + 1; $col++) {
+            for ($col = 0; $col < sizeof($columnHeader2) + 1; $col++) {
                 if ($col == 0) {
                     if ($rows['id_komponen'] == 1 || $rows['id_komponen'] == 2 || $rows['id_komponen'] == 3 || $rows['id_komponen'] == 4 || $rows['id_komponen'] == 5 || $rows['id_komponen'] == 6 || $rows['id_komponen'] == 7 || $rows['id_komponen'] == 8) {
                         $komponen = $rows['id_komponen'] . ". " . $rows['komponen'];

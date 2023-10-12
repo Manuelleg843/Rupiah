@@ -31,14 +31,19 @@
                                         </div>
                                         <div class="col-auto form-group" onchange="loadData()">
                                             <select class="form-control" style="width: 100%;" id="selectKota">
-                                                <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                                                <option value="3100" selected>DKI Jakarta</option>
-                                                <option value="3101">Kepulauan Seribu</option>
-                                                <option value="3171">Jakarta Selatan</option>
-                                                <option value="3172">Jakarta Timur</option>
-                                                <option value="3173">Jakarta Pusat</option>
-                                                <option value="3174">Jakarta Barat</option>
-                                                <option value="3175">Jakarta Utara</option>
+                                                <option value="<?= session()->get('id_satker'); ?>" hidden><?= session()->get('satker'); ?></option>
+                                                <?php if (session()->get('id_satker') == 3100) { ?>
+                                                    <option value="3100">Provinsi DKI Jakarta</option>
+                                                    <option value="3101">Kepulauan Seribu</option>
+                                                    <option value="3173">Jakarta Pusat</option>
+                                                    <option value="3175">Jakarta Utara</option>
+                                                    <option value="3174">Jakarta Barat</option>
+                                                    <option value="3171">Jakarta Selatan</option>
+                                                    <option value="3172">Jakarta Timur</option>
+                                                <?php } else { ?>
+                                                    <option value="3100">Provinsi DKI Jakarta</option>
+                                                    <option value="<?= session()->get('id_satker'); ?>"><?= session()->get('satker'); ?></option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                         <div class="col-auto form-group">

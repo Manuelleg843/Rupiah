@@ -67,6 +67,10 @@ class TabelRingkasanController extends BaseController
 
     public function index()
     {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
         $data = [
             'title' => 'Rupiah | Tabel Ringkasan',
             'tajuk' => 'Tabel PDRB',
@@ -322,7 +326,7 @@ class TabelRingkasanController extends BaseController
         $i = 0;
         $j = sizeof($dataKota);
         $kumulatif = [];
-        // return $dataKota;
+
         foreach ($dataKota as $data) {
             // $i++;
             $j--;
@@ -368,8 +372,6 @@ class TabelRingkasanController extends BaseController
         foreach ($dataCurrent as $data) {
             array_push($dataOutput, $data);
         }
-
-        // return $dataCurrent;
 
         // $dataOutput = $this->sortData($dataOutput, 3); // sort by wilayah
         $dataOutput = $this->sortData($dataOutput, 1); // sort by periode
@@ -438,13 +440,13 @@ class TabelRingkasanController extends BaseController
     // 4. Distribusi PDRB kota terhadap provinsi 
     private function ringkasan_tabel4($obj, $kota, $periode)
     {
-        return $obj;
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3, true);
 
         //   memisahkan data provinsi dan data kota 
         $dataKota = $this->filter_id_wilayah($dataCurrent, '3100', true);
         $dataProv = $this->filter_id_wilayah($dataCurrent, '3100');
+
 
         $nilaiProv = [];
         foreach ($dataProv as $data) {
@@ -458,11 +460,12 @@ class TabelRingkasanController extends BaseController
         foreach ($dataKota as $data) {
 
             $dataNew = clone $data;
-            $dataNew->nilai = $dataNew->nilai / $nilaiProv[$i] * 100;
+            $dataNew->nilai = $data->nilai / $nilaiProv[$i] * 100;
             $dataOutput[] = $dataNew;
 
+            $nilaiProv[$i] == end($nilaiProv) ? $i = 0 : $i++;
 
-            $i == sizeof($nilaiProv) - 1 ? $i = 0 :  $i++;;
+            // $i == sizeof($nilaiProv) - 1 ? $i = 0 :  $i++;;
         }
 
         $dataOutput = $this->sortData($dataOutput, 3);
