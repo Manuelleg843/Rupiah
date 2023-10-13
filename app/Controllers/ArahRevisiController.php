@@ -25,12 +25,17 @@ class ArahRevisiController extends BaseController
 
     public function index()
     {
-        //
+        // cek apakah sudah login
+        if (!session()->get('email')) {
+            return redirect()->to('/login');
+        }
+
         $data = [
             'title' => 'Rupiah | Arah Revisi',
             'tajuk' => 'Arah Revisi',
             'subTajuk' => 'Arah Revisi Kota',
         ];
+
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
@@ -38,14 +43,17 @@ class ArahRevisiController extends BaseController
         echo view('layouts/footer');
     }
 
+    // Fungsi untuk mendapatkan data yang akan ditampilkan (ajax request)
     public function getData()
     {
+        // Mendapatkan data dari ajax
         $jenisPDRB = $this->request->getPost('jenisTable');
         $kota = $this->request->getPost('kota');
         $periode = $this->request->getPost('periode');
 
+        // Mendapatkan data dari database
         $dataArahRevisi = [];
-        foreach ($periode as $p) {
+        foreach ($periode as $p) { // mengambil data (1) putaran dan (2) revisi untuk dibandingkan
             $dataArahRevisi[] = $this->putaranModel->getDataFinal($jenisPDRB, $kota, $p);
             if ($this->revisiModel->where('periode', $p)->where('id_pdrb', $jenisPDRB)->where('id_wilayah', $kota)->countAllResults() > 0) {
                 $dataArahRevisi[] = $this->revisiModel->getDataFinal($jenisPDRB, $kota, $p);
@@ -55,13 +63,13 @@ class ArahRevisiController extends BaseController
         }
         $wilayah = $this->wilayahModel->getAll();
 
+        // Mengirimkan data ke ajax
         $data = [
             'dataArahRevisi' => $dataArahRevisi,
             'komponen' => $this->komponenModel->get_data(),
             'selectedPeriode' => $periode,
             'wilayah' => $wilayah,
         ];
-
         echo json_encode($data);
     }
 }
