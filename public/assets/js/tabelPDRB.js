@@ -16,6 +16,9 @@ const eksporButtonExcelAll = document.getElementById("export-button-excelAll");
 const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
 const tableJenisPDRB = document.getElementById("selectTableHistory");
 const tableRingkasan = document.getElementById("selectTableRingkasan");
+const tableUpload = document.getElementById("selectTableUpload");
+const tableArahRevisi = document.getElementById("selectTableArahRevisi");
+const tablePerkota = document.getElementById("selectTablePerkota");
 const selectPeriodeHistory = document.getElementById("selectPeriodeHistory");
 const selectPutaranHistory = document.getElementById("selectPutaranHistory");
 var selectedKomponen = [];
@@ -29,10 +32,6 @@ var kota;
 
 // munculin data on load
 function loadData() {
-  var tableUpload = document.getElementById("selectTableUpload");
-  var tableArahRevisi = document.getElementById("selectTableArahRevisi");
-  let tablePerkota = document.getElementById("selectTablePerkota");
-
   if (tableJenisPDRB) {
     tableSelected =
       tableJenisPDRB.options[tableJenisPDRB.selectedIndex].textContent;
@@ -485,7 +484,7 @@ function renderTableArahRevisi(data, selectedPeriode, komponen) {
 
     headerRow.appendChild(headerCell);
   }
-  
+
   thead.appendChild(headerRow);
   thead.appendChild(headerRow2);
   table.appendChild(thead);
@@ -945,7 +944,7 @@ function renderTableUpload(data, selectedPeriode, komponen) {
   // create elemen tabel
   var table = document.createElement("table");
   table.id = "PDRBTable";
-  table.classList.add("table", "table-bordered", "table-hover");
+  table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
 
   // create table header
   var thead = document.createElement("thead");
@@ -1620,16 +1619,55 @@ if (eksporButtonExcelAll != null) {
 if (eksporButtonPDF != null) {
   eksporButtonPDF.addEventListener("click", function () {
     let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17];
-    const htmlElement = document.querySelector(".PDRBTable"); // Replace with your CSS selector
-    console.log(htmlElement.innerHTML);
+    const htmlElement = document.querySelector(".PDRBTable");
 
-    let doc = new jspdf.jsPDF();
+    // manual workaround untuk ekspor pdf tabel yang headernya memiliki colspan
+    let headerColSpan = 0;
+    if (tableRingkasan) {
+      let jenisTable = tableRingkasan.options[tableRingkasan.selectedIndex].id;
+      switch (jenisTable) {
+        case "11":
+        case "12":
+          headerColSpan = 9;
+          break;
+        case "14":
+          headerColSpan = 6;
+          break;
+        default:
+          headerColSpan = 7;
+          break;
+      }
+    }
+    if (tablePerkota) {
+      let jenisTable = tablePerkota.options[tablePerkota.selectedIndex].id;
+      if (jenisTable == "13") headerColSpan = 5;
+    }
+    if (tableArahRevisi) {
+      headerColSpan = 3;
+    }
+
+    if (headerColSpan != 0) {
+      const rows = htmlElement.getElementsByTagName("tr");
+      var cells = rows[0].getElementsByTagName("th");
+      for (let i = 0; i < cells.length; i++) {
+        if (i > 0) {
+          cells[i].colSpan = 1;
+          for (let j = 0; j < headerColSpan - 1; j++) {
+            const newCell = document.createElement("td");
+            cells[i].after(newCell);
+          }
+        }
+      }
+    }
+
+    // ekspor
+    let doc = new jspdf.jsPDF("landscape");
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
     docTitle = doc.splitTextToSize(judulTable.textContent, 180);
     doc.text(docTitle, 14, 10);
     doc.autoTable({
-      startY: 20, 
+      startY: 20,
       html: htmlElement,
       columnStyles: {
         0: { cellWidth: 100 },
@@ -1643,9 +1681,21 @@ if (eksporButtonPDF != null) {
       horizontalPageBreak: true,
       horizontalPageBreakRepeat: 0,
     });
-
     let filename = judulTable.textContent + ".pdf";
     doc.save(filename);
+
+    // mengembalikan struktur tabel yang telah dimodifikasi di 'manual workaround' di atas
+    if (headerColSpan != 0) {
+      for (let i = 0; i < cells.length; i++) {
+        if (i > 0) {
+          const cell = cells[i];
+          for (let j = 0; j < headerColSpan - 1; j++) {
+            cell.parentElement.removeChild(cell.nextSibling);
+          }
+          cell.colSpan = headerColSpan;
+        }
+      }
+    }
   });
 }
 

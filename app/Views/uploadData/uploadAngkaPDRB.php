@@ -14,14 +14,18 @@
                 <div class="col-auto mt-4">
                     <div class="form-group">
                         <select class="form-control" style="width: 100%;" id="selectKota">
-                            <option value="Pilih Wilayah" hidden>Pilih Wilayah</option>
-                            <option value="3100" selected>Provinsi DKI Jakarta</option>
-                            <option value="3101">Kepulauan Seribu</option>
-                            <option value="3171">Jakarta Selatan</option>
-                            <option value="3172">Jakarta Timur</option>
-                            <option value="3173">Jakarta Pusat</option>
-                            <option value="3174">Jakarta Barat</option>
-                            <option value="3175">Jakarta Utara</option>
+                            <?php if (session()->get('id_satker') == 3100) { ?>
+                                <option value="3100" selected>Provinsi DKI Jakarta</option>
+                                <option value="3101">Kepulauan Seribu</option>
+                                <option value="3173">Jakarta Pusat</option>
+                                <option value="3175">Jakarta Utara</option>
+                                <option value="3174">Jakarta Barat</option>
+                                <option value="3171">Jakarta Selatan</option>
+                                <option value="3172">Jakarta Timur</option>
+                            <?php } else { ?>
+                                <option value="3100">Provinsi DKI Jakarta</option>
+                                <option value="<?= session()->get('id_satker'); ?>" selected><?= session()->get('satker'); ?></option>
+                            <?php } ?>
                         </select>
                     </div>
                 </div>
@@ -40,7 +44,8 @@
                     </div>
                 <?php endif; ?>
             </div>
-        </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.container-fluid -->
     </section>
 
     <!-- modal -->
@@ -57,7 +62,7 @@
                     <div class="card-body">
                         <form method="post" action="<?= base_url('/downloadExcel'); ?>">
                             <div class="form-group">
-                                <label for="downloadTemplate">1. Download Format Template Upload Terbaru</label>
+                                <label for="downloadTemplate">Download Format Template Upload Terbaru</label>
                                 <div id="checkboxes-container-3-years" class="ml-2 mb-2"></div>
                                 <button type="submit" class="btn btn-warning">Download Template</button>
                                 <input type="hidden" id="kotaJudulModal" name="kotaJudulModal" hidden>
@@ -65,11 +70,7 @@
                         </form>
                         <form method="post" action="<?= base_url('/uploadExcel'); ?>" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="alasanUpload">2. Isi Keterangan/Alasan Upload</label>
-                                <textarea class="form-control" rows="3" placeholder="Isikan Keterangan/Alasan..." name="alasanUpload" id="alasanUpload"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="inputFile">3. Upload File Template yang Telah Diisi</label>
+                                <label for="inputFile">Upload File Template yang Telah Diisi</label>
                                 <div class="input-group">
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input" id="inputFile" name="inputFile" accept=".xlsx">
@@ -77,13 +78,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <button type="submit" class="btn btn-primary toastsDefaultWarning" data-dismiss="modal">Upload Data</button> -->
                             <button type="submit" class="btn btn-primary">Upload Data</button>
                         </form>
                     </div>
                     <!-- /.card-body -->
-                    <!-- <div class="card-footer">
-                    </div> -->
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -91,7 +89,6 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-
 
     <!-- Main content -->
     <section class="content">
@@ -113,12 +110,10 @@
                                 </div>
                                 <div class="col-auto">
                                     <div class="btn-group">
-                                        <!-- <a href="/uploadData/eksporPDF"> -->
                                         <button id="export-button-pdf" class="btn btn-outline-danger pdf">
                                             <i class="fa fa-file-pdf"></i>
                                             <span>Ekspor PDF</span>
                                         </button>
-                                        <!-- </a> -->
                                         <button id="export-button-excel" class="btn btn-outline-success excel">
                                             <i class="fa fa-file-excel"></i>
                                             <span>Ekspor Excel</span>
@@ -126,17 +121,16 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- /.card-header -->
                             <div class="card-header">
                                 <h2 class="card-title" style="font-weight: bold;" id="judulTable"></h2>
                             </div>
+                            <!-- /.card-header -->
                             <div id="PDRBTableContainer" class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
                             </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
             </div>
         </div>

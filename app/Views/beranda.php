@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs">
-                    <h1 class="m-0"><?= $tajuk ?></h1>
+                    <h1 class="ml-1"><?= $tajuk ?></h1>
                 </div>
                 <div class="col">
                     <small id="detail_tutup" <?= ($isActive == 0) ? 'hidden' : '' ?>>*Angka Sementara</small>

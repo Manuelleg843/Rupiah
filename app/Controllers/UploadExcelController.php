@@ -38,6 +38,9 @@ class UploadExcelController extends BaseController
     // Fungsi untuk meng-upload data
     public function upload()
     {
+        // cek apakah user memiliki akses ke halaman ini
+        if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
+
         // Cek apakah status putaran sudah dibuka
         $statusModel = new StatusModel();
         if ($statusModel->where('id_status', 1)->first()['is_active'] == 0) {
@@ -46,12 +49,6 @@ class UploadExcelController extends BaseController
 
         // Aturan validasi
         $rules = [
-            'alasanUpload' => [
-                'rules' => 'required',
-                'errors' => [
-                    'required' => 'Keterangan upload harus diisi.'
-                ]
-            ],
             'inputFile' => [
                 'rules' => 'uploaded[inputFile]|ext_in[inputFile,xls,xlsx]',
                 'errors' => [
@@ -96,17 +93,17 @@ class UploadExcelController extends BaseController
                 case 1:
                 case 3:
                     break;
-                case 2:
+                case 2: // mengambil wilayah
                     $wilayah = $row[0];
                     break;
-                case 4:
+                case 4: // mengambil periode
                     $periodeADHB = [];
                     foreach ($row as $value) {
                         $periodeADHB[] = $value;
                     }
                     array_shift($periodeADHB);
                     break;
-                default:
+                default: // mengambil data pdrb
                     array_push($komponenDanNilaiADHB, $row);
             }
         }
@@ -135,10 +132,10 @@ class UploadExcelController extends BaseController
         $messages = []; // array untuk menampung pesan error
 
         // Cek konsistensi data ADHB dan ADHK serta buat pesan error
-        $nilaiADHB = $this->check_validate($periodeADHB, $komponenDanNilaiADHB, 'ADHB')['nilai'];
-        $messages = array_merge($messages, $this->check_validate($periodeADHB, $komponenDanNilaiADHB, 'ADHB')['messages']);
-        $nilaiADHK = $this->check_validate($periodeADHK, $komponenDanNilaiADHK, 'ADHK')['nilai'];
-        $messages = array_merge($messages, $this->check_validate($periodeADHK, $komponenDanNilaiADHK, 'ADHK')['messages']);
+        list($nilaiADHB, $messageADHB) = $this->check_validate($periodeADHB, $komponenDanNilaiADHB, 'ADHB');
+        list($nilaiADHK, $messageADHK) = $this->check_validate($periodeADHK, $komponenDanNilaiADHK, 'ADHK');
+        $messages = array_merge($messages, $messageADHB);
+        $messages = array_merge($messages, $messageADHK);
 
         // Insert/update data jika tidak ada pesan error
         if (count($messages) == 0) {
@@ -162,7 +159,7 @@ class UploadExcelController extends BaseController
                     ($cek_id_kuartal == $this->statusModel->where('id_status', 1)->first()['id_kuartal'])
                 ) {
                     $putaran = $this->statusModel->where('id_status', 1)->first()['putaran'];
-                    // Cek apakah ada data dengan (periode, wilayah, jenis pdrb, dan putaran) tertentu, maka update, else insert
+                    // Cek apakah ada data dengan [periode, wilayah, jenis pdrb, dan putaran] tertentu, maka update, else insert
                     if ($this->putaranModel->where('periode', $periode)->where('id_wilayah', $id_wilayah)->where('id_pdrb', 1)->where('putaran', $putaran)->countAllResults() > 0) {
                         $this->batchData($data1PeriodeADHB, $periode, $id_kuartal, $id_wilayah, 1, $tahun, $putaran, $updateBatchPutaran);
                     } else {
@@ -170,7 +167,7 @@ class UploadExcelController extends BaseController
                     }
                 } else {
                     $putaran = -1;
-                    // Cek apakah ada data dengan (periode, wilayah, dan jenis pdrb) tertentu, maka update, else insert
+                    // Cek apakah ada data dengan [periode, wilayah, dan jenis pdrb] tertentu, maka update, else insert
                     if ($this->revisiModel->where('periode', $periode)->where('id_wilayah', $id_wilayah)->where('id_pdrb', 1)->countAllResults() > 0) {
                         $this->batchData($data1PeriodeADHB, $periode, $id_kuartal, $id_wilayah, 1, $tahun, $putaran, $updateBatchRevisi);
                     } else {
@@ -194,7 +191,7 @@ class UploadExcelController extends BaseController
                     ($cek_id_kuartal == $this->statusModel->where('id_status', 1)->first()['id_kuartal'])
                 ) {
                     $putaran = $this->statusModel->where('id_status', 1)->first()['putaran'];
-                    // Cek apakah data dengan (periode, wilayah, jenis pdrb, dan putaran) tertentu, maka update, else insert
+                    // Cek apakah data dengan [periode, wilayah, jenis pdrb, dan putaran] tertentu, maka update, else insert
                     if ($this->putaranModel->where('periode', $periode)->where('id_wilayah', $id_wilayah)->where('id_pdrb', 2)->where('putaran', $putaran)->countAllResults() > 0) {
                         $this->batchData($data1PeriodeADHK, $periode, $id_kuartal, $id_wilayah, 2, $tahun, $putaran, $updateBatchPutaran);
                     } else {
@@ -202,7 +199,7 @@ class UploadExcelController extends BaseController
                     }
                 } else {
                     $putaran = -1;
-                    // Cek apakah data dengan (periode, wilayah, dan jenis pdrb) tertentu, maka update, else insert
+                    // Cek apakah data dengan [periode, wilayah, dan jenis pdrb] tertentu, maka update, else insert
                     if ($this->revisiModel->where('periode', $periode)->where('id_wilayah', $id_wilayah)->where('id_pdrb', 2)->countAllResults() > 0) {
                         $this->batchData($data1PeriodeADHK, $periode, $id_kuartal, $id_wilayah, 2, $tahun, $putaran, $updateBatchRevisi);
                     } else {
@@ -265,11 +262,10 @@ class UploadExcelController extends BaseController
     public function extractNilaiKey($key)
     {
         [$jenis, $periode, $komponen] = explode('.', $key);
+        $tahun = substr($periode, 0, 4);
         if (substr($periode, 4, 2) !== "") {
-            $tahun = substr($periode, 0, 4);
             $kuartal = substr($periode, 4, 2);
         } else {
-            $tahun = substr($periode, 0, 4);
             $kuartal = "year";
         }
 
@@ -280,7 +276,7 @@ class UploadExcelController extends BaseController
     // Fungsi untuk memasukkan data ke dalam array batch
     public function batchData($data1Periode, $periode, $id_kuartal, $id_wilayah, $id_pdrb, $tahun, $putaran, &$dataBatch)
     {
-        if ($putaran != -1) { 
+        if ($putaran != -1) {
             foreach ($data1Periode as $index => $value) {
                 $dataBatch[] = [
                     'periode' => $periode,

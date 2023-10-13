@@ -39,14 +39,22 @@ class MonitoringController extends BaseController
             return redirect()->to('/login');
         };
 
+        // cek apakah user memiliki akses ke halaman ini
+        if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
+
         $data = [
             'title' => 'Rupiah | Monitoring',
             'tajuk' => 'Monitoring Putaran',
             'subTajuk' => '',
         ];
 
-        $wilayah = array_map('current', $this->wilayahModel->orderBy('id_wilayah', 'ASC')->select('wilayah')->findAll());
-        $wilayahId = array_map('current', $this->wilayahModel->orderBy('id_wilayah', 'ASC')->select('id_wilayah')->findAll());
+        $wilayahData = $this->wilayahModel->orderBy('id_wilayah', 'ASC')->findAll();
+        $wilayah = [];
+        $wilayahId = [];
+        foreach ($wilayahData as $row) {
+            $wilayah[] = $row['wilayah'];
+            $wilayahId[] = $row['id_wilayah'];
+        }
         $sudahUpload = $this->putaranModel->sudahUpload($this->tahun, $this->id_kuartal, $this->putaran, $wilayahId);
         $monitoring = [
             'isActive' => $this->isActive,
@@ -69,6 +77,9 @@ class MonitoringController extends BaseController
     // Fungsi untuk mengubah status monitoring dan menambah putaran ketika dibuka
     public function updateStatus()
     {
+        // cek apakah user memiliki akses ke halaman ini
+        if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
+
         // mendapatkan kuartal dan tahun (periode dikurangi 1)
         if (ceil(date('n') / 3) == 1) {
             $quarter = 4;

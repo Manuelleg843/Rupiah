@@ -26,7 +26,6 @@
                                 <!-- Jenis Tabel -->
                                 <div class="col-auto form-group" id="dropdownTableArahRevisi">
                                     <select class="form-control" style="width: 100%;" id="selectTableArahRevisi">
-                                        <!-- <option value="Pilih Jenis Tabel" hidden>Pilih Jenis Tabel</option> -->
                                         <option id="1" value="PDRB-ADHB" selected>Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)</option>
                                         <option id="2" value="PDRB-ADHK">Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)</option>
                                     </select>
@@ -34,7 +33,6 @@
                                 <!-- Jenis Prov/Kab/Kot -->
                                 <div class="col-auto form-group">
                                     <select class="form-control" style="width: 100%;" id="selectKota">
-                                        <option value="<?= session()->get('id_satker'); ?>" hidden><?= session()->get('satker'); ?></option>
                                         <?php if (session()->get('id_satker') == 3100) { ?>
                                             <option value="3100" selected>Provinsi DKI Jakarta</option>
                                             <option value="3101">Kepulauan Seribu</option>
@@ -122,10 +120,8 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- Tabel -->
                             <div id="arah-revisi-container" class="table-responsive text-nowrap" style="overflow-y: scroll; height: 400px; overflow-x:scroll;">
-
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -136,9 +132,3 @@
         </div>
     </section>
     <!-- /.content -->
-
-    <script>
-        window.addEventListener('load', function() {
-            loadData();
-        });
-    </script>

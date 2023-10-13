@@ -33,11 +33,6 @@ if (document.getElementById("checkboxes-container-year") != null) {
   generateTahunDropdown();
 }
 
-if (document.getElementById("checkboxes-container-current-year") != null) {
-  generateCheckboxesCurrentYear();
-  generateTahunDropdownCurrentYear();
-}
-
 if (
   document.getElementById("checkboxes-container-current-year-min2kuartal") !=
   null
@@ -138,70 +133,6 @@ function generateCheckboxes() {
       quarters.pop();
     }
   }
-}
-
-function generateCheckboxesCurrentYear() {
-  const year = currentYear;
-  popCount = 4 - Math.ceil(currentMonth / 3) + 1;
-  quarters.splice(-popCount, popCount);
-  const checkboxesContainerCurrentYear = document.getElementById(
-    "checkboxes-container-current-year"
-  );
-
-  if (quarters.length == 4) {
-    quarters.push(year);
-  }
-
-  const row = document.createElement("div");
-  row.classList.add("row");
-
-  quarters.forEach((quarter) => {
-    const col = document.createElement("div");
-    col.classList.add("col");
-    col.classList.add("form-check", "form-check-inline");
-
-    const checkboxLabel = document.createElement("label");
-    checkboxLabel.classList.add("form-check-label");
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = true;
-    checkbox.set;
-    checkbox.classList.add("form-check-input");
-
-    checkbox;
-
-    if (isNaN(quarter)) {
-      checkboxLabel.textContent = `${year}${quarter}`;
-      checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
-
-      checkbox.name = `${year}${quarter}`;
-      checkbox.id = `checkbox${year}${quarter}`;
-      checkbox.className = "checkbox-periode";
-      checkbox.value = `option${year}${quarter}`;
-      if (document.title == "Rupiah | Tabel Ringkasan") {
-        if (year == currentYear) {
-          if (i < currentQuarter) {
-            checkbox.checked = true;
-          }
-        }
-      }
-    } else {
-      checkboxLabel.textContent = `${quarter}`;
-      checkboxLabel.setAttribute("for", `checkbox${quarter}`);
-
-      checkbox.name = `${quarter}`;
-      checkbox.id = `checkbox${quarter}`;
-      checkbox.value = `option${quarter}`;
-      // checkbox.checked = true;
-    }
-
-    col.appendChild(checkbox);
-    col.appendChild(checkboxLabel);
-    row.appendChild(col);
-  });
-
-  checkboxesContainerCurrentYear.appendChild(row);
 }
 
 function generateCheckboxesCurrentYearMin2Kuartal() {
