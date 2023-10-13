@@ -147,9 +147,3 @@
                 </div>
             </section>
             <!-- /.content -->
-
-            <script>
-                window.addEventListener('load', function() {
-                    loadData();
-                });
-            </script>

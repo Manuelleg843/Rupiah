@@ -83,7 +83,6 @@ class TabelRingkasanController extends BaseController
     public function getAllData($periode, $jenisPDRB, $kota)
     {
         // get data dari database 
-        $dataPDRB = [];
         $dataObjKota = [];
         foreach ($periode as $p) {
             foreach ($kota as $k) {
@@ -1057,6 +1056,7 @@ class TabelRingkasanController extends BaseController
         $wilayah = [];
         if ($jenisTabel == "14") {
             $wilayah = $this->wilayah->whereNotIn('id_wilayah', [3100])->findAll();
+            sort($wilayah);
         } else {
             $wilayah = $this->wilayah->getAll();
         }
@@ -1101,7 +1101,6 @@ class TabelRingkasanController extends BaseController
 
         $currentDateTime = date("Y-m-d H_i_s"); // Format "2023-09-30 14_37_31"
 
-
         // Konfigurasi untuk generate excel
         require_once ROOTPATH . 'vendor/autoload.php';
         $spreadsheet = new Spreadsheet();
@@ -1115,6 +1114,10 @@ class TabelRingkasanController extends BaseController
             array_push($columnHeader, $col);
         }
         array_push($dataSheet, $columnHeader);
+        if ($jenisTabel == "11" || $jenisTabel == "12") {
+            array_push($columnHeader2, 'Diskrepansi');
+            array_push($columnHeader2, 'Total Kab/Kota');
+        }
         foreach ($wilayah as $col) {
             array_push($columnHeader2, $col['wilayah']);
         }
@@ -1155,23 +1158,29 @@ class TabelRingkasanController extends BaseController
         // pengaturan merge cell kolom 1
         $sheet->mergeCells('A3:A4');    // merge cell header kolom 1         
         $jumlahSelGabung  = count($wilayah);
-        $colIndex = 65;
+        // $colIndex = 65;
+        $colIndex = 1;
+        $startRow1 = 3;
+        $startRow2 = 4;
         $i = 0;
         foreach ($dataSheet[0] as $value) {
             if ($i == 0) {
                 $sheet->setCellValue('A3', $value);
             } else {
-                $startColumn = chr($colIndex + 1) . "3";
-                $startCol2 = chr($colIndex + 1) . "4";
+                $startColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colIndex + 1);
                 $colIndex = $colIndex + $jumlahSelGabung;
-                $endColumn = chr($colIndex) . "3";
+                $endColumn = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($colIndex);
+                $cell1Start = $startColumn . $startRow1;
+                $cell1End = $endColumn . $startRow1;
+                $cell2Start = $startColumn . $startRow2;
+                $range1 = $cell1Start . ":" . $cell1End;
 
                 // merge cell 
-                $sheet->mergeCells($startColumn . ':' . $endColumn);
+                $sheet->mergeCells($range1);
 
                 // set cell value untuk header 
-                $sheet->setCellValue($startColumn, $value);
-                $sheet->fromArray($dataSheet[1], null, $startCol2);
+                $sheet->setCellValue($cell1Start, $value);
+                $sheet->fromArray($dataSheet[1], null, $cell2Start);
             }
             $i++;
         };
@@ -1216,7 +1225,6 @@ class TabelRingkasanController extends BaseController
                 $sheet->getColumnDimension($column->getColumnIndex())->setWidth(20);
             }
         }
-
 
         // download file excel 
         $filename = $nama . " " . $currentDateTime . '.xlsx';
