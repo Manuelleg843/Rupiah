@@ -49,28 +49,6 @@ class PutaranModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // get all data 
-    public function getAll()
-    {
-        $builder = $this->db->table('putaran')->select();
-        return $builder->get()->getResult();
-    }
-    // get jenis pdrb
-    public function getJenisPDRB($jenisPDRB)
-    {
-        $query = $this->db->table('jenis_pdrb')
-            ->where('id_pdrb', $jenisPDRB);
-        return $query->get()->getResult();
-    }
-
-    // get wilayah
-    public function getWilayah()
-    {
-        $query = $this->db->table('wilayah')
-            ->orderBy('id_wilayah');
-        return $query->get()->getResult();
-    }
-
     public function getDataHistory($idPDRB, $kota, $putaran, $periode)
     {
 
@@ -85,14 +63,6 @@ class PutaranModel extends Model
             ->orderBy('periode');
 
         return $builder->get()->getResult();
-    }
-
-    public function getPutaranTerakhir()
-    {
-        // get current year 
-        $currentYear = date("Y");
-        $builder = $this->db->query('SELECT DISTINCT putaran FROM Putaran where tahun=' . $currentYear);
-        return $builder->getResultArray();
     }
 
     // Fungsi mendapatkan data final (putaran terakhir)
@@ -153,13 +123,6 @@ class PutaranModel extends Model
             ->distinct('periode')
             ->orderBy('tahun', 'desc');
         return $builder->get()->getResult();
-    }
-
-    public function getObject()
-    {
-        $builder = $this->db->table('putaran')
-            ->select();
-        return $builder->get()->getResultObject();
     }
 
     public function getDataKomponen($kota, $jenisPDRB, $jeniskomponen) //cara buat otomatis satker
