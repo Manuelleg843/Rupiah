@@ -231,8 +231,109 @@ class TabelRingkasanController extends BaseController
         return $this->filter_putaran($data, $putaranMax);
     }
 
+    private function get_periodeLeft($data, $allPeriode)
+    {
+        // get periode di dalem data 
+        $periodeData = [];
+        foreach ($data as $val) {
+            if (!in_array($val->periode, $periodeData)) {
+                array_push($periodeData, $val->periode); // Menambahkan nilai baru hanya jika belum ada dalam array
+            }
+        }
+
+        // get periode yang dipilih yang belum ada di dalam data 
+        $periodeLeft = [];
+        foreach ($allPeriode as $p) {
+            if (!in_array($p, $periodeData)) {
+                array_push($periodeLeft, $p);
+            }
+        }
+
+        return $periodeLeft;
+    }
+
+    private function addDataKosong_diskrepansi($data, $allPeriode)
+    {
+        // get komponen dari database 
+        $komponen =  $this->komponen->get_data();
+
+        // get ID wilayah
+        $wilayah = $this->wilayah->getAllIDKota();
+
+        $periodeLeft = $this->get_periodeLeft($data, $allPeriode);
+
+        // masukin data 0 ke array data
+        if ($periodeLeft) {
+            foreach ($periodeLeft as $p) {
+                foreach ($komponen as $k) {
+                    foreach ($wilayah as $w) {
+                        $dataNew = ["id_komponen" => $k->id_komponen, "id_wilayah" => $w->id_wilayah, "nilai" => "", "periode" => $p];
+                        array_push($data, json_decode(json_encode($dataNew), false));
+
+                        // kalo id = 3100 atau 3101, di push sekali lagi biar ada 2 data masing2 (buat diskrepansi id 3100, buat total id 3010)
+                        if ($w->id_wilayah == '3100' || $w->id_wilayah == '3101') {
+                            array_push($data, json_decode(json_encode($dataNew), false));
+                        }
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    private function addDataKosong_tabel4($data, $allPeriode)
+    {
+        // get komponen dari database 
+        $komponen =  $this->komponen->get_data();
+
+        // get ID wilayah, kecuali provinsi
+        $wilayah = $this->wilayah->getAllIDKota('3100');
+
+        $periodeLeft = $this->get_periodeLeft($data, $allPeriode);
+
+        // masukin data 0 ke array data
+        if ($periodeLeft) {
+            foreach ($periodeLeft as $p) {
+                foreach ($komponen as $k) {
+                    foreach ($wilayah as $w) {
+                        $dataNew = ["id_komponen" => $k->id_komponen, "id_wilayah" => $w->id_wilayah, "nilai" => "", "periode" => $p];
+                        array_push($data, json_decode(json_encode($dataNew), false));
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    private function addDataKosong_ringkasan($data, $allPeriode)
+    {
+        // get komponen dari database 
+        $komponen =  $this->komponen->get_data();
+
+        // get ID wilayah, kecuali provinsi
+        $wilayah = $this->wilayah->getAllIDKota();
+
+        $periodeLeft = $this->get_periodeLeft($data, $allPeriode);
+
+        // masukin data 0 ke array data
+        if ($periodeLeft) {
+            foreach ($periodeLeft as $p) {
+                foreach ($komponen as $k) {
+                    foreach ($wilayah as $w) {
+                        $dataNew = ["id_komponen" => $k->id_komponen, "id_wilayah" => $w->id_wilayah, "nilai" => "", "periode" => $p];
+                        array_push($data, json_decode(json_encode($dataNew), false));
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
     // 1. diskrepansi PDRB ADHB
-    private function ringkasan_diskrepansi($obj, $kota, $periode)
+    private function ringkasan_diskrepansi($obj, $periode)
     {
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3);
@@ -293,7 +394,9 @@ class TabelRingkasanController extends BaseController
             array_push($dataOutput, $data);
         }
 
-        // $dataOutput = $this->sortData($dataOutput, 3); // sort by wilayah
+        $dataOutput = $this->addDataKosong_diskrepansi($dataOutput, $periode);
+
+        $dataOutput = $this->sortData($dataOutput, 3); // sort by wilayah
         $dataOutput = $this->sortData($dataOutput, 1); // sort by periode
         $dataOutput = $this->sortData($dataOutput, 2); // sort by komponen
 
@@ -316,7 +419,7 @@ class TabelRingkasanController extends BaseController
     }
 
     // 3. Distribusi Persentase PDRB ADHB 
-    private function ringkasan_tabel3($obj, $kota, $periode)
+    private function ringkasan_tabel3($obj, $periode)
     {
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3, true);
@@ -349,6 +452,8 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
         $dataOutput = $this->sortData($dataOutput, 3); // sort by wilayah
         $dataOutput = $this->sortData($dataOutput, 1); // sort by periode
         $dataOutput = $this->sortData($dataOutput, 2); // sort by komponen
@@ -357,7 +462,7 @@ class TabelRingkasanController extends BaseController
     }
 
     // 4. Distribusi PDRB kota terhadap provinsi 
-    private function ringkasan_tabel4($obj, $kota, $periode)
+    private function ringkasan_tabel4($obj, $periode)
     {
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3, true);
@@ -387,6 +492,9 @@ class TabelRingkasanController extends BaseController
             // $i == sizeof($nilaiProv) - 1 ? $i = 0 :  $i++;;
         }
 
+        $dataOutput = $this->addDataKosong_tabel4($dataOutput, $periode);
+
+        // $dataOuput = $this->multipleSortData($dataOutput, [3, 1, 2]);
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
@@ -433,6 +541,8 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
@@ -475,6 +585,8 @@ class TabelRingkasanController extends BaseController
             $dataOutput[] = $dataNew;
             $i++;
         }
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
 
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
@@ -580,13 +692,14 @@ class TabelRingkasanController extends BaseController
             $dataOutput[] = $dataNew;
             $i++;
         }
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
 
         $dataOutput = $this->multipleSortData($dataOutput, [2, 1, 3]);
         return $dataOutput;
     }
 
     // 8. Indeks Implisit PDRB 
-    private function ringkasan_tabel8($adhb, $adhk, $kota, $periode)
+    private function ringkasan_tabel8($adhb, $adhk, $periode)
     {
         // sort data by periode ascending
         $dataADHB = $this->sortData($adhb, 3, true);
@@ -602,6 +715,9 @@ class TabelRingkasanController extends BaseController
             $dataOutput[] = $dataNew;
             $i++;
         }
+
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
@@ -673,6 +789,8 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
@@ -742,6 +860,8 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
@@ -805,6 +925,8 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
         $dataOutput = $this->sortData($dataOutput, 2);
@@ -863,6 +985,8 @@ class TabelRingkasanController extends BaseController
             $dataOutput[] = $dataNew;
             $i++;
         }
+
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
 
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
@@ -969,6 +1093,8 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
+        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
         $dataOutput = $this->multipleSortData($dataOutput, [2, 1, 3]);
         return $dataOutput;
     }
@@ -989,16 +1115,16 @@ class TabelRingkasanController extends BaseController
 
         switch ($jenisTabel) {
             case "11":
-                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periode, '1', $kota), $komponen, $kota, $periode);
+                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periode, '1', $kota), $periode);
                 break;
             case "12":
-                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periode, '2', $kota), $komponen, $kota, $periode);
+                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periode, '2', $kota), $periode);
                 break;
             case "13":
-                $dataRingkasan = $this->ringkasan_tabel3($this->getAllData($periode, '1', $kota), $komponen, $kota, $periode);
+                $dataRingkasan = $this->ringkasan_tabel3($this->getAllData($periode, '1', $kota), $periode);
                 break;
             case "14":
-                $dataRingkasan = $this->ringkasan_tabel4($this->getAllData($periode, '1', $kota), $komponen, $kota, $periode);
+                $dataRingkasan = $this->ringkasan_tabel4($this->getAllData($periode, '1', $kota), $periode);
                 break;
             case "15":
                 $dataRingkasan = $this->ringkasan_tabel5($this->getAllData($periode, '2', $kota), $kota, $periode);
@@ -1010,7 +1136,7 @@ class TabelRingkasanController extends BaseController
                 $dataRingkasan = $this->ringkasan_tabel7($this->getAllData($periode, '2', $kota), $kota, $periode);
                 break;
             case "18":
-                $dataRingkasan = $this->ringkasan_tabel8($this->getAllData($periode, '1', $kota), $this->getAllData($periode, '2', $kota), $kota, $periode);
+                $dataRingkasan = $this->ringkasan_tabel8($this->getAllData($periode, '1', $kota), $this->getAllData($periode, '2', $kota), $periode);
                 break;
             case "19":
                 $dataRingkasan = $this->ringkasan_tabel9($this->getAllData($periode, '1', $kota), $this->getAllData($periode, '2', $kota), $kota, $periode);
@@ -1065,16 +1191,16 @@ class TabelRingkasanController extends BaseController
 
         switch ($jenisTabel) {
             case "11":
-                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periodeArr, '1', $kota), $komponen, $kota, $periodeArr);
+                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periodeArr, '1', $kota), $periodeArr);
                 break;
             case "12":
-                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periodeArr, '2', $kota), $komponen, $kota, $periodeArr);
+                $dataRingkasan = $this->ringkasan_diskrepansi($this->getAllData($periodeArr, '2', $kota), $periodeArr);
                 break;
             case "13":
-                $dataRingkasan = $this->ringkasan_tabel3($this->getAllData($periodeArr, '1', $kota), $komponen, $kota, $periodeArr);
+                $dataRingkasan = $this->ringkasan_tabel3($this->getAllData($periodeArr, '1', $kota), $periodeArr);
                 break;
             case "14":
-                $dataRingkasan = $this->ringkasan_tabel4($this->getAllData($periodeArr, '1', $kota), $komponen, $kota, $periodeArr);
+                $dataRingkasan = $this->ringkasan_tabel4($this->getAllData($periodeArr, '1', $kota), $periodeArr);
                 break;
             case "15":
                 $dataRingkasan = $this->ringkasan_tabel5($this->getAllData($periodeArr, '2', $kota), $kota, $periodeArr);
@@ -1082,8 +1208,11 @@ class TabelRingkasanController extends BaseController
             case "16":
                 $dataRingkasan = $this->ringkasan_tabel6($this->getAllData($periodeArr, '2', $kota), $kota, $periodeArr);
                 break;
+            case "17":
+                $dataRingkasan = $this->ringkasan_tabel7($this->getAllData($periodeArr, '2', $kota), $kota, $periodeArr);
+                break;
             case "18":
-                $dataRingkasan = $this->ringkasan_tabel8($this->getAllData($periodeArr, '1', $kota), $this->getAllData($periodeArr, '2', $kota), $kota, $periodeArr);
+                $dataRingkasan = $this->ringkasan_tabel8($this->getAllData($periodeArr, '1', $kota), $this->getAllData($periodeArr, '2', $kota), $periodeArr);
                 break;
             case "19":
                 $dataRingkasan = $this->ringkasan_tabel9($this->getAllData($periodeArr, '1', $kota), $this->getAllData($periodeArr, '2', $kota), $kota, $periodeArr);
@@ -1096,6 +1225,9 @@ class TabelRingkasanController extends BaseController
                 break;
             case "22":
                 $dataRingkasan = $this->ringkasan_tabel12($this->getAllData($periodeArr, '2', $kota), $kota, $periodeArr);
+                break;
+            case "23":
+                $dataRingkasan = $this->ringkasan_tabel13($this->getAllData($periodeArr, '2', $kota), $kota, $periodeArr);
                 break;
         };
 
@@ -1116,11 +1248,20 @@ class TabelRingkasanController extends BaseController
         array_push($dataSheet, $columnHeader);
         if ($jenisTabel == "11" || $jenisTabel == "12") {
             array_push($columnHeader2, 'Diskrepansi');
+            array_push($columnHeader2, 'Provinsi DKI Jakarta');
             array_push($columnHeader2, 'Total Kab/Kota');
+
+            foreach ($wilayah as $col) {
+                if ($col['id_wilayah'] != "3100") {
+                    array_push($columnHeader2, $col['wilayah']);
+                }
+            }
+        } else {
+            foreach ($wilayah as $col) {
+                array_push($columnHeader2, $col['wilayah']);
+            }
         }
-        foreach ($wilayah as $col) {
-            array_push($columnHeader2, $col['wilayah']);
-        }
+
         array_push($dataSheet, $columnHeader2);
 
         // isi tabel 
@@ -1156,8 +1297,11 @@ class TabelRingkasanController extends BaseController
         $sheet->getStyle('A1')->getFont()->setBold(true);
 
         // pengaturan merge cell kolom 1
-        $sheet->mergeCells('A3:A4');    // merge cell header kolom 1         
+        $sheet->mergeCells('A3:A4');    // merge cell header kolom 1      
         $jumlahSelGabung  = count($wilayah);
+        if ($jenisTabel == "11" || $jenisTabel == "12") {
+            $jumlahSelGabung += 2;
+        }
         // $colIndex = 65;
         $colIndex = 1;
         $startRow1 = 3;

@@ -294,6 +294,7 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
           );
           break;
         default:
+          console.log(data["dataRingkasan"]);
           renderTable_ringkasan(
             data["dataRingkasan"],
             data["komponen"],
@@ -972,7 +973,7 @@ function renderTable_ringkasan(
             jenisTabel == "23"
           ) {
             // ini kasih if data kosong
-            if (data[temp]) {
+            if (data[temp].nilai) {
               if (data[temp].nilai < 0) {
                 cell.classList.add("text-danger");
                 cell.innerHTML = `*${numberFormat(data[temp].nilai)}`;
@@ -983,7 +984,9 @@ function renderTable_ringkasan(
               cell.innerHTML = "";
             }
           } else {
-            cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
+            cell.innerHTML = data[temp].nilai
+              ? numberFormat(data[temp].nilai)
+              : "";
           }
         }
       }
@@ -1042,7 +1045,7 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   for (var i = 0; i < selectedPeriode.length; i++) {
     var columnName = selectedPeriode[i];
     var headerCell = document.createElement("th");
-    headerCell.colSpan = "7";
+    headerCell.colSpan = "6";
     headerCell.innerHTML = columnName;
 
     wilayah.forEach((columns) => {
@@ -1099,7 +1102,10 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
+          cell.innerHTML = data[temp].nilai
+            ? numberFormat(data[temp].nilai)
+            : "";
+          // numberFormat(data[temp].nilai);
         }
       }
       row.appendChild(cell);
@@ -1151,17 +1157,24 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
     var headerCell3 = document.createElement("th");
     headerCell3.style =
       "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
-    headerCell3.innerHTML = "Total Kab/Kota";
+    headerCell3.innerHTML = "Provinsi DKI Jakarta";
+    var headerCell4 = document.createElement("th");
+    headerCell4.style =
+      "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+    headerCell4.innerHTML = "Total Kab/Kota";
 
     headerRow2.appendChild(headerCell2);
     headerRow2.appendChild(headerCell3);
+    headerRow2.appendChild(headerCell4);
 
     wilayah.forEach((columns) => {
-      var headerCell4 = document.createElement("th");
-      headerCell4.style =
-        "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
-      headerCell4.innerHTML = columns.wilayah;
-      headerRow2.appendChild(headerCell4);
+      if (columns.id_wilayah != "3100") {
+        var headerCell5 = document.createElement("th");
+        headerCell5.style =
+          "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+        headerCell5.innerHTML = columns.wilayah;
+        headerRow2.appendChild(headerCell5);
+      }
     });
     headerRow.appendChild(headerCell);
   }
@@ -1210,7 +1223,9 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
+          cell.innerHTML = data[temp].nilai
+            ? numberFormat(data[temp].nilai)
+            : "";
         }
       }
       row.appendChild(cell);
@@ -1395,7 +1410,6 @@ if (eksporButtonPDF != null) {
   eksporButtonPDF.addEventListener("click", function () {
     let komponenIndex = [0, 8, 9, 10, 13, 14, 15, 16, 17];
     const htmlElement = document.querySelector(".PDRBTable"); // Replace with your CSS selector
-    console.log(htmlElement.innerHTML);
 
     let doc = new jspdf.jsPDF();
     doc.setFontSize(12);
