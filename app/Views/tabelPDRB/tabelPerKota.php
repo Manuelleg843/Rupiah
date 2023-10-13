@@ -117,14 +117,10 @@
                                                 <i class="fa fa-file-pdf"></i>
                                                 <span>Ekspor PDF</span>
                                             </button>
-                                            <button id="exportExcelPerKota" class="btn btn-outline-success">
+                                            <button id="exportExcelPerKota" onclick="fungsieksporButtonExcelPerkota()" class="btn btn-outline-success">
                                                 <i class="fa fa-file-excel"></i>
                                                 <span>Ekspor Excel</span>
                                             </button>
-                                            <a href="#" target="_blank" class="btn btn-outline-secondary">
-                                                <i class="fa fa-file-excel"></i>
-                                                <span>Ekspor Satu Kota</span>
-                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -147,9 +143,3 @@
         </div>
     </section>
     <!-- /.content -->
-
-    <script>
-        window.addEventListener('load', function() {
-            loadData();
-        });
-    </script>

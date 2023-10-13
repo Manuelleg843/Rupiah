@@ -220,8 +220,7 @@ function kirmdataPerKota(jenisPDRB, kota, selectedPeriode) {
         renderTablePerkotaEkstrem(
           data["dataPDRB"],
           data["komponen"],
-          data["selectedPeriode"],
-          data["wilayah"]
+          data["selectedPeriode"]
         );
       },
       error: function (error) {
@@ -566,7 +565,7 @@ function renderTablePerKota(data, selectedPeriode, komponen) {
   container.appendChild(table);
 }
 
-function renderTablePerkotaEkstrem(data, komponen, selectedPeriode, wilayah) {
+function renderTablePerkotaEkstrem(data, komponen, selectedPeriode) {
   // container table
   const JENIS_PERTUMBUHAN = [
     "Pertumbuhan YoY",
@@ -655,7 +654,7 @@ function renderTablePerkotaEkstrem(data, komponen, selectedPeriode, wilayah) {
       } else {
         temp++;
         cell.style = "text-align: right;";
-        cell.classList.add("col-6");
+        // cell.classList.add("col-6");
         cell.innerHTML = data[pertumbuhan][periode][i]
           ? numberFormat(data[pertumbuhan][periode][i].nilai)
           : "";
@@ -1296,92 +1295,186 @@ if (eksporButtonExcel != null) {
     }
   });
 }
+function fungsieksporButtonExcelPerkota() {
+  console.log(jenisPDRB);
+  let tablePerkota;
+  if (document.title == "Rupiah | Tabel Per Kota") {
+    tablePerkota = document.getElementById("tablePerkota");
+  } else {
+    tablePerkota = document.getElementById("PDRBTable");
+  }
+  // Ambil referensi tabel
+  let workbook = new ExcelJS.Workbook();
+  let worksheet = workbook.addWorksheet("Sheet1");
+  // Membaca elemen thead
+  let thead = tablePerkota.querySelector("thead");
+  // Menambahkan judul tabel di cell A1
+  worksheet.getCell("A1").value = judulTable.textContent;
+  worksheet.getCell("A1").font = { bold: true, size: 11 };
+  if (jenisPDRB != 13) {
+    // Menambahkan baris header di cell A3
+    let headerRow = worksheet.getRow(3);
+    let headerCells = thead.querySelectorAll("th");
+    headerCells.forEach(function (headerCell, index) {
+      headerRow.getCell(index + 1).value = headerCell.innerText;
+      headerRow.getCell(index + 1).font = { bold: true };
+      headerRow.getCell(index + 1).alignment = { horizontal: "center" };
+    });
 
-// ekspor excel tabel perkota
-if (eksporButtonExcelPerkota) {
-  document
-    .getElementById("exportExcelPerKota")
-    .addEventListener("click", function () {
-      // Ambil referensi tabel
-      let tablePerkota = document.getElementById("tablePerkota");
+    // Membaca elemen tbody
+    let tbody = tablePerkota.querySelector("tbody");
 
-      let workbook = new ExcelJS.Workbook();
-      let worksheet = workbook.addWorksheet("Sheet1");
+    // Menambahkan baris data mulai dari cell A4
+    let dataRows = tbody.querySelectorAll("tr");
+    dataRows.forEach(function (dataRow, rowIndex) {
+      let row = worksheet.addRow([]);
+      let dataCells = dataRow.querySelectorAll("td");
+      dataCells.forEach(function (dataCell, cellIndex) {
+        row.getCell(cellIndex + 1).value = dataCell.innerText;
 
-      let rows = tablePerkota.getElementsByTagName("tr");
-
-      for (let i = 0; i < rows.length; i++) {
-        let row = worksheet.addRow([]);
-
-        let cells = rows[i].getElementsByTagName("td");
-        for (var j = 0; j < cells.length; j++) {
-          row.getCell(j + 1).value = cells[j].innerText;
-
-          // Mengatur border untuk sel
-          row.getCell(j + 1).border = {
-            top: { style: "thin" },
-            left: { style: "thin" },
-            bottom: { style: "thin" },
-            right: { style: "thin" },
-          };
+        // Mengatur alignment ke kanan untuk sel data (kolom selain A)
+        if (cellIndex > 0) {
+          row.getCell(cellIndex + 1).alignment = { horizontal: "right" };
+          row.getCell(cellIndex + 1).value = row
+            .getCell(cellIndex + 1)
+            .value.replace(/\./g, "")
+            .replace(",", ".");
         }
+      });
+      row.number = rowIndex + 4; // Mulai dari baris ke-4
+    });
+
+    // Menambahkan spasi pada cell subkomponen
+    // Array subkomponen
+    let subkomponens = [5, 6, 7, 8, 9, 10, 11, 15, 16];
+
+    subkomponens.forEach(function (subkomponent) {
+      worksheet.getCell(`A${subkomponent}`).value =
+        "    " + worksheet.getCell(`A${subkomponent}`).value;
+    });
+  } else {
+    // Membaca baris header
+    let headerRows = thead.querySelectorAll("tr");
+    let rowIndex = 3; // Mulai dari baris ke-2 dalam worksheet
+
+    headerRows.forEach(function (headerRow) {
+      let cells = headerRow.querySelectorAll("th");
+
+      let columnIndex = 1; // Indeks kolom dalam Excel
+      if (rowIndex == 4) {
+        columnIndex = 2;
       }
 
-      // Mengatur lebar kolom secara otomatis
-      worksheet.columns.forEach((column) => {
-        let maxCellLength = 0;
-        column.eachCell({ includeEmpty: true }, (cell) => {
-          maxCellLength = Math.max(
-            maxCellLength,
-            cell.value ? cell.value.toString().length : 0
-          );
-        });
-        column.width = maxCellLength + 2;
+      cells.forEach(function (headerCell) {
+        let cell = worksheet.getCell(rowIndex, columnIndex);
+        let colspan = headerCell.hasAttribute("colspan")
+          ? parseInt(headerCell.getAttribute("colspan"))
+          : 1;
+        let rowspan = headerCell.hasAttribute("rowspan")
+          ? parseInt(headerCell.getAttribute("rowspan"))
+          : 1;
+
+        // Set nilai sel header
+        cell.value = headerCell.innerText;
+        cell.font = { bold: true };
+        cell.alignment = { horizontal: "center", vertical: "middle" };
+
+        // Gabung sel-sel jika diperlukan
+        if (colspan > 1 || rowspan > 1) {
+          if (cell.value == "Komponen") {
+            worksheet.mergeCells(
+              rowIndex,
+              columnIndex,
+              rowIndex + rowspan - 1,
+              columnIndex + colspan - 2
+            );
+          } else {
+            worksheet.mergeCells(
+              rowIndex,
+              columnIndex,
+              rowIndex + rowspan - 1,
+              columnIndex + colspan - 1
+            );
+          }
+        }
+        if (cell.value == "Komponen") {
+          columnIndex += colspan - 3;
+        }
+        columnIndex += colspan;
       });
 
-      // Membuat tautan unduhan
-      workbook.xlsx.writeBuffer().then(function (data) {
-        let blob = new Blob([data], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        });
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = judulTable.textContent + ".xlsx";
-        a.click();
-        window.URL.revokeObjectURL(url);
-      });
+      rowIndex += 1;
     });
+
+    // Membaca elemen tbody
+    let tbody = tablePerkota.querySelector("tbody");
+
+    // Menambahkan baris data mulai dari cell A3
+    let dataRows = tbody.querySelectorAll("tr");
+    dataRows.forEach(function (dataRow, rowIndex) {
+      let row = worksheet.addRow([]);
+      let dataCells = dataRow.querySelectorAll("td");
+      dataCells.forEach(function (dataCell, cellIndex) {
+        row.getCell(cellIndex + 1).value = dataCell.innerText;
+
+        // Mengatur alignment ke kanan untuk sel data (kolom selain A)
+        if (cellIndex > 0) {
+          row.getCell(cellIndex + 1).alignment = { horizontal: "right" };
+          row.getCell(cellIndex + 1).value = row
+            .getCell(cellIndex + 1)
+            .value.replace(/\./g, "")
+            .replace(",", ".");
+        }
+      });
+      row.number = rowIndex + rowIndex + 4; // Mulai dari baris ke-3
+    });
+
+    // Menambahkan spasi pada cell subkomponen
+    // Array subkomponen
+    let subkomponens = [6, 7, 8, 9, 10, 11, 12, 16, 17];
+
+    subkomponens.forEach(function (subkomponent) {
+      worksheet.getCell(`A${subkomponent}`).value =
+        "    " + worksheet.getCell(`A${subkomponent}`).value;
+    });
+  }
+  // Mengatur border untuk seluruh tabel
+  worksheet.eachRow(function (row) {
+    row.eachCell(function (cell) {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+  });
+
+  // Mengatur lebar kolom secara otomatis
+  worksheet.columns.forEach((column) => {
+    let maxCellLength = 0;
+    column.eachCell({ includeEmpty: true }, (cell) => {
+      maxCellLength = Math.max(
+        maxCellLength,
+        cell.value ? cell.value.toString().length : 0
+      );
+    });
+    column.width = maxCellLength + 2;
+  });
+
+  // Membuat tautan unduhan
+  workbook.xlsx.writeBuffer().then(function (data) {
+    let blob = new Blob([data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = judulTable.textContent + ".xlsx";
+    a.click();
+    window.URL.revokeObjectURL(url);
+  });
 }
-// if (eksporButtonExcelPerkota) {
-//   document
-//     .getElementById("exportExcelPerKota")
-//     .addEventListener("click", function () {
-//       // Ambil referensi tabel
-//       let tablePerkota = document.getElementById("tablePerkota");
-
-//       // Buat objek untuk data Excel
-//       let wb = XLSX.utils.book_new();
-
-//       let ws = XLSX.utils.table_to_sheet(tablePerkota, {
-//         raw: true,
-//         origin: "A3",
-//       });
-
-//       XLSX.utils.sheet_add_aoa(ws, [[`${judulTable.textContent}`]], {
-//         origin: "A1",
-//       });
-
-//       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-
-//       let today = new Date();
-//       let fileName =
-//         judulTable.textContent + "_" + today.toISOString() + ".xlsx";
-
-//       // Export data ke file Excel
-//       XLSX.writeFile(wb, fileName);
-//     });
-// }
 
 // ekspor excel all putaran di tabel history
 if (eksporButtonExcelAll != null) {
