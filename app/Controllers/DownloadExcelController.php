@@ -22,6 +22,9 @@ class DownloadExcelController extends BaseController
     // Fungsi untuk download excel sesuai dengan checkbox yang dipilih
     public function download()
     {
+        // cek apakah user memiliki akses ke halaman ini
+        if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
+
         // Jika tidak ada wilayah atau checkbox yang dipilih, maka akan diarahkan kembali ke halaman upload data
         $postData = $this->request->getPost();
         if ($postData['kotaJudulModal'] == "") {
@@ -33,6 +36,7 @@ class DownloadExcelController extends BaseController
         // Mengambil wilayah terpilih dari array postData
         $wilayahTerpilih = $this->wilayahModel->where('id_wilayah', array_pop($postData))->first()['wilayah'];
 
+        /* GENERATE EXCEL */
         // Konfigurasi untuk generate excel
         require_once ROOTPATH . 'vendor/autoload.php';
         $filename = 'Template Upload PDRB - ' . $wilayahTerpilih . '.xlsx';
@@ -102,11 +106,26 @@ class DownloadExcelController extends BaseController
             $cell->getStyle()->getFont()->setBold(true);
         }
 
+        // Border tabel
+        $styleArray = [
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => 'FF000000'],
+                ]
+            ]
+        ];
+
         // Mengatur lebar kolom
         $worksheets = [$worksheet1, $worksheet2];
         foreach ($worksheets as $worksheet) {
             foreach ($worksheet->getColumnIterator() as $column) {
                 $worksheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+                foreach ($worksheet->getRowIterator() as $row) {
+                    if ($row->getRowIndex() >= 5) {
+                        $worksheet->getStyle($column->getColumnIndex() . $row->getRowIndex())->applyFromArray($styleArray);
+                    }
+                }
             }
         }
 
@@ -114,5 +133,6 @@ class DownloadExcelController extends BaseController
         $writer = new Xlsx($mySpreadsheet);
         $writer->save('php://output');
         die;
+        /* GENERATE EXCEL */
     }
 }

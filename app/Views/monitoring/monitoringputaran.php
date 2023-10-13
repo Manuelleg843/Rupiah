@@ -25,7 +25,11 @@
                             <div>
                                 <h4 id='putaran'>Tahun <?= $tahun ?>, Kuartal <?= $id_kuartal ?>, Putaran <?= $putaran ?></h4>
                             </div>
-                            <div class="row mb-3 justify-content-end mr-1">
+                            <div class="row mb-3 d-flex justify-content-end mr-1">
+                                <div class="mt-1 mr-auto ml-2">
+                                    <a href="<?= base_url('/monitoring') ?>"><i class="nav-icon fas fa-redo"></i></a>
+                                    <small>&nbsp;&nbsp;<i>muat ulang</i></small>
+                                </div>
                                 <ul class="nav nav-pills">
                                     <li class="nav-item ">
                                         <small id="detail_buka" class="mr-2" <?= ($isActive == 1) ? 'hidden' : '' ?>><i>Putaran Belum dibuka</i></small>
@@ -104,7 +108,7 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             Tidak
                         </button>
-                        <a href="<?= base_url('/monitoring/updateStatus') ?>" onclick="membuka(event);" type="button" class="btn btn-success swalDefaultBuka" data-dismiss="modal" href>
+                        <a href="<?= base_url('/monitoring/updateStatus') ?>" onclick="hrefModal(event);" type="button" class="btn btn-success swalDefaultBuka" data-dismiss="modal">
                             Yakin
                         </a>
                     </div>
@@ -126,9 +130,9 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">
                             Tidak
                         </button>
-                        <button onclick="menutup();" type="button" class="btn btn-success swalDefaultTutup" data-dismiss="modal">
+                        <a href="<?= base_url('/monitoring/updateStatus') ?>" onclick="hrefModal(event);" type="button" class="btn btn-success swalDefaultTutup" data-dismiss="modal">
                             Yakin
-                        </button>
+                        </a>
                     </div>
                 </div>
                 <!-- /.modal-content -->

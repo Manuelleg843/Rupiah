@@ -17,18 +17,22 @@ class DataUploadController extends BaseController
 
     public function __construct()
     {
+        $this->currentYear = date('Y');
+        $this->currentQuarter = ceil(date('n') / 3);
         $this->komponen7Model = new Komponen7Model();
         $this->putaranModel = new PutaranModel();
         $this->revisiModel = new RevisiModel();
-        $this->currentYear = date('Y');
-        $this->currentQuarter = ceil(date('n') / 3);
     }
 
     public function index()
     {
+        // cek apakah sudah login
         if (!session()->get('email')) {
             return redirect()->to('/login');
         }
+
+        // cek apakah user memiliki akses ke halaman ini
+        if(!in_array('3', session()->get('permission'))) return redirect()->to('/login');
 
         $data = [
             'title' => 'Rupiah | Upload Data',
@@ -46,6 +50,9 @@ class DataUploadController extends BaseController
     // Fungsi untuk mendapatkan data yang akan ditampilkan (ajax request)
     public function getData()
     {
+        // cek apakah user memiliki akses ke halaman ini
+        if(!in_array('2', session()->get('permission'))) return redirect()->to('/login');
+
         // Mendapatkan data dari ajax
         $jenisPDRB = $this->request->getPost('jenisPDRB');
         $kota = $this->request->getPost('kota');

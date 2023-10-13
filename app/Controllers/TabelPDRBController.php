@@ -11,15 +11,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use \Dompdf\Dompdf;
 use Dompdf\Options;
-use Exception;
-use Hermawan\DataTables\DataTable;
-use PhpOffice\PhpSpreadsheet\Shared\Trend\Trend;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf as PdfDompdf;
-use PhpParser\Node\Stmt\TryCatch;
-
-use function PHPSTORM_META\type;
-use function PHPUnit\Framework\countOf;
-use function PHPUnit\Framework\isEmpty;
 
 class TabelPDRBController extends BaseController
 {
@@ -47,10 +38,6 @@ class TabelPDRBController extends BaseController
             'title' => 'Rupiah | Tabel Ringkasan',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel Ringkasan PDRB Kab/Kota',
-            // 'nilaiDiskrepansi' => $this->nilaiDiskrepansi->get_data(),
-            // 'komponen' => $this->putaran->get_data(),
-            // 'adhb'  => $this->putaran->get_data(),
-            // 'adhk'  => $this->putaran->get_data(),
         ];
 
         echo view('layouts/header', $data);
@@ -160,7 +147,6 @@ class TabelPDRBController extends BaseController
         // Tempat data disimpan
         $dataPertumbuhanPDRBDADHK = [];
 
-
         foreach ($periodes as $periode) {
             // Tempat data periode i disimpan
             $dataPertumbuhanPDRBDADHKi = [];
@@ -228,7 +214,6 @@ class TabelPDRBController extends BaseController
         // Tempat data disimpan
         $dataPertumbuhanPDRBDADHK = [];
 
-
         foreach ($periodes as $periode) {
             // Tempat data periode i disimpan
             $dataPertumbuhanPDRBDADHKi = [];
@@ -292,7 +277,6 @@ class TabelPDRBController extends BaseController
     {
         // Tempat data disimpan
         $dataPertumbuhanPDRBDADHK = [];
-
 
         foreach ($periodes as $periode) {
             // Tempat data periode i disimpan
@@ -651,7 +635,6 @@ class TabelPDRBController extends BaseController
     {
         // Tempat data disimpan
         $dataPertumbuhanPDRBDADHK = [];
-
 
         foreach ($periodes as $periode) {
             // Tempat data periode i disimpan
@@ -1041,11 +1024,6 @@ class TabelPDRBController extends BaseController
             'periode' => $periode,
         ];
 
-        // echo "<pre>";
-        // print_r($data);
-        // echo "</pre>";
-        // exit();
-
         echo view('layouts/header', $data);
         echo view('layouts/navbar');
         echo view('layouts/sidebar', $data);
@@ -1063,7 +1041,6 @@ class TabelPDRBController extends BaseController
     public function exportExcelHistory($jenisPDRB, $kota, $putaran, $periode, $nama, $all = false)
     {
         // kalo $all = true (export semua putaran), selected periode adalah semua periode 
-
         if ($all) {
             $putaran = $this->putaran->getAllPutaran($kota, $periode);
             $putaranArr = [];
@@ -1197,35 +1174,5 @@ class TabelPDRBController extends BaseController
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
         exit();
-    }
-
-    public function exportPDF($tableSelected, $jenisPDRB, $kota, $putaran, $periode)
-    {
-
-        $periodeArr = explode(",", $periode);
-
-        $komponen = $this->komponen->get_data();
-        // get filter 
-        $dataPDRB = $this->putaran->getData($jenisPDRB, $kota, $putaran, $periodeArr);
-
-        // create dompdf object 
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $dompdf = new Dompdf($options);
-
-        // Load konten HTML ke Dompdf
-        $data = [
-            'subTajuk' => 'Tabel History Putaran',
-            'dataPDRB' => $this->putaran->getData($jenisPDRB, $kota, $putaran, $periodeArr),
-            'komponen' => $this->komponen->get_data(),
-            'selectedPeriode' => $periode
-        ];
-
-        $html = view('tabelPDRB/table_view', $data);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        ob_end_clean();
-        $dompdf->stream('data_PDRB.pdf', array('Attachment' => 0));
     }
 }
