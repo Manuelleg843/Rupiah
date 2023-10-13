@@ -83,14 +83,20 @@ class TabelPDRBController extends BaseController
 
     private function countTable2($periodes, $jenisPDRB, $kota)
     {
+        // Melakukan looping untuk mengambil data PDRB berdasarkan periode
         foreach ($periodes as $periode) {
+
+            // pengecekan apakah data sudah ada di tabel revisi atau belum
             if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
                 $dataPDRB[] = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
             } else {
+
+                // pengecekan apakah data sudah ada di tabel putaran atau belum
                 if ($this->putaran->getDataFinal($jenisPDRB, $kota, $periode)) {
                     $dataPDRB[] = $this->putaran->getDataFinal($jenisPDRB, $kota, $periode);
+                } else {
+                    $dataPDRB[] = [];
                 }
-                $dataPDRB[] = [];
             }
         }
 
@@ -99,13 +105,18 @@ class TabelPDRBController extends BaseController
 
     private function countTable3($periodes, $jenisPDRB, $kota)
     {
+        // Tempat data disimpan
         $dataPDRBDistribusiPersentase = [];
+
+        // looping untuk mengambil data PDRB berdasarkan periode
         foreach ($periodes as $periode) {
-            // Tempat data disimpan
+
+            // Tempat data periode i disimpan
             $dataPDRBDistribusiPersentasePeriodei = [];
 
-            // pengecekan apakah data sudah final atau belum
+            // pengecekan apakah data sudah ada di tabel revisi atau belum
             if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
+
                 // mengambil data final (mengambil dari tabel revisi)
                 $dataPDRB = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
 
@@ -121,6 +132,7 @@ class TabelPDRBController extends BaseController
                 // memasukkan data ke array
                 array_push($dataPDRBDistribusiPersentase, $dataPDRBDistribusiPersentasePeriodei);
             } else {
+
                 // mengambil data final berdasarkan putaran yang telah di ambil (mengambil dari tabel putaran)
                 if ($this->putaran->getDataFinal($jenisPDRB, $kota, $periode)) {
                     $dataPDRB = $this->putaran->getDataFinal($jenisPDRB, $kota, $periode);
@@ -156,6 +168,7 @@ class TabelPDRBController extends BaseController
             // membuat variabel periode sebelumnya 
             $periodeSebelumnya = 0;
 
+            // pengecekan apakah periode merupakan periode tahunan atau kuartalan
             if (strlen($periode) == 6) {
                 $Q = substr($periode, -1);
                 $tahun =  substr($periode, 0, 4);
@@ -167,7 +180,7 @@ class TabelPDRBController extends BaseController
                     $periodeSebelumnya = $tahun . 'Q' . $Qmin1;
                 }
 
-                // pengecekan apakah data sudah final atau belum
+                // pengecekan apakah data sudah ada di tabel revisi atau belum
                 if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periode)) {
                     // mengambil data final (mengambil dari tabel revisi)
                     $dataPDRB = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
@@ -201,7 +214,8 @@ class TabelPDRBController extends BaseController
                     array_push($dataPertumbuhanPDRBDADHK, $dataPertumbuhanPDRBDADHKi);
                 }
             } else {
-                // memasukkan array kosong ke array
+
+                // memasukkan array kosong ke array agar tidak error
                 array_push($dataPertumbuhanPDRBDADHK, $dataPertumbuhanPDRBDADHKi);
             }
         }
@@ -222,6 +236,7 @@ class TabelPDRBController extends BaseController
             // membuat variabel periode sebelumnya 
             $periodeSebelumnya = 0;
 
+            // pengecekan apakah periode merupakan periode tahunan atau kuartalan
             if (strlen($periode) == 6) {
                 $Q = substr($periode, -2);
                 $tahun =  substr($periode, 0, 4);
@@ -250,6 +265,8 @@ class TabelPDRBController extends BaseController
             } else {
                 // mengambil data final berdasarkan putaran yang telah di ambil (mengambil dari tabel putaran)
                 $dataPDRB = $this->putaran->getDataFinal($jenisPDRB, $kota, $periode);
+
+                // penge
                 if ($this->revisi->getDataFinal($jenisPDRB, $kota, $periodeSebelumnya)) {
                     $dataPDRBBefore = $this->revisi->getDataFinal($jenisPDRB, $kota, $periodeSebelumnya);
                 } else {
@@ -838,48 +855,60 @@ class TabelPDRBController extends BaseController
 
         switch ($jenisPDRB) {
             case '1':
+                // Menghitung Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah) di fungsi countTable2
                 $dataPDRB = $this->countTable2($periodes, '1', $kota);
                 break;
             case '2':
+                // Menghitung Tabel 3.2. PDRB ADHK Menurut Pengeluaran (Juta Rupiah) di fungsi countTable2
                 $dataPDRB = $this->countTable2($periodes, '2', $kota);
                 break;
             case '3':
+                // Menghitung Tabel 3.3. Tabel Distribusi Persentase PDRB ADHB di fungsi countTable3
                 $dataPDRB = $this->countTable3($periodes, '1', $kota);
                 break;
             case '4':
+                // Menghitung Tabel 3.4. Pertumbuhan PDRB ADHK (Q-TO-Q) di fungsi countTable4
                 $dataPDRB = $this->countTable4($periodes, '2', $kota);
                 break;
             case '5':
+                // Menghitung Tabel 3.5. Pertumbuhan PDRB ADHK (Y-ON-Y) di fungsi countTable5
                 $dataPDRB = $this->countTable5($periodes, '2', $kota);
                 break;
             case '6':
+                // Menghitung Tabel 3.6. Pertumbuhan PDRB ADHK (C-TO-C) di fungsi countTable6
                 $dataPDRB = $this->countTable6($periodes, '2', $kota);
                 break;
             case '7':
+                // Menghitung Tabel 3.7. Indeks Implisit PDRB (Persen) di fungsi countTable7
                 $dataPDRB = $this->countTable7($periodes, $kota);
                 break;
             case '8':
+                // Menghitung Tabel 3.8. Pertumbuhan Indeks Implisit (Q-TO-Q) di fungsi countTable8
                 $dataPDRB = $this->countTable8($periodes, $kota);
                 break;
             case '9':
+                // Menghitung Tabel 3.9. Pertumbuhan Indeks Implisit (Y-ON-Y) di fungsi countTable9
                 $dataPDRB = $this->countTable9($periodes, $kota);
                 break;
             case '10':
+                // Menghitung Tabel 3.10. Sumber Pertumbuhan Ekonomi (Q-TO-Q) di fungsi countTable10
                 $dataPDRB = $this->countTable10($periodes, $kota);
                 break;
             case '11':
+                // Menghitung Tabel 3.11. Sumber Pertumbuhan Ekonomi (Y-ON-Y) di fungsi countTable11
                 $dataPDRB = $this->countTable11($periodes, $kota);
                 break;
             case '12':
-                # code...
+                // Menghitung Tabel 3.12. Sumber Pertumbuhan Ekonomi (C-TO-C) di fungsi countTable12
                 $dataPDRB = $this->countTable12($periodes, $kota);
                 break;
             case '13':
-                # code...
+                // Menghitung Tabel Tabel 3.13. Ringkasan Pertumbuhan Ekstrem Provinsi di fungsi countTable13
                 $dataPDRB = $this->countTable13($periodes, $kota);
                 break;
             default:
-                # code...
+                // Menghitung Tabel 3.1. PDRB ADHB Menurut Pengeluaran (Juta Rupiah) di fungsi countTable2
+                $dataPDRB = $this->countTable2($periodes, '1', $kota);
                 break;
         }
 

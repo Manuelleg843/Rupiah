@@ -119,7 +119,7 @@
                                             <span>Ekspor PDF</span>
                                         </button>
                                         <!-- </a> -->
-                                        <button id="export-button-excel" class="btn btn-outline-success excel">
+                                        <button id="export-button-excel" onclick="fungsieksporButtonExcelPerkota()" class="btn btn-outline-success excel">
                                             <i class="fa fa-file-excel"></i>
                                             <span>Ekspor Excel</span>
                                         </button>
