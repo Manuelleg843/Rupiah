@@ -1146,34 +1146,4 @@ class TabelPDRBController extends BaseController
         $writer->save('php://output');
         exit();
     }
-
-    public function exportPDF($tableSelected, $jenisPDRB, $kota, $putaran, $periode)
-    {
-
-        $periodeArr = explode(",", $periode);
-
-        $komponen = $this->komponen->get_data();
-        // get filter 
-        $dataPDRB = $this->putaran->getData($jenisPDRB, $kota, $putaran, $periodeArr);
-
-        // create dompdf object 
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $dompdf = new Dompdf($options);
-
-        // Load konten HTML ke Dompdf
-        $data = [
-            'subTajuk' => 'Tabel History Putaran',
-            'dataPDRB' => $this->putaran->getData($jenisPDRB, $kota, $putaran, $periodeArr),
-            'komponen' => $this->komponen->get_data(),
-            'selectedPeriode' => $periode
-        ];
-
-        $html = view('tabelPDRB/table_view', $data);
-        $dompdf->loadHtml($html);
-        $dompdf->setPaper('A4', 'portrait');
-        $dompdf->render();
-        ob_end_clean();
-        $dompdf->stream('data_PDRB.pdf', array('Attachment' => 0));
-    }
 }
