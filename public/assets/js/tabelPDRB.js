@@ -139,6 +139,7 @@ function loadData() {
       break;
     case "Rupiah | Tabel Ringkasan":
       judulTable.textContent = tableSelected;
+
       // create element subJudul untuk tabel 1.15, 1.16, 1.17, 1.19, 1.20, 1.21, 1.22, 1.23
       if (subJudulContainer) {
         subJudulContainer.id = "subJudul-container";
@@ -283,15 +284,6 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
             data["jenisTabel"]
           );
           break;
-        case "13":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
         case "14":
           renderTable_ringkasan14(
             data["dataRingkasan"],
@@ -300,7 +292,8 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
             data["wilayah"]
           );
           break;
-        case "15":
+        default:
+          console.log(data["dataRingkasan"]);
           renderTable_ringkasan(
             data["dataRingkasan"],
             data["komponen"],
@@ -309,77 +302,6 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
             data["jenisTabel"]
           );
           break;
-        case "16":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
-        case "17":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
-        case "18":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
-        case "19":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
-        case "20":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
-        case "21":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
-        case "22":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
-          break;
-        case "23":
-          renderTable_ringkasan(
-            data["dataRingkasan"],
-            data["komponen"],
-            data["selectedPeriode"],
-            data["wilayah"],
-            data["jenisTabel"]
-          );
       }
     },
     error: function (error) {
@@ -494,24 +416,16 @@ function renderTableArahRevisi(data, selectedPeriode, komponen) {
   var totalColumn = headerRow.childElementCount;
 
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
 
     // insert row
     var row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
+
     subCol = 1;
     for (var col = 0; col < totalColumn; col++) {
       var cell = document.createElement("td");
@@ -521,19 +435,11 @@ function renderTableArahRevisi(data, selectedPeriode, komponen) {
 
       if (col == 0) {
         cell.colSpan = "2";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
+
         if (id_komponen == 9) {
           cell.innerHTML = komponen[i].komponen;
         } else {
@@ -613,7 +519,9 @@ function renderTablePerKota(data, selectedPeriode, komponen) {
   const tbody = document.createElement("tbody");
   let temp = -1;
   const totalColumn = headerRow.childElementCount;
+
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (var i = 0; i < komponen.length; i++) {
     // menghitung banyak kolom pada tabel
 
@@ -621,17 +529,7 @@ function renderTablePerKota(data, selectedPeriode, komponen) {
 
     // insert row
     const row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
 
@@ -640,17 +538,7 @@ function renderTablePerKota(data, selectedPeriode, komponen) {
 
       if (col == 0) {
         cell.colSpan = "2";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
         if (id_komponen == 9) {
@@ -737,6 +625,7 @@ function renderTablePerkotaEkstrem(data, komponen, selectedPeriode, wilayah) {
   let totalColumn = headerRow2.childElementCount + 1;
 
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (let i = 0; i < komponen.length; i++) {
     let periode = 0;
     let pertumbuhan = 0;
@@ -744,17 +633,7 @@ function renderTablePerkotaEkstrem(data, komponen, selectedPeriode, wilayah) {
 
     // insert row
     let row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
 
@@ -765,17 +644,7 @@ function renderTablePerkotaEkstrem(data, komponen, selectedPeriode, wilayah) {
         cell.colSpan = "2";
         cell.style =
           "position: sticky; left: 0; z-index: 1; background-color: #fff;";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
         if (id_komponen == 9) {
@@ -866,22 +735,13 @@ function renderTable(data, selectedPeriode, komponen, putaran) {
   var totalColumn = headerRow2.childElementCount + 1;
 
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
 
     // insert row
     var row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
 
@@ -892,17 +752,7 @@ function renderTable(data, selectedPeriode, komponen, putaran) {
         cell.colSpan = "2";
         cell.style =
           "position: sticky; left: 0; z-index: 1; background-color: #fff;";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
 
@@ -969,7 +819,9 @@ function renderTableUpload(data, selectedPeriode, komponen) {
 
   var temp = -1;
   var tbody = document.createElement("tbody");
+
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (var i = 0; i < komponen.length; i++) {
     // menghitung banyak kolom pada tabel
     var totalColumn = headerRow.childElementCount;
@@ -978,17 +830,7 @@ function renderTableUpload(data, selectedPeriode, komponen) {
 
     // insert row
     var row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
 
@@ -997,17 +839,7 @@ function renderTableUpload(data, selectedPeriode, komponen) {
 
       if (col == 0) {
         cell.colSpan = "2";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
 
@@ -1096,22 +928,13 @@ function renderTable_ringkasan(
   var totalColumn = headerRow2.childElementCount + 1;
 
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
 
     // insert row
     var row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
 
@@ -1122,17 +945,7 @@ function renderTable_ringkasan(
         cell.colSpan = "2";
         cell.style =
           "position: sticky; left: 0; z-index: 1; background-color: #fff;";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
         if (id_komponen == 9) {
@@ -1159,7 +972,7 @@ function renderTable_ringkasan(
             jenisTabel == "23"
           ) {
             // ini kasih if data kosong
-            if (data[temp]) {
+            if (data[temp].nilai) {
               if (data[temp].nilai < 0) {
                 cell.classList.add("text-danger");
                 cell.innerHTML = `*${numberFormat(data[temp].nilai)}`;
@@ -1170,7 +983,9 @@ function renderTable_ringkasan(
               cell.innerHTML = "";
             }
           } else {
-            cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
+            cell.innerHTML = data[temp].nilai
+              ? numberFormat(data[temp].nilai)
+              : "";
           }
         }
       }
@@ -1229,7 +1044,7 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   for (var i = 0; i < selectedPeriode.length; i++) {
     var columnName = selectedPeriode[i];
     var headerCell = document.createElement("th");
-    headerCell.colSpan = "7";
+    headerCell.colSpan = "6";
     headerCell.innerHTML = columnName;
 
     wilayah.forEach((columns) => {
@@ -1252,22 +1067,13 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
   var totalColumn = headerRow2.childElementCount + 1;
 
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
 
     // insert row
     var row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
 
@@ -1278,17 +1084,7 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
         cell.colSpan = "2";
         cell.style =
           "position: sticky; left: 0; z-index: 1; background-color: #fff;";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
         if (id_komponen == 9) {
@@ -1305,7 +1101,10 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
+          cell.innerHTML = data[temp].nilai
+            ? numberFormat(data[temp].nilai)
+            : "";
+          // numberFormat(data[temp].nilai);
         }
       }
       row.appendChild(cell);
@@ -1357,17 +1156,24 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
     var headerCell3 = document.createElement("th");
     headerCell3.style =
       "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
-    headerCell3.innerHTML = "Total Kab/Kota";
+    headerCell3.innerHTML = "Provinsi DKI Jakarta";
+    var headerCell4 = document.createElement("th");
+    headerCell4.style =
+      "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+    headerCell4.innerHTML = "Total Kab/Kota";
 
     headerRow2.appendChild(headerCell2);
     headerRow2.appendChild(headerCell3);
+    headerRow2.appendChild(headerCell4);
 
     wilayah.forEach((columns) => {
-      var headerCell4 = document.createElement("th");
-      headerCell4.style =
-        "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
-      headerCell4.innerHTML = columns.wilayah;
-      headerRow2.appendChild(headerCell4);
+      if (columns.id_wilayah != "3100") {
+        var headerCell5 = document.createElement("th");
+        headerCell5.style =
+          "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+        headerCell5.innerHTML = columns.wilayah;
+        headerRow2.appendChild(headerCell5);
+      }
     });
     headerRow.appendChild(headerCell);
   }
@@ -1382,22 +1188,13 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
   var totalColumn = headerRow2.childElementCount + 1;
 
   // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
 
     // insert row
     var row = document.createElement("tr");
-    if (
-      id_komponen == 1 ||
-      id_komponen == 2 ||
-      id_komponen == 3 ||
-      id_komponen == 4 ||
-      id_komponen == 5 ||
-      id_komponen == 6 ||
-      id_komponen == 7 ||
-      id_komponen == 8 ||
-      id_komponen == 9
-    ) {
+    if (idBold.includes(id_komponen)) {
       row.style = "font-weight: bold;";
     }
 
@@ -1408,17 +1205,7 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
         cell.colSpan = "2";
         cell.style =
           "position: sticky; left: 0; z-index: 1; background-color: #fff;";
-        if (
-          id_komponen != 1 &&
-          id_komponen != 2 &&
-          id_komponen != 3 &&
-          id_komponen != 4 &&
-          id_komponen != 5 &&
-          id_komponen != 6 &&
-          id_komponen != 7 &&
-          id_komponen != 8 &&
-          id_komponen != 9
-        ) {
+        if (!idBold.includes(id_komponen)) {
           cell.classList = "pl-5";
         }
         if (id_komponen == 9) {
@@ -1435,7 +1222,9 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          cell.innerHTML = data[temp] ? numberFormat(data[temp].nilai) : "";
+          cell.innerHTML = data[temp].nilai
+            ? numberFormat(data[temp].nilai)
+            : "";
         }
       }
       row.appendChild(cell);
@@ -1769,93 +1558,11 @@ function generateDropdownTabelRingkasan() {
     },
   ];
 
-  // Loop untuk membuat elemen-elemen option
-  var option;
-  for (var i = 0; i < options.length; i++) {
-    option = document.createElement("option");
-    option.value = options[i].value;
-    option.innerHTML = options[i].text;
-    if (i == 0) {
-      option.hidden = true;
-    }
-    if (i == 1) {
-      option.selected = true;
-    }
-    select.appendChild(option);
-  }
-
-  dropdownContainer.appendChild(select);
+  generateOptions(options);
 }
 
-function generateDropdownTabelArahRevisi() {
-  const dropdownContainer = document.getElementById("dropdownTableArahRevisi");
-
-  // generate dropdown
-  const select = document.createElement("select");
-  select.classList.add("form-control");
-  select.style = "width: 100%; max-width: 600px";
-  select.id = "selectTable";
-
-  var options = [
-    { value: "Pilih Jenis Tabel", text: "Pilih Jenis Tabel" },
-    {
-      // id 1
-      value: "PDRB-ADHB",
-      text: "Tabel 301. PDRB ADHB Menurut Pengeluaran (Juta Rupiah)",
-    },
-    {
-      // id 2
-      value: "PDRB-ADHK",
-      text: "Tabel 302. PDRB ADHK Menurut Pengeluaran (Juta Rupiah)",
-    },
-    {
-      // id 3
-      value: "Pertumbuhan-Y-ON-Y",
-      text: "Tabel 303. Pertumbuhan PDRB (Y-ON-Y)",
-    },
-    {
-      // id 4
-      value: "Pertumbuhan-Q-TO-Q",
-      text: "Tabel 304. Pertumbuhan PDRB (Q-TO-Q)",
-    },
-    {
-      // id 5
-      value: "Pertumbuhan-C-TO-C",
-      text: "Tabel 305. Pertumbuhan PDRB (C-TO-C)",
-    },
-    {
-      // id 6
-      value: "indeks-implisit",
-      text: "Tabel 306. Indeks Implisit",
-    },
-    {
-      // id 7
-      value: "pertumbuhan-indeks-implisit-Y-ON-Y",
-      text: "Tabel 307. Pertumbuhan Indeks Implisit (Y-ON-Y)",
-    },
-    {
-      // id 8
-      value: "pertumbuhan-indeks-implisit-Q-TO-Q",
-      text: "Tabel 308. Pertumbuhan Indeks Implisit (Q-TO-Q)",
-    },
-    {
-      // id 9
-      value: "sumber-pertumbuhan-Y-ON-Y",
-      text: "Tabel 309. Sumber Pertumbuhan (Y-ON-Y)",
-    },
-    {
-      // id 10
-      value: "sumber-pertumbuhan-Q-TO-Q",
-      text: "Tabel 310. Sumber Pertumbuhan (Q-TO-Q)",
-    },
-    {
-      // id 11
-      value: "sumber-pertumbuhan-C-TO-C",
-      text: "Tabel 311. Sumber Pertumbuhan (C-TO-C)",
-    },
-  ];
-
-  // Loop untuk membuat elemen-elemen option
+// Loop untuk membuat elemen-elemen option
+function generateOptions(options) {
   var option;
   for (var i = 0; i < options.length; i++) {
     option = document.createElement("option");
@@ -1897,25 +1604,15 @@ if (document.getElementById("selectTableHistory") != null) {
     });
 }
 
-if (document.title == "Rupiah | Upload Data") {
-  window.addEventListener("load", function () {
-    loadData();
-  });
-}
+const loadOnTitle = [
+  "Rupiah | Upload Data",
+  "Rupiah | Tabel Per Kota",
+  "Rupiah | Tabel Ringkasan",
+  "Rupiah | Arah Revisi",
+  "Rupiah | Tabel History Putaran",
+];
 
-if (document.title == "Rupiah | Tabel Per Kota") {
-  window.addEventListener("load", function () {
-    loadData();
-  });
-}
-
-if (document.title == "Rupiah | Tabel Ringkasan") {
-  window.addEventListener("load", function () {
-    loadData();
-  });
-}
-
-if (document.title == "Rupiah | Arah Revisi") {
+if (loadOnTitle.includes(document.title)) {
   window.addEventListener("load", function () {
     loadData();
   });

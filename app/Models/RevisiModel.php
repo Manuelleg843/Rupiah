@@ -49,19 +49,6 @@ class RevisiModel extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // get data by periode and wilayah
-    public function get_data_revisi_wilayah_periode($kota, $jenisPDRB, $periode)
-    {
-        $builder = $this->db->table('revisi')
-            ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
-            ->select()
-            ->where('id_wilayah', $kota)
-            ->where('id_pdrb', $jenisPDRB)
-            ->where('periode', $periode)
-            ->orderBy('revisi.id_komponen');
-        return $builder->get()->getResult();
-    }
-
     public function getDataKomponenPeriode($kota, $jenisPDRB, $jeniskomponen, $periode)
     {
         $builder = $this->table('revisi')
@@ -72,44 +59,6 @@ class RevisiModel extends Model
             ->where('periode', $periode);
         return $builder->get()->getResult();
     }
-
-    // get periode 
-    public function getPeriode()
-    {
-        $builder = $this->db->table('revisi')
-            ->select('periode')
-            ->groupBy('periode')
-            ->where('periode', '2023Q1');
-        return $builder->get()->getResultArray();
-    }
-
-    public function getWilayah()
-    {
-        $builder = $this->db->table('revisi')
-            ->select('id_wilayah')
-            ->groupBy('id_wilayah')
-            ->where('id_wilayah', '3100');
-        return $builder->get()->getResultArray();
-    }
-
-    public function getJenisPDRB()
-    {
-        $builder = $this->db->table('revisi')
-            ->select('id_pdrb')
-            ->groupBy('id_pdrb');
-        return $builder->get()->getResultArray();
-    }
-
-    // get jenis komponen
-    public function getJenisKomponen()
-    {
-        $builder = $this->db->table('revisi')
-            ->distinct('revisi.id_komponen,komponen')
-            ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
-            ->orderBy('revisi.id_komponen');
-        return $builder->get()->getResultArray();
-    }
-
 
     // get data dari tabel
     public function get_data()
@@ -122,90 +71,6 @@ class RevisiModel extends Model
             ->where('periode', '2023Q1')
             ->orderBy('id_komponen');
         return $builder->get()->getResult();
-    }
-
-    public function get_data_2023Q1()
-    {
-        $builder = $this->db->table('revisi')
-            ->select('nilai,id_komponen')
-            ->where('id_pdrb', '1')
-            ->where('id_wilayah', '3100')
-            ->where('periode', '2023Q1')
-            ->orderBy('id_komponen');
-        return $builder->get()->getResult();
-    }
-
-    public function get_pdrb()
-    {
-        $request = service('request');
-        $postData = $request->getPost();
-        $dtpostData = $postData['data'];
-
-        $response = array();
-
-        // read value
-        $draw = $dtpostData['draw'];
-        $start = $dtpostData['start'];
-        $columnIndex = $dtpostData['oder'][0]['column'];
-        $columnName = $dtpostData['columns'][$columnIndex]['data'];
-
-        // custom filter
-        $searchJenisPDRB = $dtpostData['jenisPDRB'];
-
-        $builder = $this->db->table('revisi')
-            ->select();
-        if ($searchJenisPDRB != "") {
-            $builder = $builder->where('id_pdrb', '$searchJenisPBDRB');
-        }
-
-        // fetch records
-        $searchQuery = $this->db->table('revisi')->select('*');
-        if ($searchJenisPDRB != '') {
-            $searchQuery->where('id_pdrb', $searchJenisPDRB);
-        }
-        $records = $searchQuery->get();
-
-        $data = array();
-    }
-
-    // get data by jenis_pdrb 
-    public function getData_by_jenisPdrb($id_pdrb)
-    {
-        $builder = $this->db->query('SELECT nilai FROM revisi WHERE id_pdrb = ' . $id_pdrb);
-        return $builder->getResult();
-    }
-
-    public function getDataGabungan()
-    {
-        $builder = $this->db->table('revisi')
-            ->select()
-            ->join('komponen_7', 'revisi.id_komponen = komponen_7.id_komponen')
-            ->where('id_pdrb', '1')
-            ->where('id_wilayah', '3100');
-        return $builder->get()->getResult();
-    }
-
-    public function getFilteredData($postData)
-    {
-        $builder = $this->db->table('revisi');
-
-        // Apply individual column search
-        foreach ($postData['columns'] as $column) {
-            if (!empty($column['search']['value'])) {
-                $builder->orLike($column['data'], $column['search']['value']);
-            }
-        }
-
-        $totalFiltered = $builder->countAllResults(false);
-        $filteredData = $builder->get()->getResultArray();
-        $response = [
-            "draw" => intval($postData['draw']),
-            "recordsTotal" => $this->countAll(),
-            "recordsFiltered" => $totalFiltered,
-            "data" => $filteredData,
-        ];
-
-        return $response;
     }
 
     // Fungsi mendapatkan data final (revisi)

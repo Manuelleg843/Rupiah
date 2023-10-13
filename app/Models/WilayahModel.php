@@ -45,4 +45,13 @@ class WilayahModel extends Model
 
         return $builder->get()->getResultArray();
     }
+
+    // get semua ID kota, kecuali wilayah tertentu
+    public function getAllIDKota($wilayah = false)
+    {
+        $builder = $this->db->table('wilayah')
+            ->select('id_wilayah');
+        $wilayah ? $builder->where('id_wilayah !=', $wilayah) : "";
+        return $builder->get()->getResultObject();
+    }
 }
