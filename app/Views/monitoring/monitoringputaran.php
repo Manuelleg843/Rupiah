@@ -37,7 +37,7 @@
                                         <button <?= ($isActive == 1) ? 'hidden' : '' ?> id="buttonbuka" type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-buka">
                                             Buka Putaran
                                         </button>
-                                        <button <?= ($isActive == 0) ? 'hidden' : '' ?> id="buttontutup" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-tutup">
+                                        <button <?= ($isActive == 0) ? 'hidden' : '' ?> id="buttontutup" type="button" class="btn btn-danger" data-toggle="modal" data-target="<?= (in_array(0, $status)) ? '#modal-tutup-gagal' : '#modal-tutup' ?>">
                                             Tutup Putaran
                                         </button>
                                     </li>
@@ -133,6 +133,25 @@
                         <a href="<?= base_url('/monitoring/updateStatus') ?>" onclick="hrefModal(event);" type="button" class="btn btn-success swalDefaultTutup" data-dismiss="modal">
                             Yakin
                         </a>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+
+        <!-- /.modal Sukses Tutup Button-->
+        <div class="modal fade" id="modal-tutup-gagal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body mt-2">
+                        <p>Hanya bisa tutup putaran ketika semua sudah upload!</p>
+                    </div>
+                    <div class="modal-footer justify-content-end">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Kembali
+                        </button>
                     </div>
                 </div>
                 <!-- /.modal-content -->

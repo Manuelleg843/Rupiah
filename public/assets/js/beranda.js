@@ -199,6 +199,7 @@ function generateCheckboxesCurrentYearMin2Kuartal() {
 }
 
 function generateCheckboxes3Year() {
+  const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
   const checkboxesContainer = document.getElementById(
     "checkboxes-container-3-years"
   );
@@ -251,6 +252,35 @@ function generateCheckboxes3Year() {
     checkboxesContainer.appendChild(row);
     quarters.pop();
   }
+
+  // default checked
+  let checkedBoxes = [];
+  switch (currentQuarter) {
+    case 1:
+      for (let i = 1; i <= 2; i++) {
+        for (let j = 1; j <= 4; j++) {
+          checkedBoxes.push(`checkbox${currentYear - i}Q${j}`);
+          checkedBoxes.push(`checkbox${currentYear - i}`);
+        }
+      }
+      break;
+    case 2:
+      checkedBoxes = [`checkbox${currentYear}Q1`];
+      break;
+    case 3:
+      checkedBoxes = [`checkbox${currentYear}Q1`, `checkbox${currentYear}Q2`];
+      break;
+    case 4:
+      checkedBoxes = [
+        `checkbox${currentYear}Q1`,
+        `checkbox${currentYear}Q2`,
+        `checkbox${currentYear}Q3`,
+      ];
+      break;
+  }
+  checkedBoxes.forEach((checkedBox) => {
+    document.getElementById(checkedBox).checked = true;
+  });
 }
 
 function generateCheckboxesYearOnly() {

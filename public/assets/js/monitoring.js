@@ -15,15 +15,11 @@ $(function () {
       icon: "success",
       title: "Putaran telah berhasil dibuka, mengarahkan kembali...",
     });
-    clearTimeout(toastTimeout);
   });
   $(".swalDefaultTutup").click(function () {
     Toast.fire({
       icon: "success",
-      title: "Putaran telah berhasil ditutup",
+      title: "Putaran telah berhasil ditutup, mengarahkan kembali...",
     });
-    toastTimeout = setTimeout(function () {
-      Toast.close();
-    }, 3000);
   });
 });
