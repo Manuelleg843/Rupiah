@@ -106,10 +106,10 @@
                                                 <i class="fa fa-file-pdf"></i>
                                                 <span>Ekspor PDF</span>
                                             </button>
-                                            <a href="#" target="_blank" class="btn btn-outline-success">
+                                            <button id="exportExcelPerKota" onclick="fungsieksporButtonExcelPerkota()" class="btn btn-outline-success">
                                                 <i class="fa fa-file-excel"></i>
                                                 <span>Ekspor Excel</span>
-                                            </a>
+                                            </button>
                                         </div>
                                     </div>
                                 </row>

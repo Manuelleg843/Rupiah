@@ -255,7 +255,7 @@ class UploadExcelController extends BaseController
             }
             next($periodeArray);
         }
-        return ['nilai' => $nilai, 'messages' => $messages];
+        return [$nilai, $messages];
     }
 
     // Fungsi untuk mengambil informasi dari key array nilai

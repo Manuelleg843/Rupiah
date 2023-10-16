@@ -36,6 +36,8 @@ function loadData() {
     tableSelected =
       tableJenisPDRB.options[tableJenisPDRB.selectedIndex].textContent;
     jenisPDRB = tableJenisPDRB.value;
+    let periode = selectPeriodeHistory.value;
+    getPutaranPeriode(periode);
   }
   if (tableRingkasan) {
     tableSelected =
@@ -82,7 +84,7 @@ function loadData() {
   if (tableArahRevisi) {
     tableSelected =
       tableArahRevisi.options[tableArahRevisi.selectedIndex].textContent;
-    jenisTable = tableArahRevisi.options[tableArahRevisi.selectedIndex].id;
+    jenisPDRB = tableArahRevisi.options[tableArahRevisi.selectedIndex].id;
   }
 
   if (submitPeriode) {
@@ -98,11 +100,13 @@ function loadData() {
 
   if (selectPutaranHistory) {
     selectedPutaran.length = 0;
-    $('#periode-checkboxes-container input[type="checkbox"]:checked').each(
-      function () {
-        selectedPutaran.push($(this).attr("name"));
-      }
-    );
+    if ($('.putaran-checkboxes-container input[type="checkbox"]:checked')) {
+      $('.putaran-checkboxes-container input[type="checkbox"]:checked').each(
+        function () {
+          selectedPutaran.push($(this).attr("name"));
+        }
+      );
+    }
   }
 
   // menampilkan periode default untuk tabel di halaman upload
@@ -174,10 +178,12 @@ function loadData() {
       break;
     case "Rupiah | Arah Revisi":
       judulTable.textContent = tableSelected + " - " + kotaSelected;
-      kirimDataArahRevisi(jenisTable, kota, selectedPeriode);
+      kirimDataArahRevisi(jenisPDRB, kota, selectedPeriode);
       break;
   }
 }
+
+$("#simpan-periode").click();
 
 function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
   $.ajax({
@@ -292,7 +298,6 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
           );
           break;
         default:
-          console.log(data["dataRingkasan"]);
           renderTable_ringkasan(
             data["dataRingkasan"],
             data["komponen"],
@@ -1237,6 +1242,21 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
   container.appendChild(table);
 }
 
+function getPutaranPeriode(periode) {
+  $.ajax({
+    type: "POST",
+    url: "/tabelPDRB/tabelHistoryPutaran/getPutaranPeriode/" + periode,
+    dataType: "json",
+    success: function (data) {
+      generateCheckboxesPutaran(data);
+    },
+    error: function (error) {
+      // Handle kesalahan jika ada
+      console.error("Terjadi kesalahan:", error);
+    },
+  });
+}
+
 // dropdown putaran
 function createDropdownPutaran(data) {
   const selectElement = document.createElement("select");
@@ -1296,7 +1316,6 @@ if (eksporButtonExcel != null) {
   });
 }
 function fungsieksporButtonExcelPerkota() {
-  console.log(jenisPDRB);
   let tablePerkota;
   if (document.title == "Rupiah | Tabel Per Kota") {
     tablePerkota = document.getElementById("tablePerkota");
@@ -1311,7 +1330,7 @@ function fungsieksporButtonExcelPerkota() {
   // Menambahkan judul tabel di cell A1
   worksheet.getCell("A1").value = judulTable.textContent;
   worksheet.getCell("A1").font = { bold: true, size: 11 };
-  if (jenisPDRB != 13) {
+  if (document.title == "Rupiah | Tabel Per Kota" && jenisPDRB != 13) {
     // Menambahkan baris header di cell A3
     let headerRow = worksheet.getRow(3);
     let headerCells = thead.querySelectorAll("th");

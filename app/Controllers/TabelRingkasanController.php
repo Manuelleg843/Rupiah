@@ -447,7 +447,7 @@ class TabelRingkasanController extends BaseController
             }
 
             $dataNew = clone $data;
-            $dataNew->nilai = $dataNew->nilai / $nilaiKomp9[$j];
+            $dataNew->nilai = $dataNew->nilai * 100 / $nilaiKomp9[$j];
             $dataOutput[] = $dataNew;
             $i++;
         }

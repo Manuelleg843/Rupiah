@@ -76,31 +76,24 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <form class="p-2" id="selectPutaranHistory" onload="loadData()">
-                                                    <div class="modal-body" id="periode-checkboxes-container">
-                                                        <div class="row">
-                                                            <?php foreach ($putaran as $opsi) : ?>
-                                                                <div class="col form-check form-check-inline">
-                                                                    <input type="checkbox" class="form-check-input" name="<?= $opsi ?>" id="<?= $opsi ?>" value="<?= $opsi ?>" <?php if ($opsi == end($putaran)) echo "checked" ?>>
-                                                                    <label class="form-check-label" for="<?= $opsi ?>"><?= $opsi ?></label>
-                                                                </div>
-                                                            <?php endforeach; ?>
-                                                        </div>
+                                                <div class="modal-body">
+                                                    <form action="" class="p-2">
+                                                        <div id="selectPutaranHistory" class="putaran-checkboxes-container"></div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer d-flex justify-content-between">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Putaran</button>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Putaran</a></li>
+                                                            <div class="dropdown-divider"></div>
+                                                            <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
+                                                        </ul>
                                                     </div>
-                                                    <div class="modal-footer d-flex justify-content-between">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">Pilih Putaran</button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="javascript:checkboxSemua()">Semua Putaran</a></li>
-                                                                <div class="dropdown-divider"></div>
-                                                                <li><a class="dropdown-item" href="javascript:clearCheckbox()" id="hapusPilihan">Hapus Pilihan</a></li>
-                                                            </ul>
-                                                        </div>
-                                                        <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                            <button type="button" class="btn btn-success" data-dismiss="modal" id="simpan-periode" onclick="loadData()">Simpan</button>
-                                                        </div>
+                                                    <div><button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-success" data-dismiss="modal" id="simpan-periode" onclick="loadData()">Simpan</button>
                                                     </div>
-                                                </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

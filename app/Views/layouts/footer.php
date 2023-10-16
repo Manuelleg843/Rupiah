@@ -6,7 +6,7 @@
         <a href="https://api.duniagames.co.id/api/content/upload/file/6975025431687514976.jpg">Magang DIV KS 2023</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
-        <b>Version</b> 3.2.0
+        <b>Version</b> 1.0.0
     </div>
 </footer>
 

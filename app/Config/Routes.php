@@ -48,6 +48,7 @@ $routes->post('/tabelPDRB/getDataPerKota', 'TabelPDRBController::getDataTabelPer
 // halaman tabel history putaran
 $routes->get('/tabelPDRB/tabelHistoryPutaran', 'TabelPDRBController::viewTabelHistoryPutaran');
 $routes->post('/tabelPDRB/tabelHistoryPutaran/getDataHistory', 'TabelPDRBController::getDataHistory');
+$routes->post('/tabelPDRB/tabelHistoryPutaran/getPutaranPeriode/(:any)', 'TabelPDRBController::getPutaranPeriode/$1');
 
 // halaman tabel arah revisi
 $routes->get('/arahRevisi', 'ArahRevisiController::index');
