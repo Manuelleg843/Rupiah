@@ -96,6 +96,24 @@ class Beranda extends BaseController
         // Triwulan (Y ON Y, Q TO Q, C TO C) atau Tahunan (Y ON Y)
         $jenisTable = $this->request->getPost('jenisTable');
         $periode = $this->request->getPost('periode');
+        if (empty($periode)) {
+            $getPeriode = function () {
+                $month = date('n');
+                $quarter = ceil($month / 3);
+
+                $year = date('Y');
+
+                if ($quarter == 1) {
+                    $previousQuarter = 4;
+                    $year = $year - 1;
+                } else {
+                    $previousQuarter = $quarter - 1;
+                }
+                return $year . 'Q' . $previousQuarter;
+            };
+
+            $periode = [$getPeriode()];
+        }
         sort($periode); // Sortir periode dari kecil ke besar (untuk line charts
         $jenisKomponen = $this->request->getPost('jenisKomponen');
 

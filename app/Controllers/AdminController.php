@@ -129,6 +129,10 @@ class AdminController extends BaseController
         if ($roleBaru == 1) {
             session()->setFlashdata('pesan', 'Role user tidak dapat diubah menjadi Super Admin.');
             return redirect()->to('/admin/administrator');
+        }
+        if ($userLama['id_role'] == 1) {
+            session()->setFlashdata('pesan', 'Role Super Admin tidak dapat diubah.');
+            return redirect()->to('/admin/administrator');
         } else {
 
             // mengubah role user

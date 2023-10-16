@@ -269,4 +269,18 @@ class PutaranModel extends Model
             ->where('id_wilayah', $wilayah);
         return $builder->get()->getResult();
     }
+
+    public function getPutaranTerakhirbyPeriode($periode)
+    {
+        $query = $this->db->table('putaran')
+            ->where('periode', $periode)
+            ->selectMax('putaran')
+            ->get();
+
+        if ($query->getResult()) {
+            $result = $query->getRow();
+            $putaran = $result->putaran;
+            return $putaran;
+        }
+    }
 }
