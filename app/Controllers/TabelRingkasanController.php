@@ -447,7 +447,7 @@ class TabelRingkasanController extends BaseController
             }
 
             $dataNew = clone $data;
-            $dataNew->nilai = $dataNew->nilai / $nilaiKomp9[$j];
+            $dataNew->nilai = $dataNew->nilai * 100 / $nilaiKomp9[$j];
             $dataOutput[] = $dataNew;
             $i++;
         }
@@ -484,7 +484,7 @@ class TabelRingkasanController extends BaseController
         foreach ($dataKota as $data) {
 
             $dataNew = clone $data;
-            $dataNew->nilai = $data->nilai / $nilaiProv[$i] * 100;
+            $dataNew->nilai = $data->nilai * 100 / $nilaiProv[$i];
             $dataOutput[] = $dataNew;
 
             $nilaiProv[$i] == end($nilaiProv) ? $i = 0 : $i++;
@@ -711,7 +711,7 @@ class TabelRingkasanController extends BaseController
         $dataNew = [];
         foreach ($dataADHB as $data) {
             $dataNew = clone $data;
-            $dataNew->nilai = $dataNew->nilai / $dataADHK[$i]->nilai * 100;
+            $dataNew->nilai = $dataNew->nilai * 100 / $dataADHK[$i]->nilai;
             $dataOutput[] = $dataNew;
             $i++;
         }
@@ -1046,6 +1046,7 @@ class TabelRingkasanController extends BaseController
 
         $dataSumCurrent = $this->multipleSortData($obj, [2, 3, 1]);
         $dataSumBefore = $this->multipleSortData($obj, [2, 3, 1]);
+
         $dataSumBefore = array_map(function ($object) {
             return clone $object;
         }, $dataSumBefore);
