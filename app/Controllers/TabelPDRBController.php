@@ -1064,6 +1064,14 @@ class TabelPDRBController extends BaseController
         echo view('layouts/footer');
     }
 
+    // Fungsi untuk mengambil semua putaran dari periode
+    public function getPutaranPeriode($periode)
+    {
+        $putaran = array_map('current', $this->putaran->getAllPutaranByPeriode($periode));
+
+        echo json_encode($putaran);
+    }
+
     public function getAllPeriode()
     {
         $allPeriode = $this->putaran->getAllPeriode();

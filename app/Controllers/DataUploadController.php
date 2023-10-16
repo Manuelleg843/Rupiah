@@ -32,7 +32,7 @@ class DataUploadController extends BaseController
         }
 
         // cek apakah user memiliki akses ke halaman ini
-        if(!in_array('3', session()->get('permission'))) return redirect()->to('/login');
+        if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
 
         $data = [
             'title' => 'Rupiah | Upload Data',
@@ -51,7 +51,7 @@ class DataUploadController extends BaseController
     public function getData()
     {
         // cek apakah user memiliki akses ke halaman ini
-        if(!in_array('2', session()->get('permission'))) return redirect()->to('/login');
+        if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
 
         // Mendapatkan data dari ajax
         $jenisPDRB = $this->request->getPost('jenisPDRB');

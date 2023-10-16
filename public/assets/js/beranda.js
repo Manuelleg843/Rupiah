@@ -164,8 +164,6 @@ function generateCheckboxesCurrentYearMin2Kuartal() {
     checkbox.set;
     checkbox.classList.add("form-check-input");
 
-    checkbox;
-
     if (isNaN(quarter)) {
       checkboxLabel.textContent = `${year}${quarter}`;
       checkboxLabel.setAttribute("for", `checkbox${year}${quarter}`);
@@ -321,6 +319,42 @@ function generateCheckboxesYearOnly() {
     col.appendChild(checkboxLabel);
     row.appendChild(col);
     checkboxesContainerYearOnly.appendChild(row);
+  }
+}
+
+function generateCheckboxesPutaran(putaran) {
+  const putaranChekboxContainer = document.getElementsByClassName(
+    "putaran-checkboxes-container"
+  );
+  putaranChekboxContainer[0].innerHTML = "";
+
+  // Generate checkboxes
+  for (let i = 1; i <= putaran.length; i++) {
+    const row = document.createElement("div");
+    row.classList.add("row");
+    const col = document.createElement("div");
+    col.classList.add("col");
+    col.classList.add("form-check", "form-check-inline");
+
+    const checkboxLabel = document.createElement("label");
+    checkboxLabel.classList.add("form-check-label");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.classList.add("form-check-input");
+
+    checkboxLabel.textContent = `${i}`;
+    checkboxLabel.setAttribute("for", `checkbox${i}`);
+
+    checkbox.name = `${i}`;
+    checkbox.id = `checkbox${i}`;
+    checkbox.value = `option${i}`;
+    checkbox.setAttribute("checked", "checked");
+
+    col.appendChild(checkbox);
+    col.appendChild(checkboxLabel);
+    row.appendChild(col);
+    putaranChekboxContainer[0].appendChild(row);
   }
 }
 // ...sampe sini.

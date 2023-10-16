@@ -23,7 +23,6 @@
                                 <option value="3171">Jakarta Selatan</option>
                                 <option value="3172">Jakarta Timur</option>
                             <?php } else { ?>
-                                <option value="3100">Provinsi DKI Jakarta</option>
                                 <option value="<?= session()->get('id_satker'); ?>" selected><?= session()->get('satker'); ?></option>
                             <?php } ?>
                         </select>
@@ -53,7 +52,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h4 class="modal-title" id="judulModal">Upload PDRB - Provinsi DKI Jakarta</h4>
+                    <h4 class="modal-title" id="judulModal">Upload PDRB - <?= session()->get('satker'); ?></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
