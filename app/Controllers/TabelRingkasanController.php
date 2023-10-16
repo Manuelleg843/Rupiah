@@ -1103,6 +1103,24 @@ class TabelRingkasanController extends BaseController
     {
         $jenisTabel = $this->request->getPost('jenisTable');
         $periode = $this->request->getPost('periode');
+        if (empty($periode)) {
+            $getPeriode = function () {
+                $month = date('n');
+                $quarter = ceil($month / 3);
+
+                $year = date('Y');
+
+                if ($quarter == 1) {
+                    $previousQuarter = 4;
+                    $year = $year - 1;
+                } else {
+                    $previousQuarter = $quarter - 1;
+                }
+                return $year . 'Q' . $previousQuarter;
+            };
+
+            $periode = [$getPeriode()];
+        }
         sort($periode);
         $komponen = $this->komponen->findAll();
         $kota = $this->wilayah->findAll();

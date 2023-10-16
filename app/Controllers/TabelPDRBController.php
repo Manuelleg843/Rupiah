@@ -172,10 +172,12 @@ class TabelPDRBController extends BaseController
                     $dataPDRB = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
                     $dataPDRBBefore = $this->revisi->getDataFinal($jenisPDRB, $kota, $periodeSebelumnya);
 
-                    // looping untuk menghitung persentase
-                    foreach ($dataPDRB as $index => $komponen) {
-                        $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
-                        array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                    if ($dataPDRBBefore) {
+                        // looping untuk menghitung persentase
+                        foreach ($dataPDRB as $index => $komponen) {
+                            $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
+                            array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                        }
                     }
 
                     // memasukkan data ke array
@@ -189,11 +191,12 @@ class TabelPDRBController extends BaseController
                         $dataPDRBBefore = $this->putaran->getDataFinal($jenisPDRB, $kota, $periodeSebelumnya);
                     }
 
-
-                    // looping untuk menghitung persentase
-                    foreach ($dataPDRB as $index => $komponen) {
-                        $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
-                        array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                    if ($dataPDRBBefore) {
+                        // looping untuk menghitung persentase
+                        foreach ($dataPDRB as $index => $komponen) {
+                            $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
+                            array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                        }
                     }
 
                     // memasukkan data ke array
@@ -239,11 +242,14 @@ class TabelPDRBController extends BaseController
                 $dataPDRB = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
                 $dataPDRBBefore = $this->revisi->getDataFinal($jenisPDRB, $kota, $periodeSebelumnya);
 
-                // looping untuk menghitung persentase
-                foreach ($dataPDRB as $index => $komponen) {
-                    $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
-                    array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                if ($dataPDRBBefore) {
+                    // looping untuk menghitung persentase
+                    foreach ($dataPDRB as $index => $komponen) {
+                        $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
+                        array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                    }
                 }
+
 
                 // memasukkan data ke array
                 array_push($dataPertumbuhanPDRBDADHK, $dataPertumbuhanPDRBDADHKi);
@@ -258,11 +264,12 @@ class TabelPDRBController extends BaseController
                     $dataPDRBBefore = $this->putaran->getDataFinal($jenisPDRB, $kota, $periodeSebelumnya);
                 }
 
-
-                // looping untuk menghitung persentase
-                foreach ($dataPDRB as $index => $komponen) {
-                    $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
-                    array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                if ($dataPDRBBefore) {
+                    // looping untuk menghitung persentase
+                    foreach ($dataPDRB as $index => $komponen) {
+                        $komponen->nilai = ($komponen->nilai - $dataPDRBBefore[$index]->nilai) * 100 / abs($dataPDRBBefore[$index]->nilai);
+                        array_push($dataPertumbuhanPDRBDADHKi, $komponen);
+                    }
                 }
 
                 // memasukkan data ke array
@@ -306,16 +313,18 @@ class TabelPDRBController extends BaseController
                 // mengambil data final (mengambil dari tabel revisi)
                 $dataPDRB = $this->revisi->getDataFinal($jenisPDRB, $kota, $periode);
 
-                // looping untuk menghitung persentase
-                foreach ($dataPDRB as $index => $komponen) {
-                    $nilaiKumulatifKomponeni = 0;
-                    $nilaiKumulatifSebelumnyaKomponeni = 0;
-                    foreach ($arrayForCumulative as $key => $value) {
-                        $nilaiKumulatifKomponeni += $this->revisi->getDataFinal($jenisPDRB, $kota, $value)[$index]->nilai;
-                        $nilaiKumulatifSebelumnyaKomponeni += $this->revisi->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai;
+                if ($this->revisi->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya)) {
+                    // looping untuk menghitung persentase
+                    foreach ($dataPDRB as $index => $komponen) {
+                        $nilaiKumulatifKomponeni = 0;
+                        $nilaiKumulatifSebelumnyaKomponeni = 0;
+                        foreach ($arrayForCumulative as $key => $value) {
+                            $nilaiKumulatifKomponeni += $this->revisi->getDataFinal($jenisPDRB, $kota, $value)[$index]->nilai;
+                            $nilaiKumulatifSebelumnyaKomponeni += $this->revisi->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai;
+                        }
+                        $komponen->nilai = ($nilaiKumulatifKomponeni - $nilaiKumulatifSebelumnyaKomponeni) * 100 / abs($nilaiKumulatifSebelumnyaKomponeni);
+                        array_push($dataPertumbuhanPDRBDADHKi, $komponen);
                     }
-                    $komponen->nilai = ($nilaiKumulatifKomponeni - $nilaiKumulatifSebelumnyaKomponeni) * 100 / abs($nilaiKumulatifSebelumnyaKomponeni);
-                    array_push($dataPertumbuhanPDRBDADHKi, $komponen);
                 }
 
                 // memasukkan data ke array
@@ -324,20 +333,22 @@ class TabelPDRBController extends BaseController
                 // mengambil data final (mengambil dari tabel revisi)
                 $dataPDRB = $this->putaran->getDataFinal($jenisPDRB, $kota, $periode);
 
-                // looping untuk menghitung persentase
-                foreach ($dataPDRB as $index => $komponen) {
-                    $nilaiKumulatifKomponeni = 0;
-                    $nilaiKumulatifSebelumnyaKomponeni = 0;
-                    foreach ($arrayForCumulative as $key => $value) {
-                        $nilaiKumulatifKomponeni += $this->putaran->getDataFinal($jenisPDRB, $kota, $value)[$index]->nilai;
-                        if ($this->revisi->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai) {
-                            $nilaiKumulatifSebelumnyaKomponeni += $this->revisi->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai;
-                        } else {
-                            $nilaiKumulatifSebelumnyaKomponeni += $this->putaran->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai;
+                if ($this->putaran->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya)) {
+                    // looping untuk menghitung persentase
+                    foreach ($dataPDRB as $index => $komponen) {
+                        $nilaiKumulatifKomponeni = 0;
+                        $nilaiKumulatifSebelumnyaKomponeni = 0;
+                        foreach ($arrayForCumulative as $key => $value) {
+                            $nilaiKumulatifKomponeni += $this->putaran->getDataFinal($jenisPDRB, $kota, $value)[$index]->nilai;
+                            if ($this->revisi->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai) {
+                                $nilaiKumulatifSebelumnyaKomponeni += $this->revisi->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai;
+                            } else {
+                                $nilaiKumulatifSebelumnyaKomponeni += $this->putaran->getDataFinal($jenisPDRB, $kota, $arrayForCumulativeSebelumnya[$key])[$index]->nilai;
+                            }
                         }
+                        $komponen->nilai = ($nilaiKumulatifKomponeni - $nilaiKumulatifSebelumnyaKomponeni) * 100 / abs($nilaiKumulatifSebelumnyaKomponeni);
+                        array_push($dataPertumbuhanPDRBDADHKi, $komponen);
                     }
-                    $komponen->nilai = ($nilaiKumulatifKomponeni - $nilaiKumulatifSebelumnyaKomponeni) * 100 / abs($nilaiKumulatifSebelumnyaKomponeni);
-                    array_push($dataPertumbuhanPDRBDADHKi, $komponen);
                 }
 
                 // memasukkan data ke array
@@ -833,6 +844,24 @@ class TabelPDRBController extends BaseController
         $jenisPDRB = $this->request->getPost('jenisPDRB');
         $kota = $this->request->getPost('kota');
         $periodes = $this->request->getPost('selectedPeriode');
+        if (empty($periodes)) {
+            $getPeriode = function () {
+                $month = date('n');
+                $quarter = ceil($month / 3);
+
+                $year = date('Y');
+
+                if ($quarter == 1) {
+                    $previousQuarter = 4;
+                    $year = $year - 1;
+                } else {
+                    $previousQuarter = $quarter - 1;
+                }
+                return $year . 'Q' . $previousQuarter;
+            };
+
+            $periodes = [$getPeriode()];
+        }
         sort($periodes);
 
 
@@ -959,6 +988,10 @@ class TabelPDRBController extends BaseController
         $periode = $this->request->getPost('periode');
         $putaran = $this->request->getPost('putaran');
         $kota = $this->request->getPost('kota');
+
+        if (empty($this->request->getPost('putaran'))) {
+            $putaran = ['1'];
+        }
 
         $dataHistory = $this->getAllDataHistory($periode, $jenisPDRB, $kota, $putaran);
         $dataHistory = $this->sortData($dataHistory, 1);
