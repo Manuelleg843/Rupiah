@@ -232,6 +232,7 @@ class PutaranModel extends Model
 
         $tahun = substr($periode, 0, 4);
         $kuartal = substr($periode, 5, 1);
+        $putaran = $this->getFinalPutaran($tahun, $kuartal, $kota);
         if ($kuartal == '') $kuartal = 5;
         $builder = $this->db->table('putaran')
             ->join('komponen_7', 'putaran.id_komponen = komponen_7.id_komponen')
@@ -239,7 +240,7 @@ class PutaranModel extends Model
             ->where('id_wilayah', $kota)
             ->where('id_pdrb', $idPDRB)
             ->where('periode', $periode)
-            ->where('putaran', '2')
+            ->where('putaran', $putaran)
             ->orderBy('periode')
             ->orderBy('id_komponen');
 
