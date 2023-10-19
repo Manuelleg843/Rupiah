@@ -113,7 +113,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="http://s.bps.go.id/nerkon_3100" target="_blank" class="nav-link">
                         <i class="nav-icon fas fa-download"></i>
                         <p>
                             Download

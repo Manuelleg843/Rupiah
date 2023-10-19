@@ -36,10 +36,19 @@ class Beranda extends BaseController
         $arrayBarY_ON_Y = array();
         foreach ($kom as $item) {
             $Y_ON_Y = $this->putaran->getDataKomponen($satker, $JenisPDRB, $item);
-            $tahunmin = ($Y_ON_Y[0]->tahun) - 1;
+            $tahun = $Y_ON_Y[0]->tahun;
+            $tahunmin = $tahun - 1;
             $kuartal = $Y_ON_Y[0]->id_kuartal;
-            $periode = $tahunmin . 'Q' . $kuartal;
-            $Y_ON_Y_minus1 = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periode);
+            if ($kuartal == 5) {
+                $kuartal = 4;
+            }
+            $periode = $tahun . 'Q' . $kuartal;
+            $periodemin = $tahunmin . 'Q' . $kuartal;
+            $Y_ON_Y = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periode);
+            $Y_ON_Y_minus1 = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin);
+            if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin)) {
+                $Y_ON_Y_minus1 = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin);
+            }
             // Perhitungan Y ON Y -> (2023 {Q} - 2022 {Q})/MUTLAK(2022 {Q})*100
             $hasil_Y_ON_Y = ($Y_ON_Y[0]->nilai - $Y_ON_Y_minus1[0]->nilai) / abs($Y_ON_Y_minus1[0]->nilai) * 100;
             array_push($arrayBarY_ON_Y, $hasil_Y_ON_Y);
@@ -50,9 +59,22 @@ class Beranda extends BaseController
         foreach ($kom as $item) {
             $Q_TO_Q = $this->putaran->getDataKomponen($satker, $JenisPDRB, $item);
             $tahun = $Q_TO_Q[0]->tahun;
-            $kuartalmin = ($Q_TO_Q[0]->id_kuartal) - 1;
-            $periode = $tahun . 'Q' . $kuartalmin;
-            $Q_TO_Q_minus1 = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periode);
+            $kuartal = $Q_TO_Q[0]->id_kuartal;
+            if ($kuartal == 1) {
+                $tahun = $tahun - 1;
+                $kuartalmin = 4;
+            } else if ($kuartal == 5) {
+                $kuartalmin = 4;
+            } else {
+                $kuartalmin = $kuartal - 1;
+            }
+            $periode = $tahun . 'Q' . $kuartal;
+            $periodemin = $tahun . 'Q' . $kuartalmin;
+            $Q_TO_Q = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periode);
+            $Q_TO_Q_minus1 = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin);
+            if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin)) {
+                $Q_TO_Q_minus1 = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin);
+            }
             // Perhitungan Y ON Y -> (2023 {Q} - 2023 {Q-1})/MUTLAK(2023 {Q-1})*100
             $hasil_Q_TO_Q = ($Q_TO_Q[0]->nilai - $Q_TO_Q_minus1[0]->nilai) / abs($Q_TO_Q_minus1[0]->nilai) * 100;
             array_push($arrayBarQ_TO_Q, $hasil_Q_TO_Q);
@@ -71,9 +93,15 @@ class Beranda extends BaseController
             for ($i = 1; $i <= $kuartal; $i++) {
                 $periode = $tahun . 'Q' . $i;
                 $C_TO_C_Year = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periode);
+                if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periode)) {
+                    $C_TO_C_Year = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periode);
+                }
                 $kumulatif = $kumulatif + $C_TO_C_Year[0]->nilai;
                 $periodemin = $tahunmin . 'Q' . $i;
                 $C_TO_C_Yearmin = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin);
+                if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin)) {
+                    $C_TO_C_Yearmin = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, $item, $periodemin);
+                }
                 $kumulatifmin = $kumulatifmin + $C_TO_C_Yearmin[0]->nilai;
             }
             $hasil_C_TO_C = ($kumulatif - $kumulatifmin) / abs($kumulatifmin) * 100;
@@ -344,22 +372,37 @@ class Beranda extends BaseController
         $Diskrepansi_adhb = (($kabkot_adhb - ($adhb[0]->nilai)) / $adhb[0]->nilai) * 100;
         $Diskrepansi_adhk = (($kabkot_adhk - ($adhk[0]->nilai)) / $adhk[0]->nilai) * 100;
 
-        // Pertumbuhan Y ON Y
         $JenisPDRB = 2; // Untuk Perhitungan pakai ADHK
+        // Pertumbuhan Y ON Y
         $Y_ON_Y = $this->putaran->getDataKomponen($satker, $JenisPDRB, 9);
         $tahunmin = ($Y_ON_Y[0]->tahun) - 1;
         $kuartal = $Y_ON_Y[0]->id_kuartal;
         $periodemin = $tahunmin . 'Q' . $kuartal;
         $Y_ON_Y_minus1 = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin);
+        if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin)) {
+            $Y_ON_Y_minus1 = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin);
+        }
         // Perhitungan Y ON Y -> (2023 {Q} - 2022 {Q})/MUTLAK(2022 {Q})*100
         $hasil_Y_ON_Y = ($Y_ON_Y[0]->nilai - $Y_ON_Y_minus1[0]->nilai) / abs($Y_ON_Y_minus1[0]->nilai) * 100;
 
         // Pertumbuhan Q TO Q
         $Q_TO_Q = $this->putaran->getDataKomponen($satker, $JenisPDRB, 9);
         $tahun = $Q_TO_Q[0]->tahun;
-        $kuartalmin = ($Q_TO_Q[0]->id_kuartal) - 1;
-        $periodemin = $tahun . 'Q' . $kuartalmin;
+        $kuartal = $Q_TO_Q[0]->id_kuartal;
+        $tahunmin = $Q_TO_Q[0]->tahun;
+        if ($kuartal == 1) {
+            $kuartalmin = 4;
+            $tahunmin = $tahun - 1;
+        } else {
+            $kuartalmin = $kuartal - 1;
+        }
+        $periode = $tahun . 'Q' . $kuartal;
+        $periodemin = $tahunmin . 'Q' . $kuartalmin;
+        $Q_TO_Q = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periode);
         $Q_TO_Q_minus1 = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin);
+        if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin)) {
+            $Q_TO_Q_minus1 = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin);
+        }
         // Perhitungan Q To Q -> (2023 {Q} - 2023 {Q-1})/MUTLAK(2023 {Q-1})*100
         $hasil_Q_TO_Q = ($Q_TO_Q[0]->nilai - $Q_TO_Q_minus1[0]->nilai) / abs($Q_TO_Q_minus1[0]->nilai) * 100;
 
@@ -373,9 +416,15 @@ class Beranda extends BaseController
         for ($i = 1; $i <= $kuartal; $i++) {
             $periode = $tahun . 'Q' . $i;
             $C_TO_C_Year = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periode);
+            if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periode)) {
+                $C_TO_C_Year = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periode);
+            }
             $kumulatif = $kumulatif + $C_TO_C_Year[0]->nilai;
             $periodemin = $tahunmin . 'Q' . $i;
             $C_TO_C_Yearmin = $this->putaran->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin);
+            if ($this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin)) {
+                $C_TO_C_Yearmin = $this->revisi->getDataKomponenPeriode($satker, $JenisPDRB, 9, $periodemin);
+            }
             $kumulatifmin = $kumulatifmin + $C_TO_C_Yearmin[0]->nilai;
         }
         // Perhitungan C TO C -> (sum2023 {Q} - sum2022 {Q})/MUTLAK(sum2022 {Q})*100 -> sum = total Q-awal {Q1} hingga Q-akhir {Q}
