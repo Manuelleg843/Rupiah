@@ -35,7 +35,7 @@ class TabelPDRBController extends BaseController
         }
         //
         $data = [
-            'title' => 'Rupiah | Tabel Ringkasan',
+            'title' => 'TEMPORAL | Tabel Ringkasan',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel Ringkasan PDRB Kab/Kota',
         ];
@@ -55,7 +55,7 @@ class TabelPDRBController extends BaseController
 
         //
         $data = [
-            'title' => 'Rupiah | Tabel Per Kota',
+            'title' => 'TEMPORAL | Tabel Per Kota',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel PDRB Per Kota (PKRT 7 Komponen)',
             'komponen' => $this->komponen->get_data(),
@@ -1050,7 +1050,7 @@ class TabelPDRBController extends BaseController
         $putaran = array_map('current', $this->putaran->getAllPutaranByPeriode(end($periode)));
 
         $data = [
-            'title' => 'Rupiah | Tabel History Putaran',
+            'title' => 'TEMPORAL | Tabel History Putaran',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel History Putaran',
             'putaran' => $putaran,

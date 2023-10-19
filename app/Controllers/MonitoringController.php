@@ -43,7 +43,7 @@ class MonitoringController extends BaseController
         if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
 
         $data = [
-            'title' => 'Rupiah | Monitoring',
+            'title' => 'TEMPORAL | Monitoring',
             'tajuk' => 'Monitoring Putaran',
             'subTajuk' => '',
         ];

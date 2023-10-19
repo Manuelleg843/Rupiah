@@ -110,7 +110,7 @@ function loadData() {
   }
 
   // menampilkan periode default untuk tabel di halaman upload
-  if (document.title == "Rupiah | Upload Data") {
+  if (document.title == "TEMPORAL | Upload Data") {
     switch (currentQuarter) {
       case 1:
         for (let i = currentYear - 2; i < currentYear; i++) {
@@ -136,12 +136,12 @@ function loadData() {
 
   // mengganti judul tabel dan kirim data buat generate tabel
   switch (document.title) {
-    case "Rupiah | Tabel History Putaran":
+    case "TEMPORAL | Tabel History Putaran":
       judulTable.textContent =
         tableSelected + " - " + kotaSelected + " - " + selectedPeriode;
       kirimData(jenisPDRB, kota, selectedPutaran, selectedPeriode);
       break;
-    case "Rupiah | Tabel Ringkasan":
+    case "TEMPORAL | Tabel Ringkasan":
       judulTable.textContent = tableSelected;
 
       // create element subJudul untuk tabel 1.15, 1.16, 1.17, 1.19, 1.20, 1.21, 1.22, 1.23
@@ -168,15 +168,15 @@ function loadData() {
       }
       kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen);
       break;
-    case "Rupiah | Upload Data":
+    case "TEMPORAL | Upload Data":
       judulTable.textContent = tableSelected + " - " + kotaSelected;
       kirimDataTabelUpload(jenisPDRB, kota, selectedPeriode);
       break;
-    case "Rupiah | Tabel Per Kota":
+    case "TEMPORAL | Tabel Per Kota":
       judulTable.textContent = tableSelected + " - " + kotaSelected;
       kirmdataPerKota(jenisPDRB, kota, selectedPeriode);
       break;
-    case "Rupiah | Arah Revisi":
+    case "TEMPORAL | Arah Revisi":
       judulTable.textContent = tableSelected + " - " + kotaSelected;
       kirimDataArahRevisi(jenisPDRB, kota, selectedPeriode);
       break;
@@ -768,7 +768,7 @@ function renderTable(data, selectedPeriode, komponen, putaran) {
       } else {
         temp++;
         cell.style = "text-align: right;";
-        if (document.title == "Rupiah | Upload Data") {
+        if (document.title == "TEMPORAL | Upload Data") {
           cell.innerHTML = data[col - 1][i]
             ? numberFormat(data[col - 1][i].nilai)
             : "";
@@ -855,7 +855,7 @@ function renderTableUpload(data, selectedPeriode, komponen) {
       } else {
         temp++;
         cell.style = "text-align: right;";
-        if (document.title == "Rupiah | Upload Data") {
+        if (document.title == "TEMPORAL | Upload Data") {
           cell.innerHTML = data[col - 1][i]
             ? numberFormat(data[col - 1][i].nilai)
             : "";
@@ -960,7 +960,7 @@ function renderTable_ringkasan(
       } else {
         temp++;
         cell.style = "text-align: right;";
-        if (document.title == "Rupiah | Upload Data") {
+        if (document.title == "TEMPORAL | Upload Data") {
           cell.innerHTML = data[col - 1][i]
             ? numberFormat(data[col - 1][i].nilai)
             : "";
@@ -1100,7 +1100,7 @@ function renderTable_ringkasan14(data, komponen, selectedPeriode, wilayah) {
         temp++;
         cell.style = "text-align: right;";
         cell.classList.add("col-6");
-        if (document.title == "Rupiah | Upload Data") {
+        if (document.title == "TEMPORAL | Upload Data") {
           cell.innerHTML = data[col - 1][i]
             ? numberFormat(data[col - 1][i].nilai)
             : "";
@@ -1221,7 +1221,7 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
         temp++;
         cell.style = "text-align: right;";
         cell.classList.add("col-6");
-        if (document.title == "Rupiah | Upload Data") {
+        if (document.title == "TEMPORAL | Upload Data") {
           cell.innerHTML = data[col - 1][i]
             ? numberFormat(data[col - 1][i].nilai)
             : "";
@@ -1292,7 +1292,7 @@ function numberFormat(
 // ekspor excel
 if (eksporButtonExcel != null) {
   eksporButtonExcel.addEventListener("click", function () {
-    if (document.title == "Rupiah | Tabel Ringkasan") {
+    if (document.title == "TEMPORAL | Tabel Ringkasan") {
       window.location =
         "/tabelPDRB/tabelRingkasan/exportExcel/" +
         jenisTable +
@@ -1300,7 +1300,7 @@ if (eksporButtonExcel != null) {
         selectedPeriode +
         "/" +
         tableSelected;
-    } else if (document.title == "Rupiah | Tabel History Putaran") {
+    } else if (document.title == "TEMPORAL | Tabel History Putaran") {
       window.location =
         "/tabelPDRB/tabelHistoryPutaran/exportExcel/" +
         jenisPDRB +
@@ -1317,7 +1317,7 @@ if (eksporButtonExcel != null) {
 }
 function fungsieksporButtonExcelPerkota() {
   let tablePerkota;
-  if (document.title == "Rupiah | Tabel Per Kota") {
+  if (document.title == "TEMPORAL | Tabel Per Kota") {
     tablePerkota = document.getElementById("tablePerkota");
   } else {
     tablePerkota = document.getElementById("PDRBTable");
@@ -1330,7 +1330,7 @@ function fungsieksporButtonExcelPerkota() {
   // Menambahkan judul tabel di cell A1
   worksheet.getCell("A1").value = judulTable.textContent;
   worksheet.getCell("A1").font = { bold: true, size: 11 };
-  if (document.title == "Rupiah | Tabel Per Kota" && jenisPDRB != 13) {
+  if (document.title == "TEMPORAL | Tabel Per Kota" && jenisPDRB != 13) {
     // Menambahkan baris header di cell A3
     let headerRow = worksheet.getRow(3);
     let headerCells = thead.querySelectorAll("th");
@@ -1498,7 +1498,7 @@ function fungsieksporButtonExcelPerkota() {
 // ekspor excel all putaran di tabel history
 if (eksporButtonExcelAll != null) {
   eksporButtonExcelAll.addEventListener("click", function () {
-    if (document.title == "Rupiah | Tabel History Putaran") {
+    if (document.title == "TEMPORAL | Tabel History Putaran") {
       window.location =
         "/tabelPDRB/tabelHistoryPutaran/exportExcel/" +
         jenisPDRB +
@@ -1717,11 +1717,11 @@ if (document.getElementById("selectTableHistory") != null) {
 }
 
 const loadOnTitle = [
-  "Rupiah | Upload Data",
-  "Rupiah | Tabel Per Kota",
-  "Rupiah | Tabel Ringkasan",
-  "Rupiah | Arah Revisi",
-  "Rupiah | Tabel History Putaran",
+  "TEMPORAL | Upload Data",
+  "TEMPORAL | Tabel Per Kota",
+  "TEMPORAL | Tabel Ringkasan",
+  "TEMPORAL | Arah Revisi",
+  "TEMPORAL | Tabel History Putaran",
 ];
 
 if (loadOnTitle.includes(document.title)) {

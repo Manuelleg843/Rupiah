@@ -31,7 +31,7 @@ class ArahRevisiController extends BaseController
         }
 
         $data = [
-            'title' => 'Rupiah | Arah Revisi',
+            'title' => 'TEMPORAL | Arah Revisi',
             'tajuk' => 'Arah Revisi',
             'subTajuk' => 'Arah Revisi Kota',
         ];
