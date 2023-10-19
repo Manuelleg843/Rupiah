@@ -35,7 +35,7 @@ class DataUploadController extends BaseController
         if (!in_array('2', session()->get('permission'))) return redirect()->to('/login');
 
         $data = [
-            'title' => 'Rupiah | Upload Data',
+            'title' => 'TEMPORAL | Upload Data',
             'tajuk' => 'Upload Data',
             'subTajuk' => 'Angka PDRB'
         ];

@@ -20,7 +20,7 @@ class AdminController extends BaseController
     {
         //
         $data = [
-            'title' => 'Rupiah | Admin',
+            'title' => 'TEMPORAL | Admin',
             'tajuk' => 'Admin',
             'subTajuk' => 'User Administrator'
         ];
@@ -47,7 +47,7 @@ class AdminController extends BaseController
 
         //
         $data = [
-            'title' => 'Rupiah | Admin',
+            'title' => 'TEMPORAL | Admin',
             'tajuk' => 'Admin',
             'subTajuk' => 'User Administrator',
             'users' => $users->paginate(10, 'users'),
@@ -92,7 +92,7 @@ class AdminController extends BaseController
         }
 
         $data = [
-            'title' => 'Rupiah | Admin',
+            'title' => 'TEMPORAL | Admin',
             'tajuk' => 'Admin',
             'subTajuk' => 'Role and Permission',
             'superAdminPermissions' => $superAdminPermissions,

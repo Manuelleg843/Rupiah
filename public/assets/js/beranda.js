@@ -87,8 +87,8 @@ function generateCheckboxes() {
         checkbox.value = `option${year}${quarter}`;
 
         if (
-          document.title == "Rupiah | Tabel Ringkasan" ||
-          document.title == "Rupiah | Tabel Per Kota"
+          document.title == "TEMPORAL | Tabel Ringkasan" ||
+          document.title == "TEMPORAL | Tabel Per Kota"
         ) {
           if (year == currentYear) {
             if (i == currentQuarter - 1) {
@@ -171,7 +171,7 @@ function generateCheckboxesCurrentYearMin2Kuartal() {
       checkbox.name = `${year}${quarter}`;
       checkbox.id = `checkbox${year}${quarter}`;
       checkbox.value = `option${year}${quarter}`;
-      if (document.title == "Rupiah | Tabel Ringkasan") {
+      if (document.title == "TEMPORAL | Tabel Ringkasan") {
         if (year == currentYear) {
           if (i < currentQuarter) {
             checkbox.checked = true;

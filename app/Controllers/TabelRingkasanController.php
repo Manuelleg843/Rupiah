@@ -67,7 +67,7 @@ class TabelRingkasanController extends BaseController
         }
 
         $data = [
-            'title' => 'Rupiah | Tabel Ringkasan',
+            'title' => 'TEMPORAL | Tabel Ringkasan',
             'tajuk' => 'Tabel PDRB',
             'subTajuk' => 'Tabel Ringkasan'
         ];
