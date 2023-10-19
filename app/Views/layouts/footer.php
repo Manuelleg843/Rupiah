@@ -3,7 +3,7 @@
 <!-- Footer -->
 <footer class="main-footer">
     <strong>Made with <i class="fa fa-heart ml-1"></i> &copy;
-        <a href="https://api.duniagames.co.id/api/content/upload/file/6975025431687514976.jpg">Magang DIV KS 2023</a>.</strong>
+        <a href="https://api.duniagames.co.id/api/content/upload/file/6975025431687514976.jpg" target="_blank">Magang DIV KS 2023</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> 1.0.0
@@ -54,6 +54,8 @@
 <script src="<?= base_url('/assets/plugins/jspdf/jspdf.umd.min.js'); ?>"></script>
 <!-- jsPDF Autotable -->
 <script src="<?= base_url('/assets/plugins/jspdf-autotable/jspdf.plugin.autotable.min.js'); ?>"></script>
+<!-- excelJs -->
+<script src="<?= base_url('/assets/plugins/excel-js/excel.js'); ?>"></script>
 <!-- beranda -->
 <script src="<?= base_url('/assets/js/beranda.js'); ?>"></script>
 <!-- tabelPDRB -->
@@ -81,8 +83,6 @@
 <script src="<?= base_url('/assets/plugins/datatables-buttons/js/buttons.colVis.min.js'); ?>"></script>
 <!-- sheet js -->
 <!-- use version 0.20.0 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
-<script lang="javascript" src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 <!-- Tombol Buka Tutup Putaran Monitoring -->
 <script src="<?= base_url('/assets/js/monitoring.js'); ?>"></script>
 <!-- SweetAlert2 -->
