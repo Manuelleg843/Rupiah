@@ -174,9 +174,10 @@ class TabelRingkasanController extends BaseController
     private function filter_id_wilayah($data, $id, $exclude = false)
     {
         if ($exclude) {
-            return $filteredArray = array_filter($data, function ($item) use ($id) {
+            $filteredArray = array_filter($data, function ($item) use ($id) {
                 return ($item->id_wilayah != $id);
             });
+            return array_values($filteredArray);
         }
 
         $filteredArray = [];
@@ -186,7 +187,7 @@ class TabelRingkasanController extends BaseController
             }
         }
 
-        return $filteredArray;
+        return array_values($filteredArray);
     }
 
     // FILTER putaran 
@@ -332,6 +333,84 @@ class TabelRingkasanController extends BaseController
         return $data;
     }
 
+    // mencari index objek dalam array berdasarkan nilai tertentu
+    private function getIndexByProperty($arrayOfObjects, $property1Name, $targetValue1, $property2Name, $targetValue2, $property3Name, $targetValue3)
+    {
+        foreach ($arrayOfObjects as $index => $object) {
+            if (
+                $object->{$property1Name} === $targetValue1 &&
+                $object->{$property2Name} === $targetValue2 &&
+                $object->{$property3Name} === $targetValue3
+            ) {
+                return ['object' => $object, 'index' => $index];
+            }
+        }
+        return ['object' => null, 'index' => -1]; // Return null object and -1 index if not found
+    }
+
+    // menghitung kumulatif semua kota tiap komponen
+    private function cumulate($dataKota)
+    {
+        $dataKumulatif = [];
+        $i = 0;
+        $j = sizeof($dataKota);
+        $kumulatif = [];
+
+        foreach ($dataKota as $data) {
+            $j--;
+
+            if ($i == 0) {
+                $kumulatif = clone $data;
+                $kumulatif->nilai = 0;
+            }
+
+            if ($j == 0) {
+                $dataKumulatif[] = $kumulatif;
+            }
+
+            // tiap 5 (sejumlah kota - 1) data di push ke aray $kumulatif sebagai total kota untuk komponen tersebut   
+            if ($i != 0 && ($i % 6) == 0) {
+                $kumulatif->id_wilayah = '3100';
+                $dataKumulatif[] = $kumulatif;
+                $kumulatif = clone $data;
+                $kumulatif->nilai = 0;
+                $i = 0;
+            }
+
+            // menghitung kumulatif semua kota tiap komponen
+            $kumulatif->nilai = $kumulatif->nilai + $data->nilai;
+
+            $i++;
+        }
+
+        return $dataKumulatif;
+    }
+
+    // menghitung indeks implisit
+    private function count_implicit($adhb, $adhk, $adhbBefore, $adhkBefore)
+    {
+        $periodeCurrent = [];
+        $periodeBefore = [];
+        $i = 0;
+        $dataNew = [];
+        $dataNewPeriodeBefore = [];
+        foreach ($adhb as $data) {
+            // menghitung indeks implisit current periode 
+            $dataNew = clone $data;
+            $dataNew->nilai = $dataNew->nilai / $adhk[$i]->nilai;
+            $periodeCurrent[] = $dataNew;
+
+            // menghitung indeks implisit periode sebelumnya 
+            $dataNewPeriodeBefore = clone $adhbBefore[$i];
+            $dataNewPeriodeBefore->nilai = $dataNewPeriodeBefore->nilai / $adhkBefore[$i]->nilai;
+            $periodeBefore[] = $dataNewPeriodeBefore;
+
+            $i++;
+        }
+
+        return [$periodeCurrent, $periodeBefore];
+    }
+
     // 1. diskrepansi PDRB ADHB
     private function ringkasan_diskrepansi($obj, $periode)
     {
@@ -401,21 +480,6 @@ class TabelRingkasanController extends BaseController
         $dataOutput = $this->sortData($dataOutput, 2); // sort by komponen
 
         return $dataOutput;
-    }
-
-    // mencari index objek dalam array berdasarkan nilali tertentu
-    private function getIndexByProperty($arrayOfObjects, $property1Name, $targetValue1, $property2Name, $targetValue2, $property3Name, $targetValue3)
-    {
-        foreach ($arrayOfObjects as $index => $object) {
-            if (
-                $object->{$property1Name} === $targetValue1 &&
-                $object->{$property2Name} === $targetValue2 &&
-                $object->{$property3Name} === $targetValue3
-            ) {
-                return ['object' => $object, 'index' => $index];
-            }
-        }
-        return ['object' => null, 'index' => -1]; // Return null object and -1 index if not found
     }
 
     // 3. Distribusi Persentase PDRB ADHB 
@@ -868,7 +932,7 @@ class TabelRingkasanController extends BaseController
         $i = 0;
         foreach ($dataSumCurrent as $data) {
             $dataNew = $data;
-            $dataNew->nilai = (($dataNew->nilai  - $dataSumBefore[$i]->nilai) * 100) / abs($dataSumBefore[$i]->nilai);
+            $dataNew->nilai = (($dataNew->nilai - $dataSumBefore[$i]->nilai) * 100) / abs($dataSumBefore[$i]->nilai);
             $dataOutput[] = $dataNew;
             $i++;
         }
@@ -909,8 +973,12 @@ class TabelRingkasanController extends BaseController
     private function ringkasan_tabel9($adhb, $adhk, $kota, $periode)
     {
         // sort data by periode ascending
-        $dataADHB = $this->sortData($adhb, 3, true);
-        $dataADHK = $this->sortData($adhk, 3, true);
+        $dataADHB = $this->sortData($adhb, 3);
+        $dataADHB = $this->sortData($dataADHB, 1);
+        $dataADHB = $this->sortData($dataADHB, 2);
+        $dataADHK = $this->sortData($adhk, 3);
+        $dataADHK = $this->sortData($dataADHK, 1);
+        $dataADHK = $this->sortData($dataADHK, 2);
 
         // membuat array untuk periode sebelumnya 
         $periodeBeforeADHB = [];
@@ -935,36 +1003,62 @@ class TabelRingkasanController extends BaseController
         // get data by periodeBefore 
         $dataBeforeADHB = $this->getAllData($periodeBeforeADHB, '1', $kota);
         $dataBeforeADHK = $this->getAllData($periodeBeforeADHK, '2', $kota);
-        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 3, true);
-        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 3, true);
+
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 3);
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 1);
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 2);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 3);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 1);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 2);
+
+        // memisahkan data provinsi dan kab/kot (untuk menghitung total kab/kot)
+        $dataADHBKota = $this->filter_id_wilayah($dataADHB, '3100', true);
+        $dataADHKKota = $this->filter_id_wilayah($dataADHK, '3100', true);
+        $dataBeforeADHBKota = $this->filter_id_wilayah($dataBeforeADHB, '3100', true);
+        $dataBeforeADHKKota = $this->filter_id_wilayah($dataBeforeADHK, '3100', true);
+
+        $dataADHBProv = $this->filter_id_wilayah($dataADHB, '3100');
+        $dataADHKProv = $this->filter_id_wilayah($dataADHK, '3100');
+        $dataBeforeADHBProv = $this->filter_id_wilayah($dataBeforeADHB, '3100');
+        $dataBeforeADHKProv = $this->filter_id_wilayah($dataBeforeADHK, '3100');
+
+        // menghitung kumulatif semua kota tiap komponen
+        $dataADHBKum = $this->cumulate($dataADHBKota);
+        $dataADHKKum = $this->cumulate($dataADHKKota);
+        $dataBeforeADHBKum = $this->cumulate($dataBeforeADHBKota);
+        $dataBeforeADHKKum = $this->cumulate($dataBeforeADHKKota);
 
         // Menghitung indeks implisit tiap periode
-        $periodeCurrent = [];
-        $periodeBefore = [];
-        $i = 0;
-        $dataNew = [];
-        $dataNewPeriodeBefore = [];
-        foreach ($dataADHB as $data) {
-            // menghitung indeks implisit current periode 
-            $dataNew = clone $data;
-            $dataNew->nilai = $dataNew->nilai / $dataADHK[$i]->nilai;
-            $periodeCurrent[] = $dataNew;
-
-            // menghitung indeks implisit periode sebelumnya 
-            $dataNewPeriodeBefore = clone $dataBeforeADHB[$i];
-            $dataNewPeriodeBefore->nilai = $dataNewPeriodeBefore->nilai / $dataBeforeADHK[$i]->nilai;
-            $periodeBefore[] = $dataNewPeriodeBefore;
-
-            $i++;
-        }
+        [$periodeCurrentKota, $periodeBeforeKota] = $this->count_implicit($dataADHBKota, $dataADHKKota, $dataBeforeADHBKota, $dataBeforeADHKKota);
+        [$periodeCurrentProv, $periodeBeforeProv] = $this->count_implicit($dataADHBProv, $dataADHKProv, $dataBeforeADHBProv, $dataBeforeADHKProv);
+        [$periodeCurrentKum, $periodeBeforeKum] = $this->count_implicit($dataADHBKum, $dataADHKKum, $dataBeforeADHBKum, $dataBeforeADHKKum);
 
         // menghitung nilai pertumbuhan indeks implisit
         $dataOutput = [];
+
         $i = 0;
         $temp = [];
-        foreach ($periodeCurrent as $data) {
+        foreach ($periodeCurrentKota as $data) {
             $temp = clone $data;
-            $temp->nilai = (($temp->nilai  - $periodeBefore[$i]->nilai) * 100) / abs($periodeBefore[$i]->nilai);
+            $temp->nilai = (($temp->nilai - $periodeBeforeKota[$i]->nilai) * 100) / abs($periodeBeforeKota[$i]->nilai);
+            $dataOutput[] = $temp;
+            $i++;
+        }
+
+        $i = 0;
+        $temp = [];
+        foreach ($periodeCurrentProv as $data) {
+            $temp = clone $data;
+            $temp->nilai = (($temp->nilai - $periodeBeforeProv[$i]->nilai) * 100) / abs($periodeBeforeProv[$i]->nilai);
+            $dataOutput[] = $temp;
+            $i++;
+        }
+
+        $i = 0;
+        $temp = [];
+        foreach ($periodeCurrentKum as $data) {
+            $temp = clone $data;
+            $temp->nilai = (($temp->nilai - $periodeBeforeKum[$i]->nilai) * 100) / abs($periodeBeforeKum[$i]->nilai);
             $dataOutput[] = $temp;
             $i++;
         }
@@ -982,8 +1076,12 @@ class TabelRingkasanController extends BaseController
     private function ringkasan_tabel10($adhb, $adhk, $kota, $periode)
     {
         // sort data by periode ascending
-        $dataADHB = $this->sortData($adhb, 3, true);
-        $dataADHK = $this->sortData($adhk, 3, true);
+        $dataADHB = $this->sortData($adhb, 3);
+        $dataADHB = $this->sortData($dataADHB, 1);
+        $dataADHB = $this->sortData($dataADHB, 2);
+        $dataADHK = $this->sortData($adhk, 3);
+        $dataADHK = $this->sortData($dataADHK, 1);
+        $dataADHK = $this->sortData($dataADHK, 2);
 
         // membuat array untuk periode sebelumnya 
         $periodeBeforeADHB = [];
@@ -1006,36 +1104,62 @@ class TabelRingkasanController extends BaseController
         // get data by periodeBefore 
         $dataBeforeADHB = $this->getAllData($periodeBeforeADHB, '1', $kota);
         $dataBeforeADHK = $this->getAllData($periodeBeforeADHK, '2', $kota);
-        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 3, true);
-        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 3, true);
+
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 3);
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 1);
+        $dataBeforeADHB = $this->sortData($dataBeforeADHB, 2);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 3);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 1);
+        $dataBeforeADHK = $this->sortData($dataBeforeADHK, 2);
+
+        // memisahkan data provinsi dan kab/kot (untuk menghitung total kab/kot)
+        $dataADHBKota = $this->filter_id_wilayah($dataADHB, '3100', true);
+        $dataADHKKota = $this->filter_id_wilayah($dataADHK, '3100', true);
+        $dataBeforeADHBKota = $this->filter_id_wilayah($dataBeforeADHB, '3100', true);
+        $dataBeforeADHKKota = $this->filter_id_wilayah($dataBeforeADHK, '3100', true);
+
+        $dataADHBProv = $this->filter_id_wilayah($dataADHB, '3100');
+        $dataADHKProv = $this->filter_id_wilayah($dataADHK, '3100');
+        $dataBeforeADHBProv = $this->filter_id_wilayah($dataBeforeADHB, '3100');
+        $dataBeforeADHKProv = $this->filter_id_wilayah($dataBeforeADHK, '3100');
+
+        // menghitung kumulatif semua kota tiap komponen
+        $dataADHBKum = $this->cumulate($dataADHBKota);
+        $dataADHKKum = $this->cumulate($dataADHKKota);
+        $dataBeforeADHBKum = $this->cumulate($dataBeforeADHBKota);
+        $dataBeforeADHKKum = $this->cumulate($dataBeforeADHKKota);
 
         // Menghitung indeks implisit tiap periode
-        $periodeCurrent = [];
-        $periodeBefore = [];
-        $i = 0;
-        $dataNew = [];
-        $dataNewPeriodeBefore = [];
-        foreach ($dataADHB as $data) {
-            // menghitung indeks implisit current periode 
-            $dataNew = clone $data;
-            $dataNew->nilai = $dataNew->nilai / $dataADHK[$i]->nilai;
-            $periodeCurrent[] = $dataNew;
-
-            // menghitung indeks implisit periode sebelumnya 
-            $dataNewPeriodeBefore = clone $dataBeforeADHB[$i];
-            $dataNewPeriodeBefore->nilai = $dataNewPeriodeBefore->nilai / $dataBeforeADHK[$i]->nilai;
-            $periodeBefore[] = $dataNewPeriodeBefore;
-
-            $i++;
-        }
+        [$periodeCurrentKota, $periodeBeforeKota] = $this->count_implicit($dataADHBKota, $dataADHKKota, $dataBeforeADHBKota, $dataBeforeADHKKota);
+        [$periodeCurrentProv, $periodeBeforeProv] = $this->count_implicit($dataADHBProv, $dataADHKProv, $dataBeforeADHBProv, $dataBeforeADHKProv);
+        [$periodeCurrentKum, $periodeBeforeKum] = $this->count_implicit($dataADHBKum, $dataADHKKum, $dataBeforeADHBKum, $dataBeforeADHKKum);
 
         // menghitung nilai pertumbuhan indeks implisit
         $dataOutput = [];
+
         $i = 0;
         $temp = [];
-        foreach ($periodeCurrent as $data) {
+        foreach ($periodeCurrentKota as $data) {
             $temp = clone $data;
-            $temp->nilai = (($temp->nilai  - $periodeBefore[$i]->nilai) * 100) / abs($periodeBefore[$i]->nilai);
+            $temp->nilai = (($temp->nilai - $periodeBeforeKota[$i]->nilai) * 100) / abs($periodeBeforeKota[$i]->nilai);
+            $dataOutput[] = $temp;
+            $i++;
+        }
+
+        $i = 0;
+        $temp = [];
+        foreach ($periodeCurrentProv as $data) {
+            $temp = clone $data;
+            $temp->nilai = (($temp->nilai - $periodeBeforeProv[$i]->nilai) * 100) / abs($periodeBeforeProv[$i]->nilai);
+            $dataOutput[] = $temp;
+            $i++;
+        }
+
+        $i = 0;
+        $temp = [];
+        foreach ($periodeCurrentKum as $data) {
+            $temp = clone $data;
+            $temp->nilai = (($temp->nilai - $periodeBeforeKum[$i]->nilai) * 100) / abs($periodeBeforeKum[$i]->nilai);
             $dataOutput[] = $temp;
             $i++;
         }
