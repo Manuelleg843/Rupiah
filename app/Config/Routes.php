@@ -58,8 +58,3 @@ $routes->post('/arahRevisi/getData', 'ArahRevisiController::getData');
 $routes->post('/tabelPDRB/tabelRingkasan/exportExcel', 'TabelRingkasanController::exportExcel');
 $routes->get('/tabelPDRB/tabelRingkasan/exportExcel/(:any)/(:any)/(:any)', 'TabelRingkasanController::exportExcel/$1/$2/$3'); // ekspor halaman ringkasan 
 $routes->get('/tabelPDRB/tabelHistoryPutaran/exportExcel/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportExcelHistory/$1/$2/$3/$4/$5');  // ekspor halaman history
-
-// routes ekspor
-// $routes->get('/tabelPDRB/exportExcel/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportExcel/$1/$2/$3/$4/$5');
-// $routes->get('/tabelPDRB/excelAllPutaran/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportExcel/$1/$2/$3/$4/$5');
-// $routes->get('/tabelPDRB/exportPDF/(:any)/(:any)/(:any)/(:any)/(:any)', 'TabelPDRBController::exportPDF/$1/$2/$3/$4/$5');
