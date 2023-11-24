@@ -95,8 +95,8 @@ class ComposerStaticInitaa437cde24e396a271af6a793286578b
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -1436,12 +1436,6 @@ class ComposerStaticInitaa437cde24e396a271af6a793286578b
         'HTMLPurifier_VarParser_Flexible' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/VarParser/Flexible.php',
         'HTMLPurifier_VarParser_Native' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/VarParser/Native.php',
         'HTMLPurifier_Zipper' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier/Zipper.php',
-        'Hermawan\\DataTables\\Column' => __DIR__ . '/..' . '/hermawan/codeigniter4-datatables/src/Column.php',
-        'Hermawan\\DataTables\\DataTable' => __DIR__ . '/..' . '/hermawan/codeigniter4-datatables/src/DataTable.php',
-        'Hermawan\\DataTables\\DataTableColumnDefs' => __DIR__ . '/..' . '/hermawan/codeigniter4-datatables/src/DataTableColumnDefs.php',
-        'Hermawan\\DataTables\\DataTableQuery' => __DIR__ . '/..' . '/hermawan/codeigniter4-datatables/src/DataTableQuery.php',
-        'Hermawan\\DataTables\\Helper' => __DIR__ . '/..' . '/hermawan/codeigniter4-datatables/src/Helper.php',
-        'Hermawan\\DataTables\\Request' => __DIR__ . '/..' . '/hermawan/codeigniter4-datatables/src/Request.php',
         'Laminas\\Escaper\\Escaper' => __DIR__ . '/..' . '/laminas/laminas-escaper/src/Escaper.php',
         'Laminas\\Escaper\\Exception\\ExceptionInterface' => __DIR__ . '/..' . '/laminas/laminas-escaper/src/Exception/ExceptionInterface.php',
         'Laminas\\Escaper\\Exception\\InvalidArgumentException' => __DIR__ . '/..' . '/laminas/laminas-escaper/src/Exception/InvalidArgumentException.php',

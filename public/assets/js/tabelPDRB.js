@@ -297,7 +297,19 @@ function kirimDataRingkasan(jenisTable, selectedPeriode, selectedKomponen) {
             data["wilayah"]
           );
           break;
+        case "15":
+        case "16":
+          console.log(data);
+          renderTable_ringkasanGrowth(
+            data["dataRingkasan"],
+            data["komponen"],
+            data["selectedPeriode"],
+            data["wilayah"],
+            data["jenisTabel"]
+          );
+          break;
         default:
+          console.log(data);
           renderTable_ringkasan(
             data["dataRingkasan"],
             data["komponen"],
@@ -933,6 +945,7 @@ function renderTable_ringkasan(
 
   // loop through json to create tbody
   var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  var idTabel = ["15", "16", "17", "19", "20", "21", "22", "23"];
   for (var i = 0; i < komponen.length; i++) {
     var id_komponen = komponen[i].id_komponen;
 
@@ -965,16 +978,7 @@ function renderTable_ringkasan(
             ? numberFormat(data[col - 1][i].nilai)
             : "";
         } else {
-          if (
-            jenisTabel == "15" ||
-            jenisTabel == "16" ||
-            jenisTabel == "17" ||
-            jenisTabel == "19" ||
-            jenisTabel == "20" ||
-            jenisTabel == "21" ||
-            jenisTabel == "22" ||
-            jenisTabel == "23"
-          ) {
+          if (jenisTabel.includes(idTabel)) {
             // ini kasih if data kosong
             if (data[temp].nilai) {
               if (data[temp].nilai < 0) {
@@ -997,8 +1001,139 @@ function renderTable_ringkasan(
     }
     tbody.appendChild(row);
   }
-
   table.appendChild(tbody);
+  // memasukkan tabel ke view
+  container.appendChild(table);
+}
+
+function renderTable_ringkasanGrowth(
+  data,
+  komponen,
+  selectedPeriode,
+  wilayah,
+  jenisTabel
+) {
+  // container table
+  var container = document.getElementById("ringkasan-container");
+
+  // delete table if there is content inside it
+  container.innerHTML = "";
+
+  // create elemen tabel
+  var table = document.createElement("table");
+  table.id = "tabelRingkasan";
+  table.classList.add("table", "table-bordered", "table-hover", "PDRBTable");
+
+  // create table header
+  var thead = document.createElement("thead");
+  thead.classList.add("text-center", "table-primary", "sticky-top");
+  var headerRow = document.createElement("tr");
+  var headerRow2 = document.createElement("tr");
+
+  var headerKomponen = document.createElement("th");
+  headerKomponen.colSpan = "2";
+  headerKomponen.rowSpan = "2";
+  headerKomponen.style =
+    "vertical-align: middle;  position: sticky; left: 0; z-index: 1; background-color: #B8DAFF";
+  headerKomponen.innerHTML = "Komponen";
+  headerRow.appendChild(headerKomponen);
+
+  for (var i = 0; i < selectedPeriode.length; i++) {
+    var columnName = selectedPeriode[i];
+    var headerCell = document.createElement("th");
+    headerCell.colSpan = "8";
+    headerCell.innerHTML = columnName;
+
+    var headercell2 = document.createElement("th");
+    headercell2.style =
+      "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+    headercell2.innerHTML = "Provinsi DKI Jakarta";
+
+    var headercell3 = document.createElement("th");
+    headercell3.style =
+      "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+    headercell3.innerHTML = "Total Kab/Kota";
+
+    headerRow2.appendChild(headercell2);
+    headerRow2.appendChild(headercell3);
+
+    wilayah.forEach((columns) => {
+      if (columns.id_wilayah != "3100") {
+        var headerCell4 = document.createElement("th");
+        headerCell4.style =
+          "max-width: 105px; overflow: auto; white-space: normal;vertical-align: middle;";
+        headerCell4.innerHTML = columns.wilayah;
+        headerRow2.appendChild(headerCell4);
+      }
+    });
+    headerRow.appendChild(headerCell);
+  }
+
+  thead.appendChild(headerRow);
+  thead.appendChild(headerRow2);
+  table.appendChild(thead);
+
+  // create table body
+  var tbody = document.createElement("tbody");
+  var temp = -1;
+  var totalColumn = headerRow2.childElementCount + 1;
+
+  // loop through json to create tbody
+  var idBold = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  // var idTabel = ["15", "16", "17", "19", "20", "21", "22", "23"];
+  for (var i = 0; i < komponen.length; i++) {
+    var id_komponen = komponen[i].id_komponen;
+
+    // insert row
+    var row = document.createElement("tr");
+    if (idBold.includes(id_komponen)) {
+      row.style = "font-weight: bold;";
+    }
+
+    for (var col = 0; col < totalColumn; col++) {
+      var cell = document.createElement("td");
+
+      if (col == 0) {
+        cell.colSpan = "2";
+        cell.style =
+          "position: sticky; left: 0; z-index: 1; background-color: #fff;";
+        if (!idBold.includes(id_komponen)) {
+          cell.classList = "pl-5";
+        }
+        if (id_komponen == 9) {
+          cell.innerHTML = komponen[i].komponen;
+        } else {
+          cell.innerHTML = id_komponen + ". " + komponen[i].komponen;
+        }
+      } else {
+        temp++;
+        cell.style = "text-align: right;";
+        cell.classList.add("col-6");
+        if (document.title == "TEMPORAL | Upload Data") {
+          cell.innerHTML = data[col - 1][i]
+            ? numberFormat(data[col - 1][i].nilai)
+            : "";
+        } else {
+          console.log(data[temp].nilai);
+          // ini kasih if data kosong
+          if (data[temp].nilai) {
+            if (data[temp].nilai < 0) {
+              cell.classList.add("text-danger");
+              cell.innerHTML = `*${numberFormat(data[temp].nilai)}`;
+            } else {
+              cell.innerHTML = numberFormat(data[temp].nilai);
+            }
+          } else {
+            cell.innerHTML = "";
+          }
+        }
+      }
+      row.appendChild(cell);
+    }
+    tbody.appendChild(row);
+  }
+  table.appendChild(tbody);
+
   // memasukkan tabel ke view
   container.appendChild(table);
 }
