@@ -569,8 +569,47 @@ class TabelRingkasanController extends BaseController
     // 5. Pertumbuhan PDRB ADHK (Q-TO-Q)
     private function ringkasan_tabel5($obj, $kota, $periode)
     {
-        // sort data by periode ascending
-        $dataCurrent = $this->sortData($obj, 3, true);
+        // sort data by periode ascending, by wilayah 
+        $dataCurrent = $this->sortData($obj, 3);
+        $dataCurrent = $this->sortData($dataCurrent, 1);
+        $dataCurrent = $this->sortData($dataCurrent, 2);
+
+        // memisahkan data provinsi dan data kota (data current)
+        $dataKota = $this->filter_id_wilayah($dataCurrent, '3100', true);
+
+        // menghitung kumulatif semua kota tiap komponen (data current)
+        $dataKumulatif = [];
+        $i = 0;
+        $j = sizeof($dataKota);
+        $kumulatif = [];
+
+        foreach ($dataKota as $data) {
+            $j--;
+
+            if ($i == 0) {
+                $kumulatif = clone $data;
+                $kumulatif->nilai = 0;
+                $kumulatif->id_wilayah = '3100';
+            }
+
+            if ($j == 0) {
+                $dataKumulatif[] = $kumulatif;
+            }
+
+            // tiap 5 (sejumlah kota - 1) data di push ke aray $kumulatif sebagai total kota untuk komponen tersebut   
+            if ($i != 0 && ($i % 6) == 0) {
+                $dataKumulatif[] = $kumulatif;
+                $kumulatif = clone $data;
+                $kumulatif->nilai = 0;
+                $kumulatif->id_wilayah = '3100';
+                $i = 0;
+            }
+
+            // menghitung kumulatif semua kota tiap komponen
+            $kumulatif->nilai = $kumulatif->nilai + $data->nilai;
+
+            $i++;
+        }
 
         // membuat array untuk periode sebelumnya 
         $periodeBefore = [];
@@ -592,6 +631,57 @@ class TabelRingkasanController extends BaseController
 
         // get data by periodeBefore 
         $dataBefore = $this->getAllData($periodeBefore, '2', $kota);
+        $dataBefore = $this->sortData($dataBefore, 3);
+        $dataBefore = $this->sortData($dataBefore, 1);
+        $dataBefore = $this->sortData($dataBefore, 2);
+
+        // memisahkan data provinsi dan data kota (data before)
+        $dataKotaBefore = $this->filter_id_wilayah($dataBefore, '3100', true);
+
+        // menghitung kumulatif semua kota tiap komponen (data before)
+        $dataKumulatifBefore = [];
+        $i = 0;
+        $j = sizeof($dataKotaBefore);
+        $kumulatifBefore = [];
+
+        foreach ($dataKotaBefore as $data) {
+            $j--;
+
+            if ($i == 0) {
+                $kumulatifBefore = clone $data;
+                $kumulatifBefore->nilai = 0;
+                $kumulatifBefore->id_wilayah = '3100';
+            }
+
+            if ($j == 0) {
+                $dataKumulatifBefore[] = $kumulatifBefore;
+            }
+
+            // tiap 5 (sejumlah kota - 1) data di push ke aray $kumulatif sebagai total kota untuk komponen tersebut   
+            if ($i != 0 && ($i % 6) == 0) {
+                $dataKumulatifBefore[] = $kumulatifBefore;
+                $kumulatifBefore = clone $data;
+                $kumulatifBefore->nilai = 0;
+                $kumulatifBefore->id_wilayah = '3100';
+                $i = 0;
+            }
+
+            // menghitung kumulatif semua kota tiap komponen
+            $kumulatifBefore->nilai = $kumulatifBefore->nilai + $data->nilai;
+
+            $i++;
+        }
+
+        // gabungin data perkota dan data kumulatif (current), sort ulang by periode
+        foreach ($dataKumulatif as $data) {
+            array_push($dataCurrent, $data);
+        }
+        $dataCurrent = $this->sortData($dataCurrent, 3, true);
+
+        // gabungin data perkota dan data kumulatif (before), sort ulang by periode
+        foreach ($dataKumulatifBefore as $data) {
+            array_push($dataBefore, $data);
+        }
         $dataBefore = $this->sortData($dataBefore, 3, true);
 
         // MENGHITUNG NILAI PERTUMBUHAN (DATA OUTPUT)
@@ -618,7 +708,46 @@ class TabelRingkasanController extends BaseController
     private function ringkasan_tabel6($obj, $kota, $periode)
     {
         // sort data by periode ascending
-        $dataCurrent = $this->sortData($obj, 3, true);
+        $dataCurrent = $this->sortData($obj, 3);
+        $dataCurrent = $this->sortData($dataCurrent, 1);
+        $dataCurrent = $this->sortData($dataCurrent, 2);
+
+        // memisahkan data provinsi dan data kota (data current)
+        $dataKota = $this->filter_id_wilayah($dataCurrent, '3100', true);
+
+        // menghitung kumulatif semua kota tiap komponen (data current)
+        $dataKumulatif = [];
+        $i = 0;
+        $j = sizeof($dataKota);
+        $kumulatif = [];
+
+        foreach ($dataKota as $data) {
+            $j--;
+
+            if ($i == 0) {
+                $kumulatif = clone $data;
+                $kumulatif->nilai = 0;
+                $kumulatif->id_wilayah = '3100';
+            }
+
+            if ($j == 0) {
+                $dataKumulatif[] = $kumulatif;
+            }
+
+            // tiap 5 (sejumlah kota - 1) data di push ke aray $kumulatif sebagai total kota untuk komponen tersebut   
+            if ($i != 0 && ($i % 6) == 0) {
+                $dataKumulatif[] = $kumulatif;
+                $kumulatif = clone $data;
+                $kumulatif->nilai = 0;
+                $kumulatif->id_wilayah = '3100';
+                $i = 0;
+            }
+
+            // menghitung kumulatif semua kota tiap komponen
+            $kumulatif->nilai = $kumulatif->nilai + $data->nilai;
+
+            $i++;
+        }
 
         // membuat array untuk periode sebelumnya 
         $periodeBefore = [];
@@ -637,6 +766,57 @@ class TabelRingkasanController extends BaseController
 
         // get data by periodeBefore 
         $dataBefore = $this->getAllData($periodeBefore, '2', $kota);
+        $dataBefore = $this->sortData($dataBefore, 3);
+        $dataBefore = $this->sortData($dataBefore, 1);
+        $dataBefore = $this->sortData($dataBefore, 2);
+
+        // memisahkan data provinsi dan data kota (data before)
+        $dataKotaBefore = $this->filter_id_wilayah($dataBefore, '3100', true);
+
+        // menghitung kumulatif semua kota tiap komponen (data before)
+        $dataKumulatifBefore = [];
+        $i = 0;
+        $j = sizeof($dataKotaBefore);
+        $kumulatifBefore = [];
+
+        foreach ($dataKotaBefore as $data) {
+            $j--;
+
+            if ($i == 0) {
+                $kumulatifBefore = clone $data;
+                $kumulatifBefore->nilai = 0;
+                $kumulatifBefore->id_wilayah = '3100';
+            }
+
+            if ($j == 0) {
+                $dataKumulatifBefore[] = $kumulatifBefore;
+            }
+
+            // tiap 5 (sejumlah kota - 1) data di push ke aray $kumulatif sebagai total kota untuk komponen tersebut   
+            if ($i != 0 && ($i % 6) == 0) {
+                $dataKumulatifBefore[] = $kumulatifBefore;
+                $kumulatifBefore = clone $data;
+                $kumulatifBefore->nilai = 0;
+                $kumulatifBefore->id_wilayah = '3100';
+                $i = 0;
+            }
+
+            // menghitung kumulatif semua kota tiap komponen
+            $kumulatifBefore->nilai = $kumulatifBefore->nilai + $data->nilai;
+
+            $i++;
+        }
+
+        // gabungin data perkota dan data kumulatif (current), sort ulang by periode
+        foreach ($dataKumulatif as $data) {
+            array_push($dataCurrent, $data);
+        }
+        $dataCurrent = $this->sortData($dataCurrent, 3, true);
+
+        // gabungin data perkota dan data kumulatif (before), sort ulang by periode
+        foreach ($dataKumulatifBefore as $data) {
+            array_push($dataBefore, $data);
+        }
         $dataBefore = $this->sortData($dataBefore, 3, true);
 
         // MENGHITUNG NILAI PERTUMBUHAN (DATA OUTPUT)
