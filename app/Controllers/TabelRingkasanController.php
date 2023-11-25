@@ -271,7 +271,7 @@ class TabelRingkasanController extends BaseController
                         $dataNew = ["id_komponen" => $k->id_komponen, "id_wilayah" => $w->id_wilayah, "nilai" => "", "periode" => $p];
                         array_push($data, json_decode(json_encode($dataNew), false));
 
-                        // kalo id = 3100 atau 3101, di push sekali lagi biar ada 2 data masing2 (buat diskrepansi id 3100, buat total id 3010)
+                        // kalo id = 3100 atau 3101, di push sekali lagi biar ada 2 data masing2 (buat diskrepansi id 3100, buat total id 3101)
                         if ($w->id_wilayah == '3100' || $w->id_wilayah == '3101') {
                             array_push($data, json_decode(json_encode($dataNew), false));
                         }
@@ -325,6 +325,36 @@ class TabelRingkasanController extends BaseController
                     foreach ($wilayah as $w) {
                         $dataNew = ["id_komponen" => $k->id_komponen, "id_wilayah" => $w->id_wilayah, "nilai" => "", "periode" => $p];
                         array_push($data, json_decode(json_encode($dataNew), false));
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    private function addDataKosong_growth($data, $allPeriode)
+    {
+        // get komponen dari database 
+        $komponen =  $this->komponen->get_data();
+
+        // get ID wilayah, kecuali provinsi
+        $wilayah = $this->wilayah->getAllIDKota();
+
+        $periodeLeft = $this->get_periodeLeft($data, $allPeriode);
+
+        // masukin data 0 ke array data
+        if ($periodeLeft) {
+            foreach ($periodeLeft as $p) {
+                foreach ($komponen as $k) {
+                    foreach ($wilayah as $w) {
+                        $dataNew = ["id_komponen" => $k->id_komponen, "id_wilayah" => $w->id_wilayah, "nilai" => "", "periode" => $p];
+                        array_push($data, json_decode(json_encode($dataNew), false));
+
+                        // kalo id = 3100, di push sekali lagi biar ada data kosong untuk total kab/kot
+                        if ($w->id_wilayah == '3100') {
+                            array_push($data, json_decode(json_encode($dataNew), false));
+                        }
                     }
                 }
             }
@@ -569,6 +599,9 @@ class TabelRingkasanController extends BaseController
     // 5. Pertumbuhan PDRB ADHK (Q-TO-Q)
     private function ringkasan_tabel5($obj, $kota, $periode)
     {
+        $periodeNoData = $this->get_periodeLeft($obj, $periode);
+        $periodeWithData = array_diff($periode, $periodeNoData);
+
         // sort data by periode ascending, by wilayah 
         $dataCurrent = $this->sortData($obj, 3);
         $dataCurrent = $this->sortData($dataCurrent, 1);
@@ -614,7 +647,7 @@ class TabelRingkasanController extends BaseController
         // membuat array untuk periode sebelumnya 
         $periodeBefore = [];
         $QBefore = 0;
-        foreach ($periode as $value) {
+        foreach ($periodeWithData as $value) {
             if (strlen($value) == 6) {
                 $Q = substr($value, -1); // ngambil Q berapa (huruf terakhir di periode)
                 $tahun =  substr($value, 0, 4); // ngambil tahun berapa (4 huruf pertama di periode)
@@ -695,7 +728,7 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
-        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+        $dataOutput = $this->addDataKosong_growth($dataOutput, $periode);
 
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
@@ -707,6 +740,9 @@ class TabelRingkasanController extends BaseController
     // 6. Pertumbuhan PDRB ADHK (Y-ON-Y)
     private function ringkasan_tabel6($obj, $kota, $periode)
     {
+        $periodeNoData = $this->get_periodeLeft($obj, $periode);
+        $periodeWithData = array_diff($periode, $periodeNoData);
+
         // sort data by periode ascending
         $dataCurrent = $this->sortData($obj, 3);
         $dataCurrent = $this->sortData($dataCurrent, 1);
@@ -752,7 +788,7 @@ class TabelRingkasanController extends BaseController
         // membuat array untuk periode sebelumnya 
         $periodeBefore = [];
         $QBefore = 0;
-        foreach ($periode as $value) {
+        foreach ($periodeWithData as $value) {
             if (strlen($value) == 6) {
                 $Q = substr($value, -1);
                 $tahun =  substr($value, 0, 4);
@@ -829,7 +865,7 @@ class TabelRingkasanController extends BaseController
             $dataOutput[] = $dataNew;
             $i++;
         }
-        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+        $dataOutput = $this->addDataKosong_growth($dataOutput, $periode);
 
 
         $dataOutput = $this->sortData($dataOutput, 3);
@@ -842,9 +878,12 @@ class TabelRingkasanController extends BaseController
     // 7. Pertumbuhan PDRB ADHK (C-TO-C)
     private function ringkasan_tabel7($obj, $kota, $periode)
     {
+        $periodeNoData = $this->get_periodeLeft($obj, $periode);
+        $periodeWithData = array_diff($periode, $periodeNoData);
+
         // membuat array untuk periode kumulatif tahun ini
         $periodeKumCurrent = [];
-        foreach ($periode as $value) {
+        foreach ($periodeWithData as $value) {
             $QBefore = [];
             $Q = substr($value, -1);
             $tahun =  substr($value, 0, 4);
@@ -927,16 +966,43 @@ class TabelRingkasanController extends BaseController
             next($dataSumBefore);
         }
 
+        // memisahkan data provinsi dan data kab/kot
+        $dataSumCurrentKota = $this->filter_id_wilayah($dataSumCurrent, '3100', true);
+        $dataSumBeforeKota = $this->filter_id_wilayah($dataSumBefore, '3100', true);
+
+        $dataSumCurrentProv = $this->filter_id_wilayah($dataSumCurrent, '3100');
+        $dataSumBeforeProv = $this->filter_id_wilayah($dataSumBefore, '3100');
+
+        // menghitung kumulatif semua kota tiap komponen
+        $dataSumCurrentKum = $this->cumulate($dataSumCurrentKota);
+        $dataSumBeforeKum = $this->cumulate($dataSumBeforeKota);
+
         // MENGHITUNG NILAI PERTUMBUHAN (DATA OUTPUT)
         $dataOutput = [];
         $i = 0;
-        foreach ($dataSumCurrent as $data) {
+        foreach ($dataSumCurrentKota as $data) {
             $dataNew = $data;
-            $dataNew->nilai = (($dataNew->nilai - $dataSumBefore[$i]->nilai) * 100) / abs($dataSumBefore[$i]->nilai);
+            $dataNew->nilai = (($dataNew->nilai - $dataSumBeforeKota[$i]->nilai) * 100) / abs($dataSumBeforeKota[$i]->nilai);
             $dataOutput[] = $dataNew;
             $i++;
         }
-        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+
+        $i = 0;
+        foreach ($dataSumCurrentProv as $data) {
+            $dataNew = $data;
+            $dataNew->nilai = (($dataNew->nilai - $dataSumBeforeProv[$i]->nilai) * 100) / abs($dataSumBeforeProv[$i]->nilai);
+            $dataOutput[] = $dataNew;
+            $i++;
+        }
+
+        $i = 0;
+        foreach ($dataSumCurrentKum as $data) {
+            $dataNew = $data;
+            $dataNew->nilai = (($dataNew->nilai - $dataSumBeforeKum[$i]->nilai) * 100) / abs($dataSumBeforeKum[$i]->nilai);
+            $dataOutput[] = $dataNew;
+            $i++;
+        }
+        $dataOutput = $this->addDataKosong_growth($dataOutput, $periode);
 
         $dataOutput = $this->multipleSortData($dataOutput, [2, 1, 3]);
         return $dataOutput;
@@ -972,6 +1038,9 @@ class TabelRingkasanController extends BaseController
     // 9. Pertumbuhan indeks implisit (Q-T-Q)
     private function ringkasan_tabel9($adhb, $adhk, $kota, $periode)
     {
+        $periodeNoData = $this->get_periodeLeft($adhb, $periode);
+        $periodeWithData = array_diff($periode, $periodeNoData);
+
         // sort data by periode ascending
         $dataADHB = $this->sortData($adhb, 3);
         $dataADHB = $this->sortData($dataADHB, 1);
@@ -984,7 +1053,7 @@ class TabelRingkasanController extends BaseController
         $periodeBeforeADHB = [];
         $periodeBeforeADHK = [];
         $QBefore = 0;
-        foreach ($periode as $value) {
+        foreach ($periodeWithData as $value) {
             if (strlen($value) == 6) {
                 $Q = substr($value, -1);
                 $tahun =  substr($value, 0, 4);
@@ -1063,7 +1132,7 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
-        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+        $dataOutput = $this->addDataKosong_growth($dataOutput, $periode);
 
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
@@ -1075,6 +1144,9 @@ class TabelRingkasanController extends BaseController
     // 10. Pertumbuhan indeks implisit (Y-ON-Y)
     private function ringkasan_tabel10($adhb, $adhk, $kota, $periode)
     {
+        $periodeNoData = $this->get_periodeLeft($adhb, $periode);
+        $periodeWithData = array_diff($periode, $periodeNoData);
+
         // sort data by periode ascending
         $dataADHB = $this->sortData($adhb, 3);
         $dataADHB = $this->sortData($dataADHB, 1);
@@ -1087,7 +1159,7 @@ class TabelRingkasanController extends BaseController
         $periodeBeforeADHB = [];
         $periodeBeforeADHK = [];
         $QBefore = 0;
-        foreach ($periode as $value) {
+        foreach ($periodeWithData as $value) {
             if (strlen($value) == 6) {
                 $Q = substr($value, -1);
                 $tahun =  substr($value, 0, 4);
@@ -1164,7 +1236,7 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
 
-        $dataOutput = $this->addDataKosong_ringkasan($dataOutput, $periode);
+        $dataOutput = $this->addDataKosong_growth($dataOutput, $periode);
 
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
