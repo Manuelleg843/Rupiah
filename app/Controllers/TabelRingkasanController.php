@@ -748,54 +748,19 @@ class TabelRingkasanController extends BaseController
         $dataCurrent = $this->sortData($dataCurrent, 1);
         $dataCurrent = $this->sortData($dataCurrent, 2);
 
-        // memisahkan data provinsi dan data kota (data current)
-        $dataKota = $this->filter_id_wilayah($dataCurrent, '3100', true);
-
-        // menghitung kumulatif semua kota tiap komponen (data current)
-        $dataKumulatif = [];
-        $i = 0;
-        $j = sizeof($dataKota);
-        $kumulatif = [];
-
-        foreach ($dataKota as $data) {
-            $j--;
-
-            if ($i == 0) {
-                $kumulatif = clone $data;
-                $kumulatif->nilai = 0;
-                $kumulatif->id_wilayah = '3100';
-            }
-
-            if ($j == 0) {
-                $dataKumulatif[] = $kumulatif;
-            }
-
-            // tiap 5 (sejumlah kota - 1) data di push ke aray $kumulatif sebagai total kota untuk komponen tersebut   
-            if ($i != 0 && ($i % 6) == 0) {
-                $dataKumulatif[] = $kumulatif;
-                $kumulatif = clone $data;
-                $kumulatif->nilai = 0;
-                $kumulatif->id_wilayah = '3100';
-                $i = 0;
-            }
-
-            // menghitung kumulatif semua kota tiap komponen
-            $kumulatif->nilai = $kumulatif->nilai + $data->nilai;
-
-            $i++;
-        }
-
         // membuat array untuk periode sebelumnya 
         $periodeBefore = [];
         $QBefore = 0;
+        $coba = '';
         foreach ($periodeWithData as $value) {
             if (strlen($value) == 6) {
+                $coba = '6';
                 $Q = substr($value, -1);
                 $tahun =  substr($value, 0, 4);
                 $tahunBefore = $tahun - 1;
                 $QBefore = $tahunBefore . 'Q' . $Q;
             } else {
-                $QBefore = (string) $value - 1;
+                $QBefore = $value - 1 . "";
             }
             array_push($periodeBefore, $QBefore);
         }
@@ -806,42 +771,13 @@ class TabelRingkasanController extends BaseController
         $dataBefore = $this->sortData($dataBefore, 1);
         $dataBefore = $this->sortData($dataBefore, 2);
 
-        // memisahkan data provinsi dan data kota (data before)
+        // memisahkan data provinsi dan data kota
+        $dataKota = $this->filter_id_wilayah($dataCurrent, '3100', true);
         $dataKotaBefore = $this->filter_id_wilayah($dataBefore, '3100', true);
 
-        // menghitung kumulatif semua kota tiap komponen (data before)
-        $dataKumulatifBefore = [];
-        $i = 0;
-        $j = sizeof($dataKotaBefore);
-        $kumulatifBefore = [];
-
-        foreach ($dataKotaBefore as $data) {
-            $j--;
-
-            if ($i == 0) {
-                $kumulatifBefore = clone $data;
-                $kumulatifBefore->nilai = 0;
-                $kumulatifBefore->id_wilayah = '3100';
-            }
-
-            if ($j == 0) {
-                $dataKumulatifBefore[] = $kumulatifBefore;
-            }
-
-            // tiap 5 (sejumlah kota - 1) data di push ke aray $kumulatif sebagai total kota untuk komponen tersebut   
-            if ($i != 0 && ($i % 6) == 0) {
-                $dataKumulatifBefore[] = $kumulatifBefore;
-                $kumulatifBefore = clone $data;
-                $kumulatifBefore->nilai = 0;
-                $kumulatifBefore->id_wilayah = '3100';
-                $i = 0;
-            }
-
-            // menghitung kumulatif semua kota tiap komponen
-            $kumulatifBefore->nilai = $kumulatifBefore->nilai + $data->nilai;
-
-            $i++;
-        }
+        // menghitung kumulatif semua kota tiap komponen
+        $dataKumulatif = $this->cumulate($dataKota);
+        $dataKumulatifBefore = $this->cumulate($dataKotaBefore);
 
         // gabungin data perkota dan data kumulatif (current), sort ulang by periode
         foreach ($dataKumulatif as $data) {
@@ -866,7 +802,6 @@ class TabelRingkasanController extends BaseController
             $i++;
         }
         $dataOutput = $this->addDataKosong_growth($dataOutput, $periode);
-
 
         $dataOutput = $this->sortData($dataOutput, 3);
         $dataOutput = $this->sortData($dataOutput, 1);
