@@ -751,10 +751,8 @@ class TabelRingkasanController extends BaseController
         // membuat array untuk periode sebelumnya 
         $periodeBefore = [];
         $QBefore = 0;
-        $coba = '';
         foreach ($periodeWithData as $value) {
             if (strlen($value) == 6) {
-                $coba = '6';
                 $Q = substr($value, -1);
                 $tahun =  substr($value, 0, 4);
                 $tahunBefore = $tahun - 1;

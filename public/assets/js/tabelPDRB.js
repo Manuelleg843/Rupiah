@@ -10,9 +10,7 @@ const subJudulContainer = document.createElement("row");
 const judulModal = document.getElementById("judulModal");
 const kotaJudulModal = document.getElementById("kotaJudulModal");
 const eksporButtonPDF = document.getElementById("export-button-pdf");
-const eksporButtonExcel = document.getElementById("export-button-excel");
 const eksporButtonExcelPerkota = document.getElementById("exportExcelPerKota");
-const eksporButtonExcelAll = document.getElementById("export-button-excelAll");
 const currentQuarter = Math.floor((new Date().getMonth() + 3) / 3);
 const tableJenisPDRB = document.getElementById("selectTableHistory");
 const tableRingkasan = document.getElementById("selectTableRingkasan");
@@ -139,7 +137,7 @@ function loadData() {
     case "TEMPORAL | Tabel History Putaran":
       judulTable.textContent =
         tableSelected + " - " + kotaSelected + " - " + selectedPeriode;
-      kirimData(jenisPDRB, kota, selectedPutaran, selectedPeriode);
+      kirimData(jenisPDRB, kota, selectedPutaran, selectedPeriode, false);
       break;
     case "TEMPORAL | Tabel Ringkasan":
       judulTable.textContent = tableSelected;
@@ -185,30 +183,63 @@ function loadData() {
 
 $("#simpan-periode").click();
 
-function kirimData(jenisPDRB, kota, putaran, selectedPeriode) {
-  $.ajax({
-    type: "POST",
-    url: "/tabelPDRB/tabelHistoryPutaran/getDataHistory",
-    data: {
-      jenisPDRB: jenisPDRB,
-      kota: kota,
-      putaran: putaran,
-      periode: selectedPeriode,
-    },
-    dataType: "json",
-    success: function (data) {
-      renderTable(
-        data["dataHistory"],
-        selectedPeriode,
-        data["komponen"],
-        putaran
-      );
-    },
-    error: function (error) {
-      // Handle kesalahan jika ada
-      console.error("Terjadi kesalahan:", error);
-    },
-  });
+function kirimData(
+  jenisPDRB,
+  kota,
+  putaran,
+  selectedPeriode,
+  allPutaran = false
+) {
+  if (allPutaran) {
+    putaran = getPutaranPeriode(selectedPeriode);
+    $.ajax({
+      type: "POST",
+      url: "/tabelPDRB/tabelHistoryPutaran/getDataHistory",
+      data: {
+        jenisPDRB: jenisPDRB,
+        kota: kota,
+        putaran: putaran,
+        periode: selectedPeriode,
+      },
+      dataType: "json",
+      success: function (data) {
+        renderTable(
+          data["dataHistory"],
+          selectedPeriode,
+          data["komponen"],
+          putaran
+        );
+      },
+      error: function (error) {
+        // Handle kesalahan jika ada
+        console.error("Terjadi kesalahan:", error);
+      },
+    });
+  } else {
+    $.ajax({
+      type: "POST",
+      url: "/tabelPDRB/tabelHistoryPutaran/getDataHistory",
+      data: {
+        jenisPDRB: jenisPDRB,
+        kota: kota,
+        putaran: putaran,
+        periode: selectedPeriode,
+      },
+      dataType: "json",
+      success: function (data) {
+        renderTable(
+          data["dataHistory"],
+          selectedPeriode,
+          data["komponen"],
+          putaran
+        );
+      },
+      error: function (error) {
+        // Handle kesalahan jika ada
+        console.error("Terjadi kesalahan:", error);
+      },
+    });
+  }
 }
 
 function kirmdataPerKota(jenisPDRB, kota, selectedPeriode) {
@@ -1370,11 +1401,15 @@ function renderTable_diskrepansi(data, komponen, selectedPeriode, wilayah) {
 }
 
 function getPutaranPeriode(periode) {
+  let putaran = [];
   $.ajax({
     type: "POST",
     url: "/tabelPDRB/tabelHistoryPutaran/getPutaranPeriode/" + periode,
     dataType: "json",
     success: function (data) {
+      data.forEach((item) => {
+        putaran.push(item);
+      });
       generateCheckboxesPutaran(data);
     },
     error: function (error) {
@@ -1382,6 +1417,7 @@ function getPutaranPeriode(periode) {
       console.error("Terjadi kesalahan:", error);
     },
   });
+  return putaran;
 }
 
 // dropdown putaran
@@ -1416,44 +1452,22 @@ function numberFormat(
   return parts.join(decimalSeparator);
 }
 
-// ekspor excel
-if (eksporButtonExcel != null) {
-  eksporButtonExcel.addEventListener("click", function () {
-    if (document.title == "TEMPORAL | Tabel Ringkasan") {
-      window.location =
-        "/tabelPDRB/tabelRingkasan/exportExcel/" +
-        jenisTable +
-        "/" +
-        selectedPeriode +
-        "/" +
-        tableSelected;
-    } else if (document.title == "TEMPORAL | Tabel History Putaran") {
-      window.location =
-        "/tabelPDRB/tabelHistoryPutaran/exportExcel/" +
-        jenisPDRB +
-        "/" +
-        kota +
-        "/" +
-        selectedPutaran +
-        "/" +
-        selectedPeriode +
-        "/" +
-        tableSelected;
-    }
-  });
-}
 function fungsieksporButtonExcelPerkota() {
-  let tablePerkota;
+  let tableToExport;
   if (document.title == "TEMPORAL | Tabel Per Kota") {
-    tablePerkota = document.getElementById("tablePerkota");
+    // export excel untuk halaman tabel perkota
+    tableToExport = document.getElementById("tablePerkota");
+  } else if (document.title == "TEMPORAL | Tabel Ringkasan") {
+    // export excel untuk halaman tabel ringkasan
+    tableToExport = document.getElementById("tabelRingkasan");
   } else {
-    tablePerkota = document.getElementById("PDRBTable");
+    tableToExport = document.getElementById("PDRBTable");
   }
   // Ambil referensi tabel
   let workbook = new ExcelJS.Workbook();
   let worksheet = workbook.addWorksheet("Sheet1");
   // Membaca elemen thead
-  let thead = tablePerkota.querySelector("thead");
+  let thead = tableToExport.querySelector("thead");
   // Menambahkan judul tabel di cell A1
   worksheet.getCell("A1").value = judulTable.textContent;
   worksheet.getCell("A1").font = { bold: true, size: 11 };
@@ -1468,7 +1482,7 @@ function fungsieksporButtonExcelPerkota() {
     });
 
     // Membaca elemen tbody
-    let tbody = tablePerkota.querySelector("tbody");
+    let tbody = tableToExport.querySelector("tbody");
 
     // Menambahkan baris data mulai dari cell A4
     let dataRows = tbody.querySelectorAll("tr");
@@ -1553,7 +1567,7 @@ function fungsieksporButtonExcelPerkota() {
     });
 
     // Membaca elemen tbody
-    let tbody = tablePerkota.querySelector("tbody");
+    let tbody = tableToExport.querySelector("tbody");
 
     // Menambahkan baris data mulai dari cell A3
     let dataRows = tbody.querySelectorAll("tr");
@@ -1622,24 +1636,143 @@ function fungsieksporButtonExcelPerkota() {
   });
 }
 
-// ekspor excel all putaran di tabel history
-if (eksporButtonExcelAll != null) {
-  eksporButtonExcelAll.addEventListener("click", function () {
-    if (document.title == "TEMPORAL | Tabel History Putaran") {
-      window.location =
-        "/tabelPDRB/tabelHistoryPutaran/exportExcel/" +
-        jenisPDRB +
-        "/" +
-        kota +
-        "/" +
-        selectedPutaran +
-        "/" +
-        selectedPeriode +
-        "/" +
-        tableSelected +
-        "/" +
-        true;
+function fungsieksporButtonExcelAllPutaran() {
+  kirimData(jenisPDRB, kota, selectedPutaran, selectedPeriode, true);
+
+  let tableToExport;
+  tableToExport = document.getElementById("PDRBTable");
+
+  // Ambil referensi tabel
+  let workbook = new ExcelJS.Workbook();
+  let worksheet = workbook.addWorksheet("Sheet1");
+
+  // Membaca elemen thead
+  let thead = tableToExport.querySelector("thead");
+
+  // Menambahkan judul tabel di cell A1
+  worksheet.getCell("A1").value = judulTable.textContent;
+  worksheet.getCell("A1").font = { bold: true, size: 11 };
+
+  // Membaca baris header
+  let headerRows = thead.querySelectorAll("tr");
+  let rowIndex = 3; // Mulai dari baris ke-2 dalam worksheet
+
+  headerRows.forEach(function (headerRow) {
+    let cells = headerRow.querySelectorAll("th");
+
+    let columnIndex = 1; // Indeks kolom dalam Excel
+    if (rowIndex == 4) {
+      columnIndex = 2;
     }
+
+    cells.forEach(function (headerCell) {
+      let cell = worksheet.getCell(rowIndex, columnIndex);
+      let colspan = headerCell.hasAttribute("colspan")
+        ? parseInt(headerCell.getAttribute("colspan"))
+        : 1;
+      let rowspan = headerCell.hasAttribute("rowspan")
+        ? parseInt(headerCell.getAttribute("rowspan"))
+        : 1;
+
+      // Set nilai sel header
+      cell.value = headerCell.innerText;
+      cell.font = { bold: true };
+      cell.alignment = { horizontal: "center", vertical: "middle" };
+
+      // Gabung sel-sel jika diperlukan
+      if (colspan > 1 || rowspan > 1) {
+        if (cell.value == "Komponen") {
+          worksheet.mergeCells(
+            rowIndex,
+            columnIndex,
+            rowIndex + rowspan - 1,
+            columnIndex + colspan - 2
+          );
+        } else {
+          worksheet.mergeCells(
+            rowIndex,
+            columnIndex,
+            rowIndex + rowspan - 1,
+            columnIndex + colspan - 1
+          );
+        }
+      }
+      if (cell.value == "Komponen") {
+        columnIndex += colspan - 3;
+      }
+      columnIndex += colspan;
+    });
+
+    rowIndex += 1;
+  });
+
+  // Membaca elemen tbody
+  let tbody = tableToExport.querySelector("tbody");
+
+  // Menambahkan baris data mulai dari cell A3
+  let dataRows = tbody.querySelectorAll("tr");
+  dataRows.forEach(function (dataRow, rowIndex) {
+    let row = worksheet.addRow([]);
+    let dataCells = dataRow.querySelectorAll("td");
+    dataCells.forEach(function (dataCell, cellIndex) {
+      row.getCell(cellIndex + 1).value = dataCell.innerText;
+
+      // Mengatur alignment ke kanan untuk sel data (kolom selain A)
+      if (cellIndex > 0) {
+        row.getCell(cellIndex + 1).alignment = { horizontal: "right" };
+        row.getCell(cellIndex + 1).value = row
+          .getCell(cellIndex + 1)
+          .value.replace(/\./g, "")
+          .replace(",", ".");
+      }
+    });
+    row.number = rowIndex + rowIndex + 4; // Mulai dari baris ke-3
+  });
+
+  // Menambahkan spasi pada cell subkomponen
+  // Array subkomponen
+  let subkomponens = [6, 7, 8, 9, 10, 11, 12, 16, 17];
+
+  subkomponens.forEach(function (subkomponent) {
+    worksheet.getCell(`A${subkomponent}`).value =
+      "    " + worksheet.getCell(`A${subkomponent}`).value;
+  });
+
+  // Mengatur border untuk seluruh tabel
+  worksheet.eachRow(function (row) {
+    row.eachCell(function (cell) {
+      cell.border = {
+        top: { style: "thin" },
+        left: { style: "thin" },
+        bottom: { style: "thin" },
+        right: { style: "thin" },
+      };
+    });
+  });
+
+  // Mengatur lebar kolom secara otomatis
+  worksheet.columns.forEach((column) => {
+    let maxCellLength = 0;
+    column.eachCell({ includeEmpty: true }, (cell) => {
+      maxCellLength = Math.max(
+        maxCellLength,
+        cell.value ? cell.value.toString().length : 0
+      );
+    });
+    column.width = maxCellLength + 2;
+  });
+
+  // Membuat tautan unduhan
+  workbook.xlsx.writeBuffer().then(function (data) {
+    let blob = new Blob([data], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+    let url = window.URL.createObjectURL(blob);
+    let a = document.createElement("a");
+    a.href = url;
+    a.download = judulTable.textContent + ".xlsx";
+    a.click();
+    window.URL.revokeObjectURL(url);
   });
 }
 
@@ -1666,8 +1799,8 @@ if (eksporButtonPDF != null) {
           break;
       }
     }
-    if (tablePerkota) {
-      let jenisTable = tablePerkota.options[tablePerkota.selectedIndex].id;
+    if (tableToExport) {
+      let jenisTable = tableToExport.options[tableToExport.selectedIndex].id;
       if (jenisTable == "13") headerColSpan = 5;
     }
     if (tableArahRevisi) {

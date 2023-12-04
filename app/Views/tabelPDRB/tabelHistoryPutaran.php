@@ -109,11 +109,11 @@
                                                         <i class="fa fa-file-pdf"></i>
                                                         <span>Ekspor PDF</span>
                                                     </button>
-                                                    <button id="export-button-excel" class="btn btn-outline-success">
+                                                    <button id="export-button-excel" onclick="fungsieksporButtonExcelPerkota()" class="btn btn-outline-success">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Excel</span>
                                                     </button>
-                                                    <a id="export-button-excelAll" class="btn btn-outline-secondary">
+                                                    <a id="export-button-excelAll" onclick="fungsieksporButtonExcelAllPutaran()" class="btn btn-outline-secondary">
                                                         <i class="fa fa-file-excel"></i>
                                                         <span>Ekspor Semua Putaran</span>
                                                     </a>
