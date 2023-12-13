@@ -199,7 +199,8 @@ class PutaranModel extends Model
         $wilayahSudah = array_map('current', $subBuilder->get()->getResultArray());
 
         $builder = $this->db->table('putaran')
-            ->select('id_wilayah, uploaded_at, uploaded_by');
+            ->select('id_wilayah, MAX(uploaded_at) as uploaded_at, uploaded_by')
+            ->groupBy('id_wilayah, uploaded_by');
         if (!empty($wilayahSudah)) {
             $builder->whereIn('id_wilayah', $wilayahSudah);
         }

@@ -1794,6 +1794,13 @@ if (eksporButtonPDF != null) {
         case "14":
           headerColSpan = 6;
           break;
+        case "15":
+        case "16":
+        case "17":
+        case "19":
+        case "20":
+          headerColSpan = 8;
+          break;
         default:
           headerColSpan = 7;
           break;
